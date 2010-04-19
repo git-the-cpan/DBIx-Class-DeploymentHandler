@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_02';
 }
 use Moose;
 
@@ -61,7 +61,7 @@ DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated - (DEP
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 DESCRIPTION
 

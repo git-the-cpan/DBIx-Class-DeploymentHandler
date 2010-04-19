@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithStandardVersionStorage;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithStandardVersionStorage::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::WithStandardVersionStorage::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithStandardVersionStorage::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::WithStandardVersionStorage::VERSION = '0.001000_02';
 }
 use Moose::Role;
 
@@ -37,7 +37,7 @@ DBIx::Class::DeploymentHandler::WithStandardVersionStorage - Delegate/Role for D
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 AUTHOR
 

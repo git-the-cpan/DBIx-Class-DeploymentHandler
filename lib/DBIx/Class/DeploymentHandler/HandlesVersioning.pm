@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::HandlesVersioning;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_02';
 }
 use Moose::Role;
 
@@ -26,7 +26,7 @@ DBIx::Class::DeploymentHandler::HandlesVersioning - Interface for version method
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 DESCRIPTION
 

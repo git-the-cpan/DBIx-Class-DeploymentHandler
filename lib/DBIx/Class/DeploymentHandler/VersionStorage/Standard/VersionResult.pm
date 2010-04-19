@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_02';
 }
 
 use strict;
@@ -52,7 +52,7 @@ DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 AUTHOR
 

@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_02';
 }
 use Moose;
 
@@ -56,7 +56,7 @@ DBIx::Class::DeploymentHandler::VersionStorage::Standard - Version storage that 
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 AUTHOR
 

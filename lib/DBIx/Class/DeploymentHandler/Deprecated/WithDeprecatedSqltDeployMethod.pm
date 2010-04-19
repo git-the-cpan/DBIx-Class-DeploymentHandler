@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_02';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_01';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_02';
 }
 use Moose::Role;
 
@@ -62,7 +62,7 @@ DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod - (DE
 
 =head1 VERSION
 
-version 0.001000_01
+version 0.001000_02
 
 =head1 AUTHOR
 
