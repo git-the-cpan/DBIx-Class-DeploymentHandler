@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_03';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_03';
 }
 
 use strict;
@@ -44,7 +44,7 @@ DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult
 
 =head1 VERSION
 
-version 0.001000_02
+version 0.001000_03
 
 =head1 AUTHOR
 

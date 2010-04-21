@@ -20,6 +20,7 @@
       "Carp::Clan" : "0",
       "DBD::SQLite" : "0",
       "DBIx::Class" : "0.08121",
+      "File::Path" : "2.08",
       "Method::Signatures::Simple" : "0.05",
       "Moose" : "1.0",
       "SQL::Translator" : "0.11005",
@@ -32,6 +33,6 @@
    "resources" : {
       "repository" : "git://git.shadowcat.co.uk/DBIx-Class-DeploymentHandler.git"
    },
-   "version" : "0.001000_02"
+   "version" : "0.001000_03"
 }
 

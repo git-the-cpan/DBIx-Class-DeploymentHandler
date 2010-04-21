@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_03';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_03';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -50,7 +50,7 @@ DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 =head1 VERSION
 
-version 0.001000_02
+version 0.001000_03
 
 =head1 SYNOPSIS
 

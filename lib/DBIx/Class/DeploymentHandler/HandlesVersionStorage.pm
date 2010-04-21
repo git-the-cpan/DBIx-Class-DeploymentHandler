@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::HandlesVersionStorage;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_03';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_03';
 }
 use Moose::Role;
 
@@ -28,7 +28,7 @@ DBIx::Class::DeploymentHandler::HandlesVersionStorage - Interface for version st
 
 =head1 VERSION
 
-version 0.001000_02
+version 0.001000_03
 
 =head1 DESCRIPTION
 

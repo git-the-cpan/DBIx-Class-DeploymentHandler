@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::Monotonic;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_03';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_02';
+  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_03';
 }
 use Moose;
 
@@ -88,7 +88,7 @@ DBIx::Class::DeploymentHandler::VersionHandler::Monotonic - Obvious version prog
 
 =head1 VERSION
 
-version 0.001000_02
+version 0.001000_03
 
 =head1 AUTHOR
 

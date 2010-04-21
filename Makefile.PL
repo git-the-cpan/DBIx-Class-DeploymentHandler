@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
                        'BUILD_REQUIRES' => {},
                        'ABSTRACT' => 'Extensible DBIx::Class deployment',
                        'EXE_FILES' => [],
-                       'VERSION' => '0.001000_02',
+                       'VERSION' => '0.001000_03',
                        'PREREQ_PM' => {
                                         'Try::Tiny' => '0',
                                         'SQL::Translator' => '0.11005',
@@ -33,6 +33,7 @@ my %WriteMakefileArgs = (
                                         'Test::More' => '0.88',
                                         'autodie' => '0',
                                         'Carp::Clan' => '0',
+                                        'File::Path' => '2.08',
                                         'DBIx::Class' => '0.08121',
                                         'Moose' => '1.0'
                                       },
