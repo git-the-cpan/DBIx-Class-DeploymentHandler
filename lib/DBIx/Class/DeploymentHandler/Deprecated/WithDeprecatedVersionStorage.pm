@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_04';
 }
 use Moose::Role;
 
@@ -37,7 +37,7 @@ DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage - (DEPR
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 AUTHOR
 

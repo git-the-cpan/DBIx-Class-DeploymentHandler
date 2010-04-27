@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithSqltDeployMethod;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_04';
 }
 use Moose::Role;
 
@@ -62,7 +62,7 @@ DBIx::Class::DeploymentHandler::WithSqltDeployMethod - Delegate/Role for DBIx::C
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 AUTHOR
 

@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_04';
 }
 use Moose;
 
@@ -60,7 +60,7 @@ DBIx::Class::DeploymentHandler::VersionStorage::Deprecated - (DEPRECATED) Use th
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 DEPRECATED
 

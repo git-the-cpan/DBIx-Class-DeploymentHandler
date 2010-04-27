@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_04';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -34,6 +34,11 @@ sub install_version_storage {
   );
 }
 
+sub prepare_install {
+   $_[0]->prepare_deploy;
+   $_[0]->prepare_version_storage_install;
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -50,7 +55,7 @@ DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 SYNOPSIS
 
@@ -63,7 +68,7 @@ version 0.001000_03
    sqltargs => { add_drop_table => 0 },
  });
 
- $dh->prepare_deploy;
+ $dh->prepare_install;
 
  $dh->install;
 
@@ -133,6 +138,13 @@ all the details.
 
 Creates the needed C<.sql> file to install the version storage and not the rest
 of the tables
+
+=head2 prepare_install
+
+ $dh->prepare_install
+
+First prepare all the tables to be installed and the prepare just the version
+storage
 
 =head2 install_version_storage
 

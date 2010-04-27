@@ -2,7 +2,7 @@ NAME
     DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 VERSION
-    version 0.001000_03
+    version 0.001000_04
 
 SYNOPSIS
      use aliased 'DBIx::Class::DeploymentHandler' => 'DH';
@@ -14,7 +14,7 @@ SYNOPSIS
        sqltargs => { add_drop_table => 0 },
      });
 
-     $dh->prepare_deploy;
+     $dh->prepare_install;
 
      $dh->install;
 
@@ -68,6 +68,12 @@ METHODS
 
     Creates the needed ".sql" file to install the version storage and not
     the rest of the tables
+
+  prepare_install
+     $dh->prepare_install
+
+    First prepare all the tables to be installed and the prepare just the
+    version storage
 
   install_version_storage
      $dh->install_version_storage

@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_04';
 }
 use Moose::Role;
 
@@ -46,7 +46,7 @@ DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions - Delegate/Role for
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 AUTHOR
 

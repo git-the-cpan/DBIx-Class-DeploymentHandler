@@ -7,7 +7,7 @@
    "configure_requires" : {
       "ExtUtils::MakeMaker" : "6.31"
    },
-   "generated_by" : "Dist::Zilla version 2.101040",
+   "generated_by" : "Dist::Zilla version 2.101170",
    "license" : "perl",
    "meta-spec" : {
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html",
@@ -33,6 +33,6 @@
    "resources" : {
       "repository" : "git://git.shadowcat.co.uk/DBIx-Class-DeploymentHandler.git"
    },
-   "version" : "0.001000_03"
+   "version" : "0.001000_04"
 }
 

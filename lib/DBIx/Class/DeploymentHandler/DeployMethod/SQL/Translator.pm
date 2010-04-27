@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_04';
 }
 use Moose;
 
@@ -443,7 +443,7 @@ DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 DESCRIPTION
 

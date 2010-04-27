@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_04';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_03';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_04';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -17,7 +17,6 @@ has schema => (
   isa      => 'DBIx::Class::Schema',
   is       => 'ro',
   required => 1,
-  handles => ['schema_version'],
 );
 
 has backup_directory => (
@@ -32,6 +31,13 @@ has to_version => (
 );
 
 sub _build_to_version { $_[0]->schema->schema_version }
+
+has schema_version => (
+  is         => 'ro',
+  lazy_build => 1,
+);
+
+sub _build_schema_version { $_[0]->schema->schema_version }
 
 method install {
   croak 'Install not possible as versions table already exists in database'
@@ -86,7 +92,7 @@ DBIx::Class::DeploymentHandler::Dad - Parent class for DeploymentHandlers
 
 =head1 VERSION
 
-version 0.001000_03
+version 0.001000_04
 
 =head1 ATTRIBUTES
 
@@ -94,6 +100,11 @@ version 0.001000_03
 
 The L<DBIx::Class::Schema> (B<required>) that is used to talk to the database
 and generate the DDL.
+
+=head2 schema_version
+
+The version that the schema is currently at.  Defaults to
+C<< $self->schema->schema_version >>.
 
 =head2 backup_directory
 
