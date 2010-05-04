@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithMonotonicVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithMonotonicVersions::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithMonotonicVersions::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithMonotonicVersions::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithMonotonicVersions::VERSION = '0.001000_05';
 }
 use Moose::Role;
 
@@ -44,7 +44,7 @@ DBIx::Class::DeploymentHandler::WithMonotonicVersions - Delegate/Role for DBIx::
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 AUTHOR
 

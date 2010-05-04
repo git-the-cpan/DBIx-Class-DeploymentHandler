@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::Types;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_05';
 }
 use strict;
 use warnings;
@@ -33,7 +33,7 @@ DBIx::Class::DeploymentHandler::Types - Types internal to DBIx::Class::Deploymen
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 AUTHOR
 

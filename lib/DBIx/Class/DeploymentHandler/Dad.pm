@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_05';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -30,7 +30,7 @@ has to_version => (
   lazy_build => 1,
 );
 
-sub _build_to_version { $_[0]->schema->schema_version }
+sub _build_to_version { $_[0]->schema_version }
 
 has schema_version => (
   is         => 'ro',
@@ -92,7 +92,7 @@ DBIx::Class::DeploymentHandler::Dad - Parent class for DeploymentHandlers
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 ATTRIBUTES
 

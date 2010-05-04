@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_05';
 }
 use Moose;
 
@@ -28,7 +28,6 @@ has schema => (
   isa      => 'DBIx::Class::Schema',
   is       => 'ro',
   required => 1,
-  handles => [qw( schema_version )],
 );
 
 has storage => (
@@ -67,6 +66,13 @@ has txn_wrap => (
   isa => 'Bool',
   default => 1,
 );
+
+has schema_version => (
+  is => 'ro',
+  lazy_build => 1,
+);
+
+method _build_schema_version { $self->schema->schema_version }
 
 method __ddl_consume_with_prefix($type, $versions, $prefix) {
   my $base_dir = $self->upgrade_directory;
@@ -199,13 +205,13 @@ sub deploy {
 }
 
 sub _prepare_install {
-  my $self = shift;
+  my $self      = shift;
   my $sqltargs  = { %{$self->sqltargs}, %{shift @_} };
   my $to_file   = shift;
   my $schema    = $self->schema;
   my $databases = $self->databases;
   my $dir       = $self->upgrade_directory;
-  my $version = $schema->schema_version;
+  my $version   = $self->schema_version;
 
   my $sqlt = SQL::Translator->new({
     add_drop_table          => 1,
@@ -298,7 +304,7 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
   my $dir       = $self->upgrade_directory;
   my $sqltargs  = $self->sqltargs;
 
-  my $schema_version = $schema->schema_version;
+  my $schema_version = $self->schema_version;
 
   $sqltargs = {
     add_drop_table => 1,
@@ -443,7 +449,7 @@ DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 DESCRIPTION
 
@@ -471,7 +477,8 @@ and generate the DDL.  This is automatically created with L</_build_storage>.
 
 =head2 sqltargs
 
-#rename
+TODO
+# rename
 
 =head2 upgrade_directory
 
@@ -486,6 +493,11 @@ generate files for
 
 Set to true (which is the default) to wrap all upgrades and deploys in a single
 transaction.
+
+=head2 schema_version
+
+The version the schema on your harddrive is at.  Defaults to
+C<< $self->schema->schema_version >>.
 
 =head1 METHODS
 

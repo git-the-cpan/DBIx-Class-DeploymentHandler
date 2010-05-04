@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithExplicitVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithExplicitVersions::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithExplicitVersions::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithExplicitVersions::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithExplicitVersions::VERSION = '0.001000_05';
 }
 use Moose::Role;
 
@@ -46,7 +46,7 @@ DBIx::Class::DeploymentHandler::WithExplicitVersions - Delegate/Role for DBIx::C
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@ NAME
     DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 VERSION
-    version 0.001000_04
+    version 0.001000_05
 
 SYNOPSIS
      use aliased 'DBIx::Class::DeploymentHandler' => 'DH';

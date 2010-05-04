@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithSqltDeployMethod;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_05';
 }
 use Moose::Role;
 
@@ -40,12 +40,15 @@ has sqltargs => (
 
 sub _build_deploy_method {
   my $self = shift;
-  DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator->new({
+  my $args = {
     schema            => $self->schema,
     databases         => $self->databases,
     upgrade_directory => $self->upgrade_directory,
     sqltargs          => $self->sqltargs,
-  });
+  };
+
+  $args->{schema_version} = $self->schema_version if $self->has_schema_version;
+  DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator->new($args);
 }
 
 1;
@@ -62,7 +65,7 @@ DBIx::Class::DeploymentHandler::WithSqltDeployMethod - Delegate/Role for DBIx::C
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 AUTHOR
 
@@ -79,3 +82,5 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+
+TODO: pod

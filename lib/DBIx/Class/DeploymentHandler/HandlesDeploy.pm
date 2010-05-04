@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_05';
 }
 use Moose::Role;
 
@@ -35,7 +35,7 @@ DBIx::Class::DeploymentHandler::HandlesDeploy - Interface for deploy methods
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 METHODS
 

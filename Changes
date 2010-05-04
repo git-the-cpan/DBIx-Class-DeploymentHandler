@@ -1,5 +1,8 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.001000_05 2010-05-04 13:37:29 CST6CDT
+       - put schema_version attr in more places
+
 0.001000_04 2010-04-27 13:29:14 CST6CDT
        - schema_version is now an attr so that users can more easily force the
          version of the schema

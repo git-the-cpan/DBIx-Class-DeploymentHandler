@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_05';
 }
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_04';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_05';
 }
 use Moose::Role;
 
@@ -55,7 +55,7 @@ DBIx::Class::DeploymentHandler::WithReasonableDefaults - Make default arguments 
 
 =head1 VERSION
 
-version 0.001000_04
+version 0.001000_05
 
 =head1 AUTHOR
 
