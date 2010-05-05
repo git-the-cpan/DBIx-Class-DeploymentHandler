@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_06';
 }
 use Moose::Role;
 
@@ -55,7 +52,36 @@ DBIx::Class::DeploymentHandler::WithReasonableDefaults - Make default arguments 
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 CONVENIENCE
+
+The whole point of this role is to set defaults for arguments of various
+methods.  It's a little awesome.
+
+=head1 METHODS
+
+=head2 prepare_upgrade
+
+Defaulted args:
+
+  my $from_version = $self->database_version;
+  my $to_version   = $self->schema_version;
+  my $version_set  = [$from_version, $to_version];
+
+=head2 prepare_downgrade
+
+Defaulted args:
+
+  my $from_version = $self->database_version;
+  my $to_version   = $self->schema_version;
+  my $version_set  = [$from_version, $to_version];
+
+=head2 install_resultsource
+
+Defaulted args:
+
+  my $version = $self->to_version;
 
 =head1 AUTHOR
 
@@ -74,3 +100,4 @@ the same terms as the Perl 5 programming language system itself.
 __END__
 
 vim: ts=2 sw=2 expandtab
+

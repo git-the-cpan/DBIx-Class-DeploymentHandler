@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions::VERSION = '0.001000_06';
 }
 use Moose::Role;
 
@@ -46,7 +43,13 @@ DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions - Delegate/Role for
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 DELEGATION ROLE
+
+This role is entirely for making delegation look like a role.  The actual
+docs for the methods and attributes are at
+L<DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions>
 
 =head1 AUTHOR
 
@@ -64,4 +67,3 @@ the same terms as the Perl 5 programming language system itself.
 
 __END__
 
-TODO: pod

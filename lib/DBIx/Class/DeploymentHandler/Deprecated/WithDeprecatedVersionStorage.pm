@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage::VERSION = '0.001000_06';
 }
 use Moose::Role;
 
@@ -37,7 +34,20 @@ DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage - (DEPR
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 DEPRECATED
+
+This component has been suplanted by
+L<DBIx::Class::DeploymentHandler::WithStandardVersionStorage>.
+In the next major version (1) we will begin issuing a warning on it's use.
+In the major version after that (2) we will remove it entirely.
+
+=head1 DELEGATION ROLE
+
+This role is entirely for making delegation look like a role.  The actual
+docs for the methods and attributes are at
+L<DBIx::Class::DeploymentHandler::VersionStorage::Deprecated>
 
 =head1 AUTHOR
 
@@ -54,3 +64,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+

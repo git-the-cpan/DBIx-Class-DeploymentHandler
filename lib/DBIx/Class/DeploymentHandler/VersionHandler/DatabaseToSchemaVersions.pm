@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_06';
 }
 use Moose;
 
@@ -78,7 +75,7 @@ DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions - Go st
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
 
 =head1 AUTHOR
 

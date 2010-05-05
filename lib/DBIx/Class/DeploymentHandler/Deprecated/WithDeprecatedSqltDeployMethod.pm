@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod::VERSION = '0.001000_06';
 }
 use Moose::Role;
 
@@ -32,7 +29,7 @@ has databases => (
   default => sub { [qw( MySQL SQLite PostgreSQL )] },
 );
 
-has sqltargs => (
+has sql_translator_args => (
   isa => 'HashRef',
   is  => 'ro',
   default => sub { {} },
@@ -41,10 +38,10 @@ has sqltargs => (
 sub _build_deploy_method {
   my $self = shift;
   DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated->new({
-    schema            => $self->schema,
-    databases         => $self->databases,
-    upgrade_directory => $self->upgrade_directory,
-    sqltargs          => $self->sqltargs,
+    schema              => $self->schema,
+    databases           => $self->databases,
+    upgrade_directory   => $self->upgrade_directory,
+    sql_translator_args => $self->sql_translator_args,
   });
 }
 
@@ -62,7 +59,20 @@ DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod - (DE
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 DEPRECATED
+
+This component has been suplanted by
+L<DBIx::Class::DeploymentHandler::WithSqltDeployMethod>.
+In the next major version (1) we will begin issuing a warning on it's use.
+In the major version after that (2) we will remove it entirely.
+
+=head1 DELEGATION ROLE
+
+This role is entirely for making delegation look like a role.  The actual
+docs for the methods and attributes are at
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated>
 
 =head1 AUTHOR
 

@@ -2,16 +2,16 @@ NAME
     DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 VERSION
-    version 0.001000_05
+    version 0.001000_06
 
 SYNOPSIS
      use aliased 'DBIx::Class::DeploymentHandler' => 'DH';
      my $s = My::Schema->connect(...);
 
      my $dh = DH->new({
-       schema => $s,
-       databases => 'SQLite',
-       sqltargs => { add_drop_table => 0 },
+       schema              => $s,
+       databases           => 'SQLite',
+       sql_translator_args => { add_drop_table => 0 },
      });
 
      $dh->prepare_install;
@@ -24,9 +24,9 @@ SYNOPSIS
      my $s = My::Schema->connect(...);
 
      my $dh = DH->new({
-       schema => $s,
-       databases => 'SQLite',
-       sqltargs => { add_drop_table => 0 },
+       schema              => $s,
+       databases           => 'SQLite',
+       sql_translator_args => { add_drop_table => 0 },
      });
 
      $dh->prepare_upgrade(1, 2);

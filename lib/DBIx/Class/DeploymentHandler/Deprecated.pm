@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_06';
 }
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
@@ -50,7 +47,7 @@ DBIx::Class::DeploymentHandler::Deprecated - (DEPRECATED) Use this if you are st
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
 
 =head1 SYNOPSIS
 

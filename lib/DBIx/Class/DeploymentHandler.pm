@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_06';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -55,7 +52,7 @@ DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
 
 =head1 SYNOPSIS
 
@@ -63,9 +60,9 @@ version 0.001000_05
  my $s = My::Schema->connect(...);
 
  my $dh = DH->new({
-   schema => $s,
-   databases => 'SQLite',
-   sqltargs => { add_drop_table => 0 },
+   schema              => $s,
+   databases           => 'SQLite',
+   sql_translator_args => { add_drop_table => 0 },
  });
 
  $dh->prepare_install;
@@ -78,9 +75,9 @@ or for upgrades:
  my $s = My::Schema->connect(...);
 
  my $dh = DH->new({
-   schema => $s,
-   databases => 'SQLite',
-   sqltargs => { add_drop_table => 0 },
+   schema              => $s,
+   databases           => 'SQLite',
+   sql_translator_args => { add_drop_table => 0 },
  });
 
  $dh->prepare_upgrade(1, 2);

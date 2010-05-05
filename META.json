@@ -33,6 +33,6 @@
    "resources" : {
       "repository" : "git://git.shadowcat.co.uk/DBIx-Class-DeploymentHandler.git"
    },
-   "version" : "0.001000_05"
+   "version" : "0.001000_06"
 }
 

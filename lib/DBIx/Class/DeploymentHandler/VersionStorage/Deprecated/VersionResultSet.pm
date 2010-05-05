@@ -1,10 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_06';
 }
-BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_05';
-}
+
+# ABSTRACT: (DEPRECATED) Predefined searches to find what you want from the version storage
 
 use strict;
 use warnings;
@@ -59,11 +58,32 @@ sub create {
 
 =head1 NAME
 
-DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet
+DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet - (DEPRECATED) Predefined searches to find what you want from the version storage
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 METHODS
+
+=head2 version_storage_is_installed
+
+True if (!!!) the version storage has been installed
+
+=head2 database_version
+
+The version of the database
+
+=head2 create
+
+Overridden to default C<installed> to the current time. (take a look, it's yucky)
+
+=head1 DEPRECATED
+
+This component has been suplanted by
+L<DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet>.
+In the next major version (1) we will begin issuing a warning on it's use.
+In the major version after that (2) we will remove it entirely.
 
 =head1 AUTHOR
 

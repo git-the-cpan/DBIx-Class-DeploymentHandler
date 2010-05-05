@@ -1,9 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithSqltDeployMethod;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::WithSqltDeployMethod::VERSION = '0.001000_06';
 }
 use Moose::Role;
 
@@ -32,7 +29,7 @@ has databases => (
   default => sub { [qw( MySQL SQLite PostgreSQL )] },
 );
 
-has sqltargs => (
+has sql_translator_args => (
   isa => 'HashRef',
   is  => 'ro',
   default => sub { {} },
@@ -41,10 +38,10 @@ has sqltargs => (
 sub _build_deploy_method {
   my $self = shift;
   my $args = {
-    schema            => $self->schema,
-    databases         => $self->databases,
-    upgrade_directory => $self->upgrade_directory,
-    sqltargs          => $self->sqltargs,
+    schema              => $self->schema,
+    databases           => $self->databases,
+    upgrade_directory   => $self->upgrade_directory,
+    sql_translator_args => $self->sql_translator_args,
   };
 
   $args->{schema_version} = $self->schema_version if $self->has_schema_version;
@@ -65,7 +62,13 @@ DBIx::Class::DeploymentHandler::WithSqltDeployMethod - Delegate/Role for DBIx::C
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 DELEGATION ROLE
+
+This role is entirely for making delegation look like a role.  The actual
+docs for the methods and attributes are at
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator>
 
 =head1 AUTHOR
 
@@ -83,4 +86,3 @@ the same terms as the Perl 5 programming language system itself.
 
 __END__
 
-TODO: pod

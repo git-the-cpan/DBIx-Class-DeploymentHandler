@@ -1,10 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.001000_06';
 }
-BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.001000_05';
-}
+
+# ABSTRACT: Predefined searches to find what you want from the version storage
 
 use strict;
 use warnings;
@@ -36,11 +35,21 @@ sub database_version {
 
 =head1 NAME
 
-DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet
+DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet - Predefined searches to find what you want from the version storage
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
+
+=head1 METHODS
+
+=head2 version_storage_is_installed
+
+True if (!!!) the version storage has been installed
+
+=head2 database_version
+
+The version of the database
 
 =head1 AUTHOR
 

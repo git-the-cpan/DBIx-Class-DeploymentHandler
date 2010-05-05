@@ -1,11 +1,10 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_05';
-}
-BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_05';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_06';
 }
 use Moose;
+
+# ABSTRACT: Manage your SQL and Perl migrations in nicely laid out directories
 
 use autodie;
 use Carp qw( carp croak );
@@ -42,7 +41,7 @@ method _build_storage {
   $s
 }
 
-has sqltargs => (
+has sql_translator_args => (
   isa => 'HashRef',
   is  => 'ro',
   default => sub { {} },
@@ -206,7 +205,7 @@ sub deploy {
 
 sub _prepare_install {
   my $self      = shift;
-  my $sqltargs  = { %{$self->sqltargs}, %{shift @_} };
+  my $sqltargs  = { %{$self->sql_translator_args}, %{shift @_} };
   my $to_file   = shift;
   my $schema    = $self->schema;
   my $databases = $self->databases;
@@ -302,7 +301,7 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
   my $schema    = $self->schema;
   my $databases = $self->databases;
   my $dir       = $self->upgrade_directory;
-  my $sqltargs  = $self->sqltargs;
+  my $sqltargs  = $self->sql_translator_args;
 
   my $schema_version = $self->schema_version;
 
@@ -445,11 +444,11 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator
+DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator - Manage your SQL and Perl migrations in nicely laid out directories
 
 =head1 VERSION
 
-version 0.001000_05
+version 0.001000_06
 
 =head1 DESCRIPTION
 
@@ -475,10 +474,9 @@ and generate the DDL.
 The L<DBIx::Class::Storage> that is I<actually> used to talk to the database
 and generate the DDL.  This is automatically created with L</_build_storage>.
 
-=head2 sqltargs
+=head2 sql_translator_args
 
-TODO
-# rename
+The arguments that get passed to L<SQL::Translator> when it's used.
 
 =head2 upgrade_directory
 
