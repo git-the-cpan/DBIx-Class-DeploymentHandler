@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -107,6 +107,10 @@ method __ddl_consume_with_prefix($type, $versions, $prefix) {
   return [@files{sort keys %files}]
 }
 
+method _ddl_preinstall_consume_filenames($type, $version) {
+  $self->__ddl_consume_with_prefix($type, [ $version ], 'preinstall')
+}
+
 method _ddl_schema_consume_filenames($type, $version) {
   $self->__ddl_consume_with_prefix($type, [ $version ], 'schema')
 }
@@ -169,22 +173,21 @@ method _run_sql_and_perl($filenames) {
         $storage->_query_end($line);
       }
     } elsif ( $filename =~ /^(.+)\.pl$/ ) {
-      my $package = $1;
       my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
-      # make the package name more palateable to perl
-      $package =~ s/\W/_/g;
 
       no warnings 'redefine';
-      eval "package $package;\n\n$filedata";
+      my $fn = eval "$filedata";
       use warnings;
 
-      if (my $fn = $package->can('run')) {
-        $fn->($self->schema);
+		if ($@) {
+        carp "$filename failed to compile: $@";
+		} elsif (ref $fn eq 'CODE') {
+        $fn->($self->schema)
       } else {
-        carp "$filename should define a run method that takes a schema but it didn't!";
+        carp "$filename should define an anonymouse sub that takes a schema but it didn't!";
       }
     } else {
-      croak "A file got to deploy that wasn't sql or perl!";
+      croak "A file ($filename) got to deploy that wasn't sql or perl!";
     }
   }
 
@@ -201,6 +204,37 @@ sub deploy {
     $self->storage->sqlt_type,
     $version,
   ));
+}
+
+sub preinstall {
+  my $self = shift;
+  my $version = shift || $self->schema_version;
+
+  my @files = @{$self->_ddl_preinstall_consume_filenames(
+    $self->storage->sqlt_type,
+    $version,
+  )};
+
+  for my $filename (@files) {
+    # We ignore sql for now (till I figure out what to do with it)
+    if ( $filename =~ /^(.+)\.pl$/ ) {
+      my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
+
+		no warnings 'redefine';
+      my $fn = eval "$filedata";
+      use warnings;
+
+		if ($@) {
+        carp "$filename failed to compile: $@";
+		} elsif (ref $fn eq 'CODE') {
+        $fn->()
+      } else {
+        carp "$filename should define an anonymous sub but it didn't!";
+      }
+    } else {
+      croak "A file ($filename) got to preinstall_scripts that wasn't sql or perl!";
+    }
+  }
 }
 
 sub _prepare_install {
@@ -446,10 +480,6 @@ __PACKAGE__->meta->make_immutable;
 
 DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator - Manage your SQL and Perl migrations in nicely laid out directories
 
-=head1 VERSION
-
-version 0.001000_06
-
 =head1 DESCRIPTION
 
 This class is the meat of L<DBIx::Class::DeploymentHandler>.  It takes care of
@@ -461,6 +491,105 @@ to be run at any stage of the process.
 
 For basic usage see L<DBIx::Class::DeploymentHandler::HandlesDeploy>.  What's
 documented here is extra fun stuff or private methods.
+
+=head1 DIRECTORY LAYOUT
+
+Arguably this is the best feature of L<DBIx::Class::DeploymentHandler>.  It's
+heavily based upon L<DBIx::Migration::Directories>, but has some extensions and
+modifications, so even if you are familiar with it, please read this.  I feel
+like the best way to describe the layout is with the following example:
+
+ $sql_migration_dir
+ |- SQLite
+ |  |- down
+ |  |  `- 2-1
+ |  |     `- 001-auto.sql
+ |  |- schema
+ |  |  `- 1
+ |  |     `- 001-auto.sql
+ |  `- up
+ |     |- 1-2
+ |     |  `- 001-auto.sql
+ |     `- 2-3
+ |        `- 001-auto.sql
+ |- _common
+ |  |- down
+ |  |  `- 2-1
+ |  |     `- 002-remove-customers.pl
+ |  `- up
+ |     `- 1-2
+ |        `- 002-generate-customers.pl
+ |- _generic
+ |  |- down
+ |  |  `- 2-1
+ |  |     `- 001-auto.sql
+ |  |- schema
+ |  |  `- 1
+ |  |     `- 001-auto.sql
+ |  `- up
+ |     `- 1-2
+ |        |- 001-auto.sql
+ |        `- 002-create-stored-procedures.sql
+ `- MySQL
+    |- down
+    |  `- 2-1
+    |     `- 001-auto.sql
+    |- preinstall
+    |  `- 1
+    |     |- 001-create_database.pl
+    |     `- 002-create_users_and_permissions.pl
+    |- schema
+    |  `- 1
+    |     `- 001-auto.sql
+    `- up
+       `- 1-2
+          `- 001-auto.sql
+
+So basically, the code
+
+ $dm->deploy(1)
+
+on an C<SQLite> database that would simply run
+C<$sql_migration_dir/SQLite/schema/1/001-auto.sql>.  Next,
+
+ $dm->upgrade_single_step([1,2])
+
+would run C<$sql_migration_dir/SQLite/up/1-2/001-auto.sql> followed by
+C<$sql_migration_dir/_common/up/1-2/002-generate-customers.pl>.
+
+Now, a C<.pl> file doesn't have to be in the C<_common> directory, but most of
+the time it probably should be, since perl scripts will mostly be database
+independent.
+
+C<_generic> exists for when you for some reason are sure that your SQL is
+generic enough to run on all databases.  Good luck with that one.
+
+Note that unlike most steps in the process, C<preinstall> will not run SQL, as
+there may not even be an database at preinstall time.  It will run perl scripts
+just like the other steps in the process, but nothing is passed to them.
+Until people have used this more it will remain freeform, but a recommended use
+of preinstall is to have it prompt for username and password, and then call the
+appropriate C<< CREATE DATABASE >> commands etc.
+
+=head1 PERL SCRIPTS
+
+A perl script for this tool is very simple.  It merely needs to contain an
+anonymous sub that takes a L<DBIx::Class::Schema> as it's only argument.
+A very basic perl script might look like:
+
+ #!perl
+
+ use strict;
+ use warnings;
+
+ sub {
+   my $schema = shift;
+
+   $schema->resultset('Users')->create({
+     name => 'root',
+     password => 'root',
+   })
+ }
 
 =head1 ATTRIBUTES
 
@@ -589,94 +718,6 @@ direction of the changegrade, be it 'up' or 'down'.
 
 Reads a sql file and returns lines in an C<ArrayRef>.  Strips out comments,
 transactions, and blank lines.
-
-=head1 DIRECTORY LAYOUT
-
-Arguably this is the best feature of L<DBIx::Class::DeploymentHandler>.  It's
-heavily based upon L<DBIx::Migration::Directories>, but has some extensions and
-modifications, so even if you are familiar with it, please read this.  I feel
-like the best way to describe the layout is with the following example:
-
- $sql_migration_dir
- |- SQLite
- |  |- down
- |  |  `- 1-2
- |  |     `- 001-auto.sql
- |  |- schema
- |  |  `- 1
- |  |     `- 001-auto.sql
- |  `- up
- |     |- 1-2
- |     |  `- 001-auto.sql
- |     `- 2-3
- |        `- 001-auto.sql
- |- _common
- |  |- down
- |  |  `- 1-2
- |  |     `- 002-remove-customers.pl
- |  `- up
- |     `- 1-2
- |        `- 002-generate-customers.pl
- |- _generic
- |  |- down
- |  |  `- 1-2
- |  |     `- 001-auto.sql
- |  |- schema
- |  |  `- 1
- |  |     `- 001-auto.sql
- |  `- up
- |     `- 1-2
- |        |- 001-auto.sql
- |        `- 002-create-stored-procedures.sql
- `- MySQL
-    |- down
-    |  `- 1-2
-    |     `- 001-auto.sql
-    |- schema
-    |  `- 1
-    |     `- 001-auto.sql
-    `- up
-       `- 1-2
-          `- 001-auto.sql
-
-So basically, the code
-
- $dm->deploy(1)
-
-on an C<SQLite> database that would simply run
-C<$sql_migration_dir/SQLite/schema/1/001-auto.sql>.  Next,
-
- $dm->upgrade_single_step([1,2])
-
-would run C<$sql_migration_dir/SQLite/up/1-2/001-auto.sql> followed by
-C<$sql_migration_dir/_common/up/1-2/002-generate-customers.pl>.
-
-Now, a C<.pl> file doesn't have to be in the C<_common> directory, but most of
-the time it probably should be, since perl scripts will mostly be database
-independent.
-
-C<_generic> exists for when you for some reason are sure that your SQL is
-generic enough to run on all databases.  Good luck with that one.
-
-=head1 PERL SCRIPTS
-
-A perl script for this tool is very simple.  It merely needs to contain a
-sub called C<run> that takes a L<DBIx::Class::Schema> as it's only argument.
-A very basic perl script might look like:
-
- #!perl
-
- use strict;
- use warnings;
-
- sub run {
-   my $schema = shift;
-
-   $schema->resultset('Users')->create({
-     name => 'root',
-     password => 'root',
-   })
- }
 
 =head1 AUTHOR
 

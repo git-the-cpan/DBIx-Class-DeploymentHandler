@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_07';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -10,9 +10,25 @@ use Moose;
 extends 'DBIx::Class::DeploymentHandler::Dad';
 # a single with would be better, but we can't do that
 # see: http://rt.cpan.org/Public/Bug/Display.html?id=46347
-with 'DBIx::Class::DeploymentHandler::WithSqltDeployMethod',
-     'DBIx::Class::DeploymentHandler::WithMonotonicVersions',
-     'DBIx::Class::DeploymentHandler::WithStandardVersionStorage';
+with 'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+    interface_role       => 'DBIx::Class::DeploymentHandler::HandlesDeploy',
+    class_name           => 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator',
+    delegate_name        => 'deploy_method',
+    attributes_to_assume => ['schema'],
+    attributes_to_copy   => [qw( databases upgrade_directory sql_translator_args )],
+  },
+  'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+    interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersioning',
+    class_name           => 'DBIx::Class::DeploymentHandler::VersionHandler::Monotonic',
+    delegate_name        => 'version_handler',
+    attributes_to_assume => [qw( database_version schema_version to_version )],
+  },
+  'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+    interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersionStorage',
+    class_name           => 'DBIx::Class::DeploymentHandler::VersionStorage::Standard',
+    delegate_name        => 'version_storage',
+    attributes_to_assume => ['schema'],
+  };
 with 'DBIx::Class::DeploymentHandler::WithReasonableDefaults';
 
 sub prepare_version_storage_install {
@@ -32,8 +48,8 @@ sub install_version_storage {
 }
 
 sub prepare_install {
-   $_[0]->prepare_deploy;
-   $_[0]->prepare_version_storage_install;
+  $_[0]->prepare_deploy;
+  $_[0]->prepare_version_storage_install;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -49,10 +65,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 SYNOPSIS
 
@@ -127,39 +139,17 @@ And much, much more!
 That's really just a taste of some of the differences.  Check out each role for
 all the details.
 
-=head1 METHODS
-
-=head2 prepare_version_storage_install
-
- $dh->prepare_version_storage_install
-
-Creates the needed C<.sql> file to install the version storage and not the rest
-of the tables
-
-=head2 prepare_install
-
- $dh->prepare_install
-
-First prepare all the tables to be installed and the prepare just the version
-storage
-
-=head2 install_version_storage
-
- $dh->install_version_storage
-
-Install the version storage and not the rest of the tables
-
 =head1 WHERE IS ALL THE DOC?!
 
 C<DBIx::Class::DeploymentHandler> extends
 L<DBIx::Class::DeploymentHandler::Dad>, so that's probably the first place to
 look when you are trying to figure out how everything works.
 
-Next would be to look at all the roles that fill in the blanks that
+Next would be to look at all the pieces that fill in the blanks that
 L<DBIx::Class::DeploymentHandler::Dad> expects to be filled.  They would be
-L<DBIx::Class::DeploymentHandler::WithSqltDeployMethod>,
-L<DBIx::Class::DeploymentHandler::WithMonotonicVersions>,
-L<DBIx::Class::DeploymentHandler::WithStandardVersionStorage>, and
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator>,
+L<DBIx::Class::DeploymentHandler::VersionHandler::Monotonic>,
+L<DBIx::Class::DeploymentHandler::VersionStorage::Standard>, and
 L<DBIx::Class::DeploymentHandler::WithReasonableDefaults>.
 
 =head1 THIS SUCKS
@@ -192,6 +182,28 @@ you should do research when donating to a charity, so don't just take my word
 on this.  I like Children's Survival Fund:
 L<http://www.childrenssurvivalfund.org>, but there are a host of other
 charities that can do much more good than I will with your money.
+
+=head1 METHODS
+
+=head2 prepare_version_storage_install
+
+ $dh->prepare_version_storage_install
+
+Creates the needed C<.sql> file to install the version storage and not the rest
+of the tables
+
+=head2 prepare_install
+
+ $dh->prepare_install
+
+First prepare all the tables to be installed and the prepare just the version
+storage
+
+=head2 install_version_storage
+
+ $dh->install_version_storage
+
+Install the version storage and not the rest of the tables
 
 =head1 AUTHOR
 

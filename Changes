@@ -1,8 +1,16 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.001000_07 2010-05-09 01:59:59 CST6CDT
+       - Downgrades swap from version and to version, so instead of up 1-2
+         being down 1-2, it's down 2-1, which clearly makes more sense
+       - perl scripts are now just anonymous subroutines, instead of files
+         with a single run subroutine
+       - Serious changes to architecture by using MXRP instead
+         of lots of repetitive roles
+
 0.001000_06 2010-05-05 00:46:24 CST6CDT
        - Add a bunch of boilerplate and not so boilerplate doc
-		 - rename sqltargs attribute to sql_translator_args
+       - rename sqltargs attribute to sql_translator_args
 
 0.001000_05 2010-05-04 13:37:29 CST6CDT
        - put schema_version attr in more places

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -96,8 +96,8 @@ sub previous_version_set {
   } else {
     my $next_idx = $self->_dec_version_idx;
     return [
-      $self->ordered_versions->[$next_idx    ],
       $self->ordered_versions->[$next_idx + 1],
+      $self->ordered_versions->[$next_idx    ],
     ];
   }
 }
@@ -115,10 +115,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions - Define your own list of versions to use for migrations
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 AUTHOR
 

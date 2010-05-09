@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.001000_07';
 }
 
 # ABSTRACT: Predefined searches to find what you want from the version storage
@@ -36,10 +36,6 @@ sub database_version {
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet - Predefined searches to find what you want from the version storage
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 METHODS
 

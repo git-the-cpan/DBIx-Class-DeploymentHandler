@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_07';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -87,69 +87,6 @@ __PACKAGE__->meta->make_immutable;
 
 DBIx::Class::DeploymentHandler::Dad - Parent class for DeploymentHandlers
 
-=head1 VERSION
-
-version 0.001000_06
-
-=head1 ATTRIBUTES
-
-=head2 schema
-
-The L<DBIx::Class::Schema> (B<required>) that is used to talk to the database
-and generate the DDL.
-
-=head2 schema_version
-
-The version that the schema is currently at.  Defaults to
-C<< $self->schema->schema_version >>.
-
-=head2 backup_directory
-
-The directory where backups are stored
-
-=head2 to_version
-
-The version (defaults to schema's version) to migrate the database to
-
-=head1 METHODS
-
-=head2 install
-
- $dh->install
-
-Deploys the current schema into the database.  Populates C<version_storage> with
-C<version> and C<ddl>.
-
-B<Note>: you typically need to call C<< $dh->prepare_deploy >> before you call
-this method.
-
-B<Note>: you cannot install on top of an already installed database
-
-=head2 upgrade
-
- $dh->upgrade
-
-Upgrades the database one step at a time till L</next_version_set>
-returns C<undef>.  Each upgrade step will add a C<version>, C<ddl>, and
-C<upgrade_sql> to the version storage (if C<ddl> and/or C<upgrade_sql> are
-returned from L</upgrade_single_step>.
-
-=head2 downgrade
-
- $dh->downgrade
-
-Downgrades the database one step at a time till L</previous_version_set>
-returns C<undef>.  Each downgrade step will delete a C<version> from the
-version storage.
-
-=head2 backup
-
- $dh->backup
-
-Simply calls backup on the C<< $schema->storage >>, passing in
-C<< $self->backup_directory >> as an argument.  Please test yourself before
-assuming it will work.
-
 =head1 METHODS THAT ARE REQUIRED IN SUBCLASSES
 
 =head2 deploy
@@ -228,6 +165,65 @@ For in-depth documentation on how methods are supposed to work, see the roles
 L<DBIx::Class::DeploymentHandler::HandlesDeploy>,
 L<DBIx::Class::DeploymentHandler::HandlesVersioning>, and
 L<DBIx::Class::DeploymentHandler::HandlesVersionStorage>.
+
+=head1 ATTRIBUTES
+
+=head2 schema
+
+The L<DBIx::Class::Schema> (B<required>) that is used to talk to the database
+and generate the DDL.
+
+=head2 schema_version
+
+The version that the schema is currently at.  Defaults to
+C<< $self->schema->schema_version >>.
+
+=head2 backup_directory
+
+The directory where backups are stored
+
+=head2 to_version
+
+The version (defaults to schema's version) to migrate the database to
+
+=head1 METHODS
+
+=head2 install
+
+ $dh->install
+
+Deploys the current schema into the database.  Populates C<version_storage> with
+C<version> and C<ddl>.
+
+B<Note>: you typically need to call C<< $dh->prepare_deploy >> before you call
+this method.
+
+B<Note>: you cannot install on top of an already installed database
+
+=head2 upgrade
+
+ $dh->upgrade
+
+Upgrades the database one step at a time till L</next_version_set>
+returns C<undef>.  Each upgrade step will add a C<version>, C<ddl>, and
+C<upgrade_sql> to the version storage (if C<ddl> and/or C<upgrade_sql> are
+returned from L</upgrade_single_step>.
+
+=head2 downgrade
+
+ $dh->downgrade
+
+Downgrades the database one step at a time till L</previous_version_set>
+returns C<undef>.  Each downgrade step will delete a C<version> from the
+version storage.
+
+=head2 backup
+
+ $dh->backup
+
+Simply calls backup on the C<< $schema->storage >>, passing in
+C<< $self->backup_directory >> as an argument.  Please test yourself before
+assuming it will work.
 
 =head1 AUTHOR
 

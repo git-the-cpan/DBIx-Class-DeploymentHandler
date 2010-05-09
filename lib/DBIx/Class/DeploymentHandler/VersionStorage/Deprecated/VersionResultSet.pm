@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_07';
 }
 
 # ABSTRACT: (DEPRECATED) Predefined searches to find what you want from the version storage
@@ -60,9 +60,12 @@ sub create {
 
 DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet - (DEPRECATED) Predefined searches to find what you want from the version storage
 
-=head1 VERSION
+=head1 DEPRECATED
 
-version 0.001000_06
+This component has been suplanted by
+L<DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet>.
+In the next major version (1) we will begin issuing a warning on it's use.
+In the major version after that (2) we will remove it entirely.
 
 =head1 METHODS
 
@@ -77,13 +80,6 @@ The version of the database
 =head2 create
 
 Overridden to default C<installed> to the current time. (take a look, it's yucky)
-
-=head1 DEPRECATED
-
-This component has been suplanted by
-L<DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet>.
-In the next major version (1) we will begin issuing a warning on it's use.
-In the major version after that (2) we will remove it entirely.
 
 =head1 AUTHOR
 

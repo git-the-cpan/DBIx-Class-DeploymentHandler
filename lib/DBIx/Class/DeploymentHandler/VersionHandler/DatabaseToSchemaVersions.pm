@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -72,10 +72,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions - Go straight from Database to Schema version
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 AUTHOR
 

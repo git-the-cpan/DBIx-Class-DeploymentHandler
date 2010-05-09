@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::Monotonic;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -51,7 +51,7 @@ sub previous_version_set {
     return undef
   } else {
     $self->_dec_version;
-    return [$self->_version, $self->_version + 1];
+    return [$self->_version + 1, $self->_version];
   }
 }
 
@@ -82,10 +82,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionHandler::Monotonic - Obvious version progressions
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 AUTHOR
 

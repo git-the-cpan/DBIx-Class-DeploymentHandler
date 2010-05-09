@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001000_07';
 }
 use Moose::Role;
 
@@ -26,7 +26,7 @@ around prepare_downgrade => sub {
 
   my $from_version = shift || $self->database_version;
   my $to_version   = shift || $self->schema_version;
-  my $version_set  = shift || [$to_version, $from_version];
+  my $version_set  = shift || [$from_version, $to_version];
 
   $self->$orig($from_version, $to_version, $version_set);
 };
@@ -50,10 +50,6 @@ around install_resultsource => sub {
 
 DBIx::Class::DeploymentHandler::WithReasonableDefaults - Make default arguments to a few methods sensible
 
-=head1 VERSION
-
-version 0.001000_06
-
 =head1 CONVENIENCE
 
 The whole point of this role is to set defaults for arguments of various
@@ -75,7 +71,7 @@ Defaulted args:
 
   my $from_version = $self->database_version;
   my $to_version   = $self->schema_version;
-  my $version_set  = [$from_version, $to_version];
+  my $version_set  = [$to_version];
 
 =head2 install_resultsource
 

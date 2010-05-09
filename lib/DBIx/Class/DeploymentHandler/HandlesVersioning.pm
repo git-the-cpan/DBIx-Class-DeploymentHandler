@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesVersioning;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000_07';
 }
 use Moose::Role;
 
@@ -20,10 +20,6 @@ requires 'previous_version_set';
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::HandlesVersioning - Interface for version methods
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 DESCRIPTION
 
@@ -79,44 +75,20 @@ understand.  That means that with the first two examples given above we can use
 the L</previous_version_set> iterator to yeild the following:
 
  db_version = 5, to_version=1
- [4, 5]
- [3, 4]
- [2, 3]
- [1, 2]
+ [5, 4]
+ [4, 3]
+ [3, 2]
+ [2, 1]
  undef
 
 or maybe just
 
- [1, 5]
+ [5, 1]
  undef
 
 Note that we do not swap the version number order.  This allows us to remain
 consistent in our version set abstraction, since a version set really just
 describes a version change, and not necesarily a defined progression.
-
-=head1 METHODS
-
-=head2 next_version_set
-
- print 'versions to install: ';
- while (my $vs = $dh->next_version_set) {
-   print join q(, ), @{$vs}
- }
- print qq(\n);
-
-Return a L<version set|/VERSION SET> describing each version that needs to be
-installed to upgrade to C<< $dh->to_version >>.
-
-=head2 previous_version_set
-
- print 'versions to uninstall: ';
- while (my $vs = $dh->previous_version_set) {
-   print join q(, ), @{$vs}
- }
- print qq(\n);
-
-Return a L<version set|/VERSION SET> describing each version that needs to be
-"installed" to downgrade to C<< $dh->to_version >>.
 
 =head1 VERSION SET
 
@@ -144,6 +116,30 @@ L<DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions>
 L<DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions>
 
 =back
+
+=head1 METHODS
+
+=head2 next_version_set
+
+ print 'versions to install: ';
+ while (my $vs = $dh->next_version_set) {
+   print join q(, ), @{$vs}
+ }
+ print qq(\n);
+
+Return a L<version set|/VERSION SET> describing each version that needs to be
+installed to upgrade to C<< $dh->to_version >>.
+
+=head2 previous_version_set
+
+ print 'versions to uninstall: ';
+ while (my $vs = $dh->previous_version_set) {
+   print join q(, ), @{$vs}
+ }
+ print qq(\n);
+
+Return a L<version set|/VERSION SET> describing each version that needs to be
+"installed" to downgrade to C<< $dh->to_version >>.
 
 =head1 AUTHOR
 

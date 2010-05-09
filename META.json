@@ -21,8 +21,10 @@
       "DBD::SQLite" : "0",
       "DBIx::Class" : "0.08121",
       "File::Path" : "2.08",
+      "File::Touch" : "0.08",
       "Method::Signatures::Simple" : "0.05",
       "Moose" : "1.0",
+      "MooseX::Role::Parameterized" : "0.18",
       "SQL::Translator" : "0.11005",
       "Test::Exception" : "0",
       "Test::More" : "0.88",
@@ -33,6 +35,6 @@
    "resources" : {
       "repository" : "git://git.shadowcat.co.uk/DBIx-Class-DeploymentHandler.git"
    },
-   "version" : "0.001000_06"
+   "version" : "0.001000_07"
 }
 

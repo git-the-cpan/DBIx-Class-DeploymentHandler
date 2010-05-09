@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesVersionStorage;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001000_07';
 }
 use Moose::Role;
 
@@ -23,16 +23,26 @@ requires 'version_storage_is_installed';
 
 DBIx::Class::DeploymentHandler::HandlesVersionStorage - Interface for version storage methods
 
-=head1 VERSION
-
-version 0.001000_06
-
 =head1 DESCRIPTION
 
 Typically VersionStorages will be implemented with a simple
 DBIx::Class::Result.  Take a look at the
 L<two existing implementations|/KNOWN IMPLEMENTATIONS> for examples of what you
 might want to do in your own storage.
+
+=head1 KNOWN IMPLEMENTATIONS
+
+=over
+
+=item *
+
+L<DBIx::Class::DeploymentHandler::VersionStorage::Standard>
+
+=item *
+
+L<DBIx::Class::DeploymentHandler::VersionStorage::Deprecated>
+
+=back
 
 =head1 METHODS
 
@@ -64,20 +74,6 @@ Deletes given database version from the version storage
    unless $dh->version_storage_is_installed
 
 return true iff the version storage is installed.
-
-=head1 KNOWN IMPLEMENTATIONS
-
-=over
-
-=item *
-
-L<DBIx::Class::DeploymentHandler::VersionStorage::Standard>
-
-=item *
-
-L<DBIx::Class::DeploymentHandler::VersionStorage::Deprecated>
-
-=back
 
 =head1 AUTHOR
 

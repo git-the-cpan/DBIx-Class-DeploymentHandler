@@ -1,9 +1,6 @@
 NAME
     DBIx::Class::DeploymentHandler - Extensible DBIx::Class deployment
 
-VERSION
-    version 0.001000_06
-
 SYNOPSIS
      use aliased 'DBIx::Class::DeploymentHandler' => 'DH';
      my $s = My::Schema->connect(...);
@@ -62,34 +59,16 @@ DESCRIPTION
     That's really just a taste of some of the differences. Check out each
     role for all the details.
 
-METHODS
-  prepare_version_storage_install
-     $dh->prepare_version_storage_install
-
-    Creates the needed ".sql" file to install the version storage and not
-    the rest of the tables
-
-  prepare_install
-     $dh->prepare_install
-
-    First prepare all the tables to be installed and the prepare just the
-    version storage
-
-  install_version_storage
-     $dh->install_version_storage
-
-    Install the version storage and not the rest of the tables
-
 WHERE IS ALL THE DOC?!
     "DBIx::Class::DeploymentHandler" extends
     DBIx::Class::DeploymentHandler::Dad, so that's probably the first place
     to look when you are trying to figure out how everything works.
 
-    Next would be to look at all the roles that fill in the blanks that
+    Next would be to look at all the pieces that fill in the blanks that
     DBIx::Class::DeploymentHandler::Dad expects to be filled. They would be
-    DBIx::Class::DeploymentHandler::WithSqltDeployMethod,
-    DBIx::Class::DeploymentHandler::WithMonotonicVersions,
-    DBIx::Class::DeploymentHandler::WithStandardVersionStorage, and
+    DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator,
+    DBIx::Class::DeploymentHandler::VersionHandler::Monotonic,
+    DBIx::Class::DeploymentHandler::VersionStorage::Standard, and
     DBIx::Class::DeploymentHandler::WithReasonableDefaults.
 
 THIS SUCKS
@@ -122,6 +101,24 @@ DONATIONS
     just take my word on this. I like Children's Survival Fund:
     <http://www.childrenssurvivalfund.org>, but there are a host of other
     charities that can do much more good than I will with your money.
+
+METHODS
+  prepare_version_storage_install
+     $dh->prepare_version_storage_install
+
+    Creates the needed ".sql" file to install the version storage and not
+    the rest of the tables
+
+  prepare_install
+     $dh->prepare_install
+
+    First prepare all the tables to be installed and the prepare just the
+    version storage
+
+  install_version_storage
+     $dh->install_version_storage
+
+    Install the version storage and not the rest of the tables
 
 AUTHOR
       Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>

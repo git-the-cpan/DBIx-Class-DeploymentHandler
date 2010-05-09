@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -50,10 +50,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionStorage::Standard - Version storage that does the normal stuff
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Types;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001000_07';
 }
 use strict;
 use warnings;
@@ -27,10 +27,6 @@ no Moose::Util::TypeConstraints;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::Types - Types internal to DBIx::Class::DeploymentHandler
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 AUTHOR
 

@@ -1,10 +1,12 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_07';
 }
 use Moose::Role;
 
 # ABSTRACT: Interface for deploy methods
+
+requires 'preinstall';
 
 requires 'prepare_deploy';
 requires 'deploy';
@@ -30,11 +32,27 @@ requires 'downgrade_single_step';
 
 DBIx::Class::DeploymentHandler::HandlesDeploy - Interface for deploy methods
 
-=head1 VERSION
+=head1 KNOWN IMPLEMENTATIONS
 
-version 0.001000_06
+=over
+
+=item *
+
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator>
+
+=item *
+
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated>
+
+=back
 
 =head1 METHODS
+
+=head2 preinstall
+
+ $dh->preinstall
+
+Run scripts before deploying to the database
 
 =head2 prepare_deploy
 
@@ -96,20 +114,6 @@ Call a single downgrade migration.  Takes a version set as an argument.
 Optionally return C<< [ $ddl, $upgrade_sql ] >> where C<$ddl> is the DDL for
 that version of the schema and C<$upgrade_sql> is the SQL that was run to
 upgrade the database.
-
-=head1 KNOWN IMPLEMENTATIONS
-
-=over
-
-=item *
-
-L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator>
-
-=item *
-
-L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated>
-
-=back
 
 =head1 AUTHOR
 

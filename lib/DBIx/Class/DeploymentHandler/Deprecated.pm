@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_07';
 }
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
@@ -11,8 +11,19 @@ use Moose::Util 'apply_all_roles';
 extends 'DBIx::Class::DeploymentHandler::Dad';
 # a single with would be better, but we can't do that
 # see: http://rt.cpan.org/Public/Bug/Display.html?id=46347
-with 'DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedSqltDeployMethod',
-     'DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage';
+with 'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+    interface_role       => 'DBIx::Class::DeploymentHandler::HandlesDeploy',
+    class_name           => 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated',
+    delegate_name        => 'deploy_method',
+    attributes_to_assume => ['schema'],
+    attributes_to_copy   => [qw( upgrade_directory databases sql_translator_args )],
+  },
+  'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+    interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersionStorage',
+    class_name           => 'DBIx::Class::DeploymentHandler::VersionStorage::Deprecated',
+    delegate_name        => 'version_storage',
+    attributes_to_assume => ['schema'],
+  };
 with 'DBIx::Class::DeploymentHandler::WithReasonableDefaults';
 
 sub BUILD {
@@ -21,14 +32,27 @@ sub BUILD {
   if ($self->schema->can('ordered_versions') && $self->schema->ordered_versions) {
     apply_all_roles(
       $self,
-      'DBIx::Class::DeploymentHandler::WithExplicitVersions'
+      'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+        interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersioning',
+        class_name           => 'DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions',
+        delegate_name        => 'version_handler',
+        attributes_to_assume => [qw( database_version schema_version to_version )],
+      }
     );
   } else {
     apply_all_roles(
       $self,
-      'DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions'
+      'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
+        interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersioning',
+        class_name           => 'DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions',
+        delegate_name        => 'version_handler',
+        attributes_to_assume => [qw( database_version schema_version to_version )],
+      }
     );
   }
+  # the following is just a hack so that ->version_storage
+  # won't be lazy
+  $self->version_storage;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -44,10 +68,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::Deprecated - (DEPRECATED) Use this if you are stuck in the past
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 SYNOPSIS
 
@@ -98,14 +118,14 @@ C<DBIx::Class::DeploymentHandler::Deprecated> extends
 L<DBIx::Class::DeploymentHandler::Dad>, so that's probably the first place to
 look when you are trying to figure out how everything works.
 
-Next would be to look at all the roles that fill in the blanks that
+Next would be to look at all the pieces that fill in the blanks that
 L<DBIx::Class::DeploymentHandler::Dad> expects to be filled.  They would be
-L<DBIx::Class::DeploymentHandler::Deprecated::WithSqltDeployMethod>,
-L<DBIx::Class::DeploymentHandler::Deprecated::WithDeprecatedVersionStorage>, and
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated>,
+L<DBIx::Class::DeploymentHandler::VersionStorage::Deprecated>, and
 L<DBIx::Class::DeploymentHandler::WithReasonableDefaults>.  Also, this class
 is special in that it applies either
-L<DBIx::Class::DeploymentHandler::WithExplicitVersions> or
-L<DBIx::Class::DeploymentHandler::WithDatabaseToSchemaVersions> depending on
+L<DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions> or
+L<DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions> depending on
 your schema.
 
 =head1 AUTHOR

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_06';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_07';
 }
 use Moose;
 
@@ -55,10 +55,6 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated - (DEPRECATED) Use this if you are stuck in the past
-
-=head1 VERSION
-
-version 0.001000_06
 
 =head1 DESCRIPTION
 
