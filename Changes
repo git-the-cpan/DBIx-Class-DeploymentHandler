@@ -1,5 +1,8 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.001000_08 2010-05-11 22:42:20 CST6CDT
+       - Add missing dep namespace::autoclean
+
 0.001000_07 2010-05-09 01:59:59 CST6CDT
        - Downgrades swap from version and to version, so instead of up 1-2
          being down 1-2, it's down 2-1, which clearly makes more sense

@@ -30,11 +30,12 @@
       "Test::More" : "0.88",
       "Try::Tiny" : "0",
       "aliased" : "0",
-      "autodie" : "0"
+      "autodie" : "0",
+      "namespace::autoclean" : "0"
    },
    "resources" : {
       "repository" : "git://git.shadowcat.co.uk/DBIx-Class-DeploymentHandler.git"
    },
-   "version" : "0.001000_07"
+   "version" : "0.001000_08"
 }
 
