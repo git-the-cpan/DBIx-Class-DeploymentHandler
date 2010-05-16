@@ -1,14 +1,27 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Sun May  9 00:58:22 2010
+-- Created on Sat May 15 22:47:00 2010
 -- 
 
 
 BEGIN TRANSACTION;
 
 --
+-- Table: Foo
+--
+DROP TABLE Foo;
+
+CREATE TABLE Foo (
+  foo INTEGER PRIMARY KEY NOT NULL,
+  bar VARCHAR(10) NOT NULL,
+  baz VARCHAR(10)
+);
+
+--
 -- Table: dbix_class_deploymenthandler_versions
 --
+DROP TABLE dbix_class_deploymenthandler_versions;
+
 CREATE TABLE dbix_class_deploymenthandler_versions (
   id INTEGER PRIMARY KEY NOT NULL,
   version varchar(50) NOT NULL,

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_08';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_09';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -52,6 +52,9 @@ sub prepare_install {
   $_[0]->prepare_version_storage_install;
 }
 
+# the following is just a hack so that ->version_storage
+# won't be lazy
+sub BUILD { $_[0]->version_storage }
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -160,7 +163,7 @@ Lucky for you I had you in mind when I wrote this doc.
 First off, you'll want to just install the C<version_storage>:
 
  my $s = My::Schema->connect(...);
- my $dh = DBIx::Class::DeploymentHandler({ schema => $s });
+ my $dh = DBIx::Class::DeploymentHandler->({ schema => $s });
 
  $dh->prepare_version_storage_install;
  $dh->install_version_storage;
