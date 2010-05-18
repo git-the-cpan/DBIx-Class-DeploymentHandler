@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_10';
 }
 use Moose;
 

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_10';
 }
 use Moose;
 
@@ -24,6 +24,7 @@ has database_version => (
 
 has to_version => (
   is         => 'ro',
+  isa        => 'Str',
   lazy_build => 1,
 );
 

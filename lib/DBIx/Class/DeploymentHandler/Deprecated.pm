@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000_10';
 }
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
@@ -16,7 +16,7 @@ with 'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
     class_name           => 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated',
     delegate_name        => 'deploy_method',
     attributes_to_assume => ['schema'],
-    attributes_to_copy   => [qw( upgrade_directory databases sql_translator_args )],
+    attributes_to_copy   => [qw( script_directory databases sql_translator_args )],
   },
   'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
     interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersionStorage',

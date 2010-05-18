@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_10';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -24,6 +24,7 @@ has backup_directory => (
 
 has to_version => (
   is         => 'ro',
+  isa        => 'Str',
   lazy_build => 1,
 );
 
@@ -31,6 +32,7 @@ sub _build_to_version { $_[0]->schema_version }
 
 has schema_version => (
   is         => 'ro',
+  isa        => 'Str',
   lazy_build => 1,
 );
 
@@ -51,7 +53,9 @@ method install {
 sub upgrade {
   my $self = shift;
   while ( my $version_list = $self->next_version_set ) {
-    my ($ddl, $upgrade_sql) = @{$self->upgrade_single_step($version_list)||[]};
+    my ($ddl, $upgrade_sql) = @{
+		$self->upgrade_single_step({ version_set => $version_list })
+    ||[]};
 
     $self->add_database_version({
       version     => $version_list->[-1],
@@ -64,7 +68,7 @@ sub upgrade {
 sub downgrade {
   my $self = shift;
   while ( my $version_list = $self->previous_version_set ) {
-    $self->downgrade_single_step($version_list);
+    $self->downgrade_single_step({ version_set => $version_list });
 
     # do we just delete a row here?  I think so but not sure
     $self->delete_database_version({ version => $version_list->[-1] });

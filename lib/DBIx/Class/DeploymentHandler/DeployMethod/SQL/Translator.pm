@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_10';
 }
 use Moose;
 
@@ -46,7 +46,7 @@ has sql_translator_args => (
   is  => 'ro',
   default => sub { {} },
 );
-has upgrade_directory => (
+has script_directory => (
   isa      => 'Str',
   is       => 'ro',
   required => 1,
@@ -68,13 +68,14 @@ has txn_wrap => (
 
 has schema_version => (
   is => 'ro',
+  isa => 'Str',
   lazy_build => 1,
 );
 
 method _build_schema_version { $self->schema->schema_version }
 
 method __ddl_consume_with_prefix($type, $versions, $prefix) {
-  my $base_dir = $self->upgrade_directory;
+  my $base_dir = $self->script_directory;
 
   my $main    = catfile( $base_dir, $type      );
   my $generic = catfile( $base_dir, '_generic' );
@@ -116,7 +117,7 @@ method _ddl_schema_consume_filenames($type, $version) {
 }
 
 method _ddl_schema_produce_filename($type, $version) {
-  my $dirname = catfile( $self->upgrade_directory, $type, 'schema', $version );
+  my $dirname = catfile( $self->script_directory, $type, 'schema', $version );
   mkpath($dirname) unless -d $dirname;
 
   return catfile( $dirname, '001-auto.sql' );
@@ -131,7 +132,7 @@ method _ddl_schema_down_consume_filenames($type, $versions) {
 }
 
 method _ddl_schema_up_produce_filename($type, $versions) {
-  my $dir = $self->upgrade_directory;
+  my $dir = $self->script_directory;
 
   my $dirname = catfile( $dir, $type, 'up', join q(-), @{$versions});
   mkpath($dirname) unless -d $dirname;
@@ -179,9 +180,9 @@ method _run_sql_and_perl($filenames) {
       my $fn = eval "$filedata";
       use warnings;
 
-		if ($@) {
+      if ($@) {
         carp "$filename failed to compile: $@";
-		} elsif (ref $fn eq 'CODE') {
+      } elsif (ref $fn eq 'CODE') {
         $fn->($self->schema)
       } else {
         carp "$filename should define an anonymouse sub that takes a schema but it didn't!";
@@ -198,7 +199,7 @@ method _run_sql_and_perl($filenames) {
 
 sub deploy {
   my $self = shift;
-  my $version = shift || $self->schema_version;
+  my $version = (shift @_ || {})->{version} || $self->schema_version;
 
   return $self->_run_sql_and_perl($self->_ddl_schema_consume_filenames(
     $self->storage->sqlt_type,
@@ -207,11 +208,13 @@ sub deploy {
 }
 
 sub preinstall {
-  my $self = shift;
-  my $version = shift || $self->schema_version;
+  my $self         = shift;
+  my $args         = shift;
+  my $version      = $args->{version}      || $self->schema_version;
+  my $storage_type = $args->{storage_type} || $self->storage->sqlt_type;
 
   my @files = @{$self->_ddl_preinstall_consume_filenames(
-    $self->storage->sqlt_type,
+    $storage_type,
     $version,
   )};
 
@@ -220,13 +223,13 @@ sub preinstall {
     if ( $filename =~ /^(.+)\.pl$/ ) {
       my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
 
-		no warnings 'redefine';
+      no warnings 'redefine';
       my $fn = eval "$filedata";
       use warnings;
 
-		if ($@) {
+      if ($@) {
         carp "$filename failed to compile: $@";
-		} elsif (ref $fn eq 'CODE') {
+      } elsif (ref $fn eq 'CODE') {
         $fn->()
       } else {
         carp "$filename should define an anonymous sub but it didn't!";
@@ -243,7 +246,7 @@ sub _prepare_install {
   my $to_file   = shift;
   my $schema    = $self->schema;
   my $databases = $self->databases;
-  my $dir       = $self->upgrade_directory;
+  my $dir       = $self->script_directory;
   my $version   = $self->schema_version;
 
   my $sqlt = SQL::Translator->new({
@@ -283,7 +286,7 @@ sub _resultsource_install_filename {
   my ($self, $source_name) = @_;
   return sub {
     my ($self, $type, $version) = @_;
-    my $dirname = catfile( $self->upgrade_directory, $type, 'schema', $version );
+    my $dirname = catfile( $self->script_directory, $type, 'schema', $version );
     mkpath($dirname) unless -d $dirname;
 
     return catfile( $dirname, "001-auto-$source_name.sql" );
@@ -291,8 +294,9 @@ sub _resultsource_install_filename {
 }
 
 sub install_resultsource {
-  my ($self, $source, $version) = @_;
-
+  my ($self, $args) = @_;
+  my $source          = $args->{result_source};
+  my $version         = $args->{version};
   my $rs_install_file =
     $self->_resultsource_install_filename($source->source_name);
 
@@ -307,7 +311,7 @@ sub install_resultsource {
 
 sub prepare_resultsource_install {
   my $self = shift;
-  my $source = shift;
+  my $source = (shift @_)->{result_source};
 
   my $filename = $self->_resultsource_install_filename($source->source_name);
   $self->_prepare_install({
@@ -321,20 +325,23 @@ sub prepare_deploy {
 }
 
 sub prepare_upgrade {
-  my ($self, $from_version, $to_version, $version_set) = @_;
-  $self->_prepare_changegrade($from_version, $to_version, $version_set, 'up');
+  my ($self, $args) = @_;
+  $self->_prepare_changegrade(
+    $args->{from_version}, $args->{to_version}, $args->{version_set}, 'up'
+  );
 }
 
 sub prepare_downgrade {
-  my ($self, $from_version, $to_version, $version_set) = @_;
-
-  $self->_prepare_changegrade($from_version, $to_version, $version_set, 'down');
+  my ($self, $args) = @_;
+  $self->_prepare_changegrade(
+    $args->{from_version}, $args->{to_version}, $args->{version_set}, 'down'
+  );
 }
 
 method _prepare_changegrade($from_version, $to_version, $version_set, $direction) {
   my $schema    = $self->schema;
   my $databases = $self->databases;
-  my $dir       = $self->upgrade_directory;
+  my $dir       = $self->script_directory;
   my $sqltargs  = $self->sql_translator_args;
 
   my $schema_version = $self->schema_version;
@@ -445,7 +452,7 @@ method _read_sql_file($file) {
 
 sub downgrade_single_step {
   my $self = shift;
-  my $version_set = shift @_;
+  my $version_set = (shift @_)->{version_set};
 
   my $sql = $self->_run_sql_and_perl($self->_ddl_schema_down_consume_filenames(
     $self->storage->sqlt_type,
@@ -457,7 +464,7 @@ sub downgrade_single_step {
 
 sub upgrade_single_step {
   my $self = shift;
-  my $version_set = shift @_;
+  my $version_set = (shift @_)->{version_set};
 
   my $sql = $self->_run_sql_and_perl($self->_ddl_schema_up_consume_filenames(
     $self->storage->sqlt_type,
@@ -591,6 +598,79 @@ A very basic perl script might look like:
    })
  }
 
+=begin comment
+
+=head2 __ddl_consume_with_prefix
+
+ $dm->__ddl_consume_with_prefix( 'SQLite', [qw( 1.00 1.01 )], 'up' )
+
+This is the meat of the multi-file upgrade/deploy stuff.  It returns a list of
+files in the order that they should be run for a generic "type" of upgrade.
+You should not be calling this in user code.=head2 _ddl_schema_consume_filenames
+
+ $dm->__ddl_schema_consume_filenames( 'SQLite', [qw( 1.00 )] )
+
+Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for an
+initial deploy.=head2 _ddl_schema_produce_filename
+
+ $dm->__ddl_schema_produce_filename( 'SQLite', [qw( 1.00 )] )
+
+Returns a single file in which an initial schema will be stored.=head2 _ddl_schema_up_consume_filenames
+
+ $dm->_ddl_schema_up_consume_filenames( 'SQLite', [qw( 1.00 )] )
+
+Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for an
+upgrade.=head2 _ddl_schema_down_consume_filenames
+
+ $dm->_ddl_schema_down_consume_filenames( 'SQLite', [qw( 1.00 )] )
+
+Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for a
+downgrade.=head2 _ddl_schema_up_produce_filenames
+
+ $dm->_ddl_schema_up_produce_filename( 'SQLite', [qw( 1.00 1.01 )] )
+
+Returns a single file in which the sql to upgrade from one schema to another
+will be stored.=head2 _ddl_schema_down_produce_filename
+
+ $dm->_ddl_schema_down_produce_filename( 'SQLite', [qw( 1.00 1.01 )] )
+
+Returns a single file in which the sql to downgrade from one schema to another
+will be stored.=head2 _resultsource_install_filename
+
+ my $filename_fn = $dm->_resultsource_install_filename('User');
+ $dm->$filename_fn('SQLite', '1.00')
+
+Returns a function which in turn returns a single filename used to install a
+single resultsource.  Weird interface is convenient for me.  Deal with it.=head2 _run_sql_and_perl
+
+ $dm->_run_sql_and_perl([qw( list of filenames )])
+
+Simply put, this runs the list of files passed to it.  If the file ends in
+C<.sql> it runs it as sql and if it ends in C<.pl> it runs it as a perl file.
+
+Depending on L</txn_wrap> all of the files run will be wrapped in a single
+transaction.=head2 _prepare_install
+
+ $dm->_prepare_install({ add_drop_table => 0 }, sub { 'file_to_create' })
+
+Generates the sql file for installing the database.  First arg is simply
+L<SQL::Translator> args and the second is a coderef that returns the filename
+to store the sql in.=head2 _prepare_changegrade
+
+ $dm->_prepare_changegrade('1.00', '1.01', [qw( 1.00 1.01)], 'up')
+
+Generates the sql file for migrating from one schema version to another.  First
+arg is the version to start from, second is the version to go to, third is the
+L<version set|DBIx::Class::DeploymentHandler/VERSION SET>, and last is the
+direction of the changegrade, be it 'up' or 'down'.=head2 _read_sql_file
+
+ $dm->_read_sql_file('foo.sql')
+
+Reads a sql file and returns lines in an C<ArrayRef>.  Strips out comments,
+transactions, and blank lines.
+
+=end comment
+
 =head1 ATTRIBUTES
 
 =head2 schema
@@ -607,9 +687,9 @@ and generate the DDL.  This is automatically created with L</_build_storage>.
 
 The arguments that get passed to L<SQL::Translator> when it's used.
 
-=head2 upgrade_directory
+=head2 script_directory
 
-The directory (default C<'sql'>) that upgrades are stored in
+The directory (default C<'sql'>) that scripts are stored in
 
 =head2 databases
 
@@ -625,99 +705,6 @@ transaction.
 
 The version the schema on your harddrive is at.  Defaults to
 C<< $self->schema->schema_version >>.
-
-=head1 METHODS
-
-=head2 __ddl_consume_with_prefix
-
- $dm->__ddl_consume_with_prefix( 'SQLite', [qw( 1.00 1.01 )], 'up' )
-
-This is the meat of the multi-file upgrade/deploy stuff.  It returns a list of
-files in the order that they should be run for a generic "type" of upgrade.
-You should not be calling this in user code.
-
-=head2 _ddl_schema_consume_filenames
-
- $dm->__ddl_schema_consume_filenames( 'SQLite', [qw( 1.00 )] )
-
-Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for an
-initial deploy.
-
-=head2 _ddl_schema_produce_filename
-
- $dm->__ddl_schema_produce_filename( 'SQLite', [qw( 1.00 )] )
-
-Returns a single file in which an initial schema will be stored.
-
-=head2 _ddl_schema_up_consume_filenames
-
- $dm->_ddl_schema_up_consume_filenames( 'SQLite', [qw( 1.00 )] )
-
-Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for an
-upgrade.
-
-=head2 _ddl_schema_down_consume_filenames
-
- $dm->_ddl_schema_down_consume_filenames( 'SQLite', [qw( 1.00 )] )
-
-Just a curried L</__ddl_consume_with_prefix>.  Get's a list of files for a
-downgrade.
-
-=head2 _ddl_schema_up_produce_filenames
-
- $dm->_ddl_schema_up_produce_filename( 'SQLite', [qw( 1.00 1.01 )] )
-
-Returns a single file in which the sql to upgrade from one schema to another
-will be stored.
-
-=head2 _ddl_schema_down_produce_filename
-
- $dm->_ddl_schema_down_produce_filename( 'SQLite', [qw( 1.00 1.01 )] )
-
-Returns a single file in which the sql to downgrade from one schema to another
-will be stored.
-
-=head2 _resultsource_install_filename
-
- my $filename_fn = $dm->_resultsource_install_filename('User');
- $dm->$filename_fn('SQLite', '1.00')
-
-Returns a function which in turn returns a single filename used to install a
-single resultsource.  Weird interface is convenient for me.  Deal with it.
-
-=head2 _run_sql_and_perl
-
- $dm->_run_sql_and_perl([qw( list of filenames )])
-
-Simply put, this runs the list of files passed to it.  If the file ends in
-C<.sql> it runs it as sql and if it ends in C<.pl> it runs it as a perl file.
-
-Depending on L</txn_wrap> all of the files run will be wrapped in a single
-transaction.
-
-=head2 _prepare_install
-
- $dm->_prepare_install({ add_drop_table => 0 }, sub { 'file_to_create' })
-
-Generates the sql file for installing the database.  First arg is simply
-L<SQL::Translator> args and the second is a coderef that returns the filename
-to store the sql in.
-
-=head2 _prepare_changegrade
-
- $dm->_prepare_changegrade('1.00', '1.01', [qw( 1.00 1.01)], 'up')
-
-Generates the sql file for migrating from one schema version to another.  First
-arg is the version to start from, second is the version to go to, third is the
-L<version set|DBIx::Class::DeploymentHandler/VERSION SET>, and last is the
-direction of the changegrade, be it 'up' or 'down'.
-
-=head2 _read_sql_file
-
- $dm->_read_sql_file('foo.sql')
-
-Reads a sql file and returns lines in an C<ArrayRef>.  Strips out comments,
-transactions, and blank lines.
 
 =head1 AUTHOR
 

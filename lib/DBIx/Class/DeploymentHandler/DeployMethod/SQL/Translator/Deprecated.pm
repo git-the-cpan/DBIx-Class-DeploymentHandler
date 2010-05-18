@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_10';
 }
 use Moose;
 
@@ -21,7 +21,7 @@ method _ddl_schema_produce_filename($type, $version) {
   $filename =~ s/::/-/g;
 
   $filename = catfile(
-    $self->upgrade_directory, "$filename-$version-$type.sql"
+    $self->script_directory, "$filename-$version-$type.sql"
   );
 
   return $filename;
@@ -32,7 +32,7 @@ method _ddl_schema_up_produce_filename($type, $versions, $dir) {
   $filename =~ s/::/-/g;
 
   $filename = catfile(
-    $self->upgrade_directory, "$filename-" . join( q(-), @{$versions} ) . "-$type.sql"
+    $self->script_directory, "$filename-" . join( q(-), @{$versions} ) . "-$type.sql"
   );
 
   return $filename;

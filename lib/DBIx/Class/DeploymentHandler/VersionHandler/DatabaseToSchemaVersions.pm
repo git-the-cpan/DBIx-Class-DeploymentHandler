@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_09';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_10';
 }
 use Moose;
 
@@ -24,8 +24,8 @@ has database_version => (
 
 has to_version => ( # configuration
   is         => 'ro',
-  lazy_build => 1, # builder comes from another role...
-                   # which is... probably not how we want it
+  isa        => 'Str',
+  lazy_build => 1,
 );
 
 sub _build_to_version { $_[0]->schema_version }

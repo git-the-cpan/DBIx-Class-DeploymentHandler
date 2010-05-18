@@ -24,7 +24,7 @@ VERSION1: {
   $DBICVersion::Schema::VERSION = 1;
   ok($s, 'DBICVersion::Schema 1 instantiates correctly');
   my $handler = DH->new({
-    upgrade_directory => $sql_dir,
+    script_directory => $sql_dir,
     schema => $s,
     databases => 'SQLite',
     sql_translator_args => { add_drop_table => 0 },
@@ -57,7 +57,7 @@ VERSION2: {
   $DBICVersion::Schema::VERSION = 2;
   ok($s, 'DBICVersion::Schema 2 instantiates correctly');
   my $handler = DH->new({
-    upgrade_directory => $sql_dir,
+    script_directory => $sql_dir,
     schema => $s,
     databases => 'SQLite',
   });
@@ -66,7 +66,7 @@ VERSION2: {
 
   my $version = $s->schema_version();
   $handler->prepare_deploy();
-  $handler->prepare_upgrade(1, $version);
+  $handler->prepare_upgrade({ from_version => 1, to_version => $version} );
   dies_ok {
     $s->resultset('Foo')->create({
       bar => 'frew',
@@ -94,7 +94,7 @@ VERSION3: {
   $DBICVersion::Schema::VERSION = 3;
   ok($s, 'DBICVersion::Schema 3 instantiates correctly');
   my $handler = DH->new({
-    upgrade_directory => $sql_dir,
+    script_directory => $sql_dir,
     schema => $s,
     databases => 'SQLite',
   });
@@ -103,7 +103,7 @@ VERSION3: {
 
   my $version = $s->schema_version();
   $handler->prepare_deploy;
-  $handler->prepare_upgrade( 2, $version );
+  $handler->prepare_upgrade({ from_version => 2, to_version => $version });
   dies_ok {
     $s->resultset('Foo')->create({
         bar => 'frew',
@@ -127,7 +127,7 @@ DOWN2: {
   $DBICVersion::Schema::VERSION = 2;
   ok($s, 'DBICVersion::Schema 2 instantiates correctly');
   my $handler = DH->new({
-    upgrade_directory => $sql_dir,
+    script_directory => $sql_dir,
     schema => $s,
     databases => 'SQLite',
   });
@@ -135,7 +135,7 @@ DOWN2: {
   ok($handler, 'DBIx::Class::DeploymentHandler w/2 instantiates correctly');
 
   my $version = $s->schema_version();
-  $handler->prepare_downgrade(3, $version);
+  $handler->prepare_downgrade({ from_version => 3, to_version => $version });
   lives_ok {
     $s->resultset('Foo')->create({
       bar => 'frew',
