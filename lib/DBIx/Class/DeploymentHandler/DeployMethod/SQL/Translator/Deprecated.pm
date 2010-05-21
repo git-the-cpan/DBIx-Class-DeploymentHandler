@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_10';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001000_11';
 }
 use Moose;
 
@@ -9,6 +9,7 @@ use Moose;
 use Method::Signatures::Simple;
 
 use File::Spec::Functions;
+require SQL::Translator::Diff;
 
 extends 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator',
 
@@ -41,6 +42,20 @@ method _ddl_schema_up_produce_filename($type, $versions, $dir) {
 method _ddl_schema_up_consume_filenames($type, $versions) {
   return [$self->_ddl_schema_up_produce_filename($type, $versions)]
 }
+
+method _generate_final_diff($source_schema, $dest_schema, $db, $sqltargs) {
+  scalar SQL::Translator::Diff::schema_diff(
+	  $source_schema, $db,
+	  $dest_schema,   $db,
+	  $sqltargs
+  )
+}
+
+method _default_read_sql_file_as_string($file) {
+  do { local( @ARGV, $/ ) = $file; <> } # slurp
+}
+
+method _generate_final_sql($sqlt) { scalar $sqlt->translate }
 
 __PACKAGE__->meta->make_immutable;
 

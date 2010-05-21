@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_10';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_11';
 }
 use Moose;
 
@@ -8,6 +8,11 @@ use Moose;
 
 use autodie;
 use Carp qw( carp croak );
+use Log::Contextual::WarnLogger;
+use Log::Contextual qw(:log :dlog), -default_logger => Log::Contextual::WarnLogger->new({
+   env_prefix => 'DBICDH'
+});
+use Data::Dumper::Concise;
 
 use Method::Signatures::Simple;
 use Try::Tiny;
@@ -72,7 +77,17 @@ has schema_version => (
   lazy_build => 1,
 );
 
+# this will probably never get called as the DBICDH
+# will be passing down a schema_version normally, which
+# is built the same way, but we leave this in place
 method _build_schema_version { $self->schema->schema_version }
+
+has _json => (
+  is => 'ro',
+  lazy_build => 1,
+);
+
+sub _build__json { require JSON; JSON->new->pretty }
 
 method __ddl_consume_with_prefix($type, $versions, $prefix) {
   my $base_dir = $self->script_directory;
@@ -92,7 +107,7 @@ method __ddl_consume_with_prefix($type, $versions, $prefix) {
   }
 
   opendir my($dh), $dir;
-  my %files = map { $_ => "$dir/$_" } grep { /\.(?:sql|pl)$/ && -f "$dir/$_" } readdir $dh;
+  my %files = map { $_ => "$dir/$_" } grep { /\.(?:sql|pl|sql-\w+)$/ && -f "$dir/$_" } readdir $dh;
   closedir $dh;
 
   if (-d $common) {
@@ -120,7 +135,7 @@ method _ddl_schema_produce_filename($type, $version) {
   my $dirname = catfile( $self->script_directory, $type, 'schema', $version );
   mkpath($dirname) unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql' );
+  return catfile( $dirname, '001-auto.sql-json' );
 }
 
 method _ddl_schema_up_consume_filenames($type, $versions) {
@@ -137,56 +152,88 @@ method _ddl_schema_up_produce_filename($type, $versions) {
   my $dirname = catfile( $dir, $type, 'up', join q(-), @{$versions});
   mkpath($dirname) unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql'
-  );
+  return catfile( $dirname, '001-auto.sql-json' );
 }
 
 method _ddl_schema_down_produce_filename($type, $versions, $dir) {
   my $dirname = catfile( $dir, $type, 'down', join q(-), @{$versions} );
   mkpath($dirname) unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql');
+  return catfile( $dirname, '001-auto.sql-json');
+}
+
+method _run_sql_array($sql) {
+  my $storage = $self->storage;
+
+  $sql = [grep {
+    $_ && # remove blank lines
+    !/^(BEGIN|BEGIN TRANSACTION|COMMIT)/ # strip txn's
+  } map {
+    s/^\s+//; s/\s+$//; # trim whitespace
+    join '', grep { !/^--/ } split /\n/ # remove comments
+  } @$sql];
+
+  log_trace { '[DBICDH] Running SQL ' . Dumper($sql) };
+  foreach my $line (@{$sql}) {
+    $storage->_query_start($line);
+    try {
+      # do a dbh_do cycle here, as we need some error checking in
+      # place (even though we will ignore errors)
+      $storage->dbh_do (sub { $_[1]->do($line) });
+    }
+    catch {
+      carp "$_ (running '${line}')"
+    }
+    $storage->_query_end($line);
+  }
+  return join "\n", @$sql
+}
+
+method _run_sql($filename) {
+  log_debug { "[DBICDH] Running SQL from $filename" };
+  return $self->_run_sql_array($self->_read_sql_file($filename));
+}
+
+method _run_perl($filename) {
+  log_debug { "[DBICDH] Running Perl from $filename" };
+  my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
+
+  no warnings 'redefine';
+  my $fn = eval "$filedata";
+  use warnings;
+  log_trace { '[DBICDH] Running Perl ' . Dumper($fn) };
+
+  if ($@) {
+    carp "$filename failed to compile: $@";
+  } elsif (ref $fn eq 'CODE') {
+    $fn->($self->schema)
+  } else {
+    carp "$filename should define an anonymouse sub that takes a schema but it didn't!";
+  }
+}
+
+method _run_serialized_sql($filename, $type) {
+  if (lc $type eq 'json') {
+    return $self->_run_sql_array($self->_json->decode(
+      do { local( @ARGV, $/ ) = $filename; <> } # slurp
+    ))
+  } else {
+    croak "$type is not one of the supported serialzed types"
+  }
 }
 
 method _run_sql_and_perl($filenames) {
-  my @files = @{$filenames};
-  my $storage = $self->storage;
+  my @files   = @{$filenames};
+  my $guard   = $self->schema->txn_scope_guard if $self->txn_wrap;
 
-
-  my $guard = $self->schema->txn_scope_guard if $self->txn_wrap;
-
-  my $sql;
+  my $sql = '';
   for my $filename (@files) {
     if ($filename =~ /\.sql$/) {
-      my @sql = @{$self->_read_sql_file($filename)};
-      $sql .= join "\n", @sql;
-
-      foreach my $line (@sql) {
-        $storage->_query_start($line);
-        try {
-          # do a dbh_do cycle here, as we need some error checking in
-          # place (even though we will ignore errors)
-          $storage->dbh_do (sub { $_[1]->do($line) });
-        }
-        catch {
-          carp "$_ (running '${line}')"
-        }
-        $storage->_query_end($line);
-      }
-    } elsif ( $filename =~ /^(.+)\.pl$/ ) {
-      my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
-
-      no warnings 'redefine';
-      my $fn = eval "$filedata";
-      use warnings;
-
-      if ($@) {
-        carp "$filename failed to compile: $@";
-      } elsif (ref $fn eq 'CODE') {
-        $fn->($self->schema)
-      } else {
-        carp "$filename should define an anonymouse sub that takes a schema but it didn't!";
-      }
+       $sql .= $self->_run_sql($filename)
+    } elsif ( $filename =~ /\.sql-(\w+)$/ ) {
+       $sql .= $self->_run_serialized_sql($filename, $1)
+    } elsif ( $filename =~ /\.pl$/ ) {
+       $self->_run_perl($filename)
     } else {
       croak "A file ($filename) got to deploy that wasn't sql or perl!";
     }
@@ -200,6 +247,7 @@ method _run_sql_and_perl($filenames) {
 sub deploy {
   my $self = shift;
   my $version = (shift @_ || {})->{version} || $self->schema_version;
+  log_info { "[DBICDH] deploying version $version" };
 
   return $self->_run_sql_and_perl($self->_ddl_schema_consume_filenames(
     $self->storage->sqlt_type,
@@ -211,6 +259,7 @@ sub preinstall {
   my $self         = shift;
   my $args         = shift;
   my $version      = $args->{version}      || $self->schema_version;
+  log_info { "[DBICDH] preinstalling version $version" };
   my $storage_type = $args->{storage_type} || $self->storage->sqlt_type;
 
   my @files = @{$self->_ddl_preinstall_consume_filenames(
@@ -250,6 +299,7 @@ sub _prepare_install {
   my $version   = $self->schema_version;
 
   my $sqlt = SQL::Translator->new({
+    no_comments             => 1,
     add_drop_table          => 1,
     ignore_constraint_names => 1,
     ignore_index_names      => 1,
@@ -271,15 +321,20 @@ sub _prepare_install {
       unlink $filename;
     }
 
-    my $output = $sqlt->translate;
-    if(!$output) {
+    my $sql = $self->_generate_final_sql($sqlt);
+    if(!$sql) {
       carp("Failed to translate to $db, skipping. (" . $sqlt->error . ")");
       next;
     }
     open my $file, q(>), $filename;
-    print {$file} $output;
+    print {$file} $sql;
     close $file;
   }
+}
+
+method _generate_final_sql($sqlt) {
+  my @output = $sqlt->translate;
+  $self->_json->encode(\@output);
 }
 
 sub _resultsource_install_filename {
@@ -289,7 +344,7 @@ sub _resultsource_install_filename {
     my $dirname = catfile( $self->script_directory, $type, 'schema', $version );
     mkpath($dirname) unless -d $dirname;
 
-    return catfile( $dirname, "001-auto-$source_name.sql" );
+    return catfile( $dirname, "001-auto-$source_name.sql-json" );
   }
 }
 
@@ -297,6 +352,7 @@ sub install_resultsource {
   my ($self, $args) = @_;
   my $source          = $args->{result_source};
   my $version         = $args->{version};
+  log_info { '[DBICDH] installing_resultsource ' . $source->source_name . ", version $version" };
   my $rs_install_file =
     $self->_resultsource_install_filename($source->source_name);
 
@@ -312,6 +368,7 @@ sub install_resultsource {
 sub prepare_resultsource_install {
   my $self = shift;
   my $source = (shift @_)->{result_source};
+  log_info { '[DBICDH] preparing install for resultsource ' . $source->source_name };
 
   my $filename = $self->_resultsource_install_filename($source->source_name);
   $self->_prepare_install({
@@ -320,12 +377,17 @@ sub prepare_resultsource_install {
 }
 
 sub prepare_deploy {
+  log_info { '[DBICDH] preparing deploy' };
   my $self = shift;
   $self->_prepare_install({}, '_ddl_schema_produce_filename');
 }
 
 sub prepare_upgrade {
   my ($self, $args) = @_;
+  log_info {
+     '[DBICDH] preparing upgrade ' .
+     "from $args->{from_version} to $args->{to_version}"
+  };
   $self->_prepare_changegrade(
     $args->{from_version}, $args->{to_version}, $args->{version_set}, 'up'
   );
@@ -333,6 +395,10 @@ sub prepare_upgrade {
 
 sub prepare_downgrade {
   my ($self, $args) = @_;
+  log_info {
+     '[DBICDH] preparing downgrade ' .
+     "from $args->{from_version} to $args->{to_version}"
+  };
   $self->_prepare_changegrade(
     $args->{from_version}, $args->{to_version}, $args->{version_set}, 'down'
   );
@@ -348,6 +414,7 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
 
   $sqltargs = {
     add_drop_table => 1,
+    no_comments => 1,
     ignore_constraint_names => 1,
     ignore_index_names => 1,
     %{$sqltargs}
@@ -387,7 +454,8 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
       $t->parser( $db ) # could this really throw an exception?
         or croak($t->error);
 
-      my $out = $t->translate( $prefilename )
+      my $sql = $self->_default_read_sql_file_as_string($prefilename);
+      my $out = $t->translate( \$sql )
         or croak($t->error);
 
       $source_schema = $t->schema;
@@ -412,7 +480,8 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
         or croak($t->error);
 
       my $filename = $self->_ddl_schema_produce_filename($db, $to_version, $dir);
-      my $out = $t->translate( $filename )
+      my $sql = $self->_default_read_sql_file_as_string($filename);
+      my $out = $t->translate( \$sql )
         or croak($t->error);
 
       $dest_schema = $t->schema;
@@ -421,15 +490,21 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
         unless $dest_schema->name;
     }
 
-    my $diff = SQL::Translator::Diff::schema_diff(
-       $source_schema, $db,
-       $dest_schema,   $db,
-       $sqltargs
-    );
     open my $file, q(>), $diff_file;
-    print {$file} $diff;
+    print {$file}
+      $self->_generate_final_diff($source_schema, $dest_schema, $db, $sqltargs);
     close $file;
   }
+}
+
+method _generate_final_diff($source_schema, $dest_schema, $db, $sqltargs) {
+  $self->_json->encode([
+     SQL::Translator::Diff::schema_diff(
+        $source_schema, $db,
+        $dest_schema,   $db,
+        $sqltargs
+     )
+  ])
 }
 
 method _read_sql_file($file) {
@@ -439,20 +514,19 @@ method _read_sql_file($file) {
   my @data = split /;\n/, join '', <$fh>;
   close $fh;
 
-  @data = grep {
-    $_ && # remove blank lines
-    !/^(BEGIN|BEGIN TRANSACTION|COMMIT)/ # strip txn's
-  } map {
-    s/^\s+//; s/\s+$//; # trim whitespace
-    join '', grep { !/^--/ } split /\n/ # remove comments
-  } @data;
-
   return \@data;
+}
+
+method _default_read_sql_file_as_string($file) {
+  return join q(), map "$_;\n", @{$self->_json->decode(
+    do { local( @ARGV, $/ ) = $file; <> } # slurp
+  )};
 }
 
 sub downgrade_single_step {
   my $self = shift;
   my $version_set = (shift @_)->{version_set};
+  log_info { qq([DBICDH] downgrade_single_step'ing ) . Dumper($version_set) };
 
   my $sql = $self->_run_sql_and_perl($self->_ddl_schema_down_consume_filenames(
     $self->storage->sqlt_type,
@@ -465,6 +539,7 @@ sub downgrade_single_step {
 sub upgrade_single_step {
   my $self = shift;
   my $version_set = (shift @_)->{version_set};
+  log_info { qq([DBICDH] upgrade_single_step'ing ) . Dumper($version_set) };
 
   my $sql = $self->_run_sql_and_perl($self->_ddl_schema_up_consume_filenames(
     $self->storage->sqlt_type,
@@ -489,12 +564,13 @@ DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator - Manage your SQL 
 
 =head1 DESCRIPTION
 
-This class is the meat of L<DBIx::Class::DeploymentHandler>.  It takes care of
-generating sql files representing schemata as well as sql files to move from
-one version of a schema to the rest.  One of the hallmark features of this
-class is that it allows for multiple sql files for deploy and upgrade, allowing
-developers to fine tune deployment.  In addition it also allows for perl files
-to be run at any stage of the process.
+This class is the meat of L<DBIx::Class::DeploymentHandler>.  It takes
+care of generating serialized sql files representing schemata as well
+as serialized sql files to move from one version of a schema to the rest.
+One of the hallmark features of this class is that it allows for multiple sql
+files for deploy and upgrade, allowing developers to fine tune deployment.
+In addition it also allows for perl files to be run
+at any stage of the process.
 
 For basic usage see L<DBIx::Class::DeploymentHandler::HandlesDeploy>.  What's
 documented here is extra fun stuff or private methods.
@@ -510,15 +586,15 @@ like the best way to describe the layout is with the following example:
  |- SQLite
  |  |- down
  |  |  `- 2-1
- |  |     `- 001-auto.sql
+ |  |     `- 001-auto.sql-json
  |  |- schema
  |  |  `- 1
- |  |     `- 001-auto.sql
+ |  |     `- 001-auto.sql-json
  |  `- up
  |     |- 1-2
- |     |  `- 001-auto.sql
+ |     |  `- 001-auto.sql-json
  |     `- 2-3
- |        `- 001-auto.sql
+ |        `- 001-auto.sql-json
  |- _common
  |  |- down
  |  |  `- 2-1
@@ -529,44 +605,43 @@ like the best way to describe the layout is with the following example:
  |- _generic
  |  |- down
  |  |  `- 2-1
- |  |     `- 001-auto.sql
+ |  |     `- 001-auto.sql-json
  |  |- schema
  |  |  `- 1
- |  |     `- 001-auto.sql
+ |  |     `- 001-auto.sql-json
  |  `- up
  |     `- 1-2
- |        |- 001-auto.sql
+ |        |- 001-auto.sql-json
  |        `- 002-create-stored-procedures.sql
  `- MySQL
     |- down
     |  `- 2-1
-    |     `- 001-auto.sql
+    |     `- 001-auto.sql-json
     |- preinstall
     |  `- 1
     |     |- 001-create_database.pl
     |     `- 002-create_users_and_permissions.pl
     |- schema
     |  `- 1
-    |     `- 001-auto.sql
+    |     `- 001-auto.sql-json
     `- up
        `- 1-2
-          `- 001-auto.sql
+          `- 001-auto.sql-json
 
 So basically, the code
 
  $dm->deploy(1)
 
 on an C<SQLite> database that would simply run
-C<$sql_migration_dir/SQLite/schema/1/001-auto.sql>.  Next,
+C<$sql_migration_dir/SQLite/schema/1/001-auto.sql-json>.  Next,
 
  $dm->upgrade_single_step([1,2])
 
-would run C<$sql_migration_dir/SQLite/up/1-2/001-auto.sql> followed by
+would run C<$sql_migration_dir/SQLite/up/1-2/001-auto.sql-json> followed by
 C<$sql_migration_dir/_common/up/1-2/002-generate-customers.pl>.
 
-Now, a C<.pl> file doesn't have to be in the C<_common> directory, but most of
-the time it probably should be, since perl scripts will mostly be database
-independent.
+C<.pl> files don't have to be in the C<_common> directory, but most of the time
+they should be, because perl scripts are generally be database independent.
 
 C<_generic> exists for when you for some reason are sure that your SQL is
 generic enough to run on all databases.  Good luck with that one.
@@ -577,6 +652,22 @@ just like the other steps in the process, but nothing is passed to them.
 Until people have used this more it will remain freeform, but a recommended use
 of preinstall is to have it prompt for username and password, and then call the
 appropriate C<< CREATE DATABASE >> commands etc.
+
+=head1 SERIALIZED SQL
+
+The SQL that this module generates and uses is serialized into an array of
+SQL statements.  The reason being that some databases handle multiple
+statements in a single execution differently.  Generally you do not need to
+worry about this as these are scripts generated for you.  If you find that
+you are editing them on a regular basis something is wrong and you either need
+to submit a bug or consider writing extra serialized SQL or Perl scripts to run
+before or after the automatically generated script.
+
+B<NOTE:> Currently the SQL is serialized into JSON.  I am willing to merge in
+patches that will allow more serialization formats if you want that feature,
+but if you do send me a patch for that realize that I do not want to add YAML
+support or whatever, I would rather add a generic method of adding any
+serialization format.
 
 =head1 PERL SCRIPTS
 

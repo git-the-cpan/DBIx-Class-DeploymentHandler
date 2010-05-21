@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_10';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_11';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -9,6 +9,10 @@ use Moose;
 use Method::Signatures::Simple;
 require DBIx::Class::Schema;    # loaded for type constraint
 use Carp::Clan '^DBIx::Class::DeploymentHandler';
+use Log::Contextual::WarnLogger;
+use Log::Contextual ':log', -default_logger => Log::Contextual::WarnLogger->new({
+	env_prefix => 'DBICDH'
+});
 
 has schema => (
   isa      => 'DBIx::Class::Schema',
@@ -39,6 +43,7 @@ has schema_version => (
 sub _build_schema_version { $_[0]->schema->schema_version }
 
 method install {
+  log_info { '[DBICDH] installing version ' . $self->to_version };
   croak 'Install not possible as versions table already exists in database'
     if $self->version_storage_is_installed;
 
@@ -51,6 +56,7 @@ method install {
 }
 
 sub upgrade {
+  log_info { '[DBICDH] upgrading' };
   my $self = shift;
   while ( my $version_list = $self->next_version_set ) {
     my ($ddl, $upgrade_sql) = @{
@@ -66,6 +72,7 @@ sub upgrade {
 }
 
 sub downgrade {
+  log_info { '[DBICDH] upgrading' };
   my $self = shift;
   while ( my $version_list = $self->previous_version_set ) {
     $self->downgrade_single_step({ version_set => $version_list });
@@ -75,7 +82,10 @@ sub downgrade {
   }
 }
 
-method backup { $self->storage->backup($self->backup_directory) }
+method backup {
+  log_info { '[DBICDH] backing up' };
+  $self->storage->backup($self->backup_directory)
+}
 
 __PACKAGE__->meta->make_immutable;
 
