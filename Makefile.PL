@@ -26,7 +26,8 @@ my %WriteMakefileArgs = (
     'DBIx::Class' => '0.08121',
     'File::Path' => '2.08',
     'File::Touch' => '0.08',
-    'Log::Contextual' => '0.00201',
+    'JSON' => '2.21',
+    'Log::Contextual' => '0.00202',
     'Method::Signatures::Simple' => '0.05',
     'Moose' => '1.0',
     'MooseX::Role::Parameterized' => '0.18',
@@ -38,7 +39,7 @@ my %WriteMakefileArgs = (
     'autodie' => '0',
     'namespace::autoclean' => '0'
   },
-  'VERSION' => '0.001000_11',
+  'VERSION' => '0.001000_12',
   'test' => {
     'TESTS' => 't/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t'
   }

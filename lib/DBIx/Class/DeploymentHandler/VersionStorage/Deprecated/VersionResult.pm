@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_11';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.001000_12';
 }
 
 # ABSTRACT: (DEPRECATED) The old way to store versions in the database

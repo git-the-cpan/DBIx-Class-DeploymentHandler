@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.001000_11';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.001000_12';
 }
 
 # ABSTRACT: Attach this component to your schema to ensure you stay up to date

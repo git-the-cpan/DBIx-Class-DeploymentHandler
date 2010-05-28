@@ -1,5 +1,6 @@
 [
    "\n\nBEGIN TRANSACTION",
+   "CREATE TABLE Foo (\n  foo INTEGER PRIMARY KEY NOT NULL,\n  bar VARCHAR(10) NOT NULL\n)",
    "CREATE TABLE dbix_class_deploymenthandler_versions (\n  id INTEGER PRIMARY KEY NOT NULL,\n  version varchar(50) NOT NULL,\n  ddl text,\n  upgrade_sql text\n)",
    "CREATE UNIQUE INDEX dbix_class_deploymenthandler_versions_version ON dbix_class_deploymenthandler_versions (version)",
    "COMMIT"

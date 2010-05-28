@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_11';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.001000_12';
 }
 
 # ABSTRACT: (DEPRECATED) Predefined searches to find what you want from the version storage

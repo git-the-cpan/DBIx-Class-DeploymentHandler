@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_11';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_12';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -9,10 +9,11 @@ use Moose;
 use Method::Signatures::Simple;
 require DBIx::Class::Schema;    # loaded for type constraint
 use Carp::Clan '^DBIx::Class::DeploymentHandler';
-use Log::Contextual::WarnLogger;
-use Log::Contextual ':log', -default_logger => Log::Contextual::WarnLogger->new({
-	env_prefix => 'DBICDH'
-});
+use DBIx::Class::DeploymentHandler::Logger;
+use Log::Contextual ':log', -default_logger =>
+  DBIx::Class::DeploymentHandler::Logger->new({
+    env_prefix => 'DBICDH'
+  });
 
 has schema => (
   isa      => 'DBIx::Class::Schema',
@@ -58,9 +59,11 @@ method install {
 sub upgrade {
   log_info { '[DBICDH] upgrading' };
   my $self = shift;
+  my $ran_once = 0;
   while ( my $version_list = $self->next_version_set ) {
+    $ran_once = 1;
     my ($ddl, $upgrade_sql) = @{
-		$self->upgrade_single_step({ version_set => $version_list })
+      $self->upgrade_single_step({ version_set => $version_list })
     ||[]};
 
     $self->add_database_version({
@@ -69,17 +72,22 @@ sub upgrade {
       upgrade_sql => $upgrade_sql,
     });
   }
+
+  log_warn { '[DBICDH] no need to run upgrade' } unless $ran_once;
 }
 
 sub downgrade {
   log_info { '[DBICDH] upgrading' };
   my $self = shift;
+  my $ran_once = 0;
   while ( my $version_list = $self->previous_version_set ) {
+    $ran_once = 1;
     $self->downgrade_single_step({ version_set => $version_list });
 
     # do we just delete a row here?  I think so but not sure
     $self->delete_database_version({ version => $version_list->[-1] });
   }
+  log_warn { '[DBICDH] no version to run downgrade' } unless $ran_once;
 }
 
 method backup {

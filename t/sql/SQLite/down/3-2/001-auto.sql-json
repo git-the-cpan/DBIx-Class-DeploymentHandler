@@ -1,0 +1,11 @@
+[
+   "-- Convert schema 't/sql/SQLite/schema/3/001-auto.sql-json' to 't/sql/SQLite/schema/2/001-auto.sql-json':;\n\n",
+   "BEGIN;\n\n",
+   "CREATE TEMPORARY TABLE Foo_temp_alter (\n  foo INTEGER PRIMARY KEY NOT NULL,\n  bar VARCHAR(10) NOT NULL,\n  baz VARCHAR(10)\n);\n\n",
+   "INSERT INTO Foo_temp_alter SELECT foo, bar, baz FROM Foo;\n\n",
+   "DROP TABLE Foo;\n\n",
+   "CREATE TABLE Foo (\n  foo INTEGER PRIMARY KEY NOT NULL,\n  bar VARCHAR(10) NOT NULL,\n  baz VARCHAR(10)\n);\n\n",
+   "INSERT INTO Foo SELECT foo, bar, baz FROM Foo_temp_alter;\n\n",
+   "DROP TABLE Foo_temp_alter;\n\n",
+   "\nCOMMIT;\n\n"
+]
