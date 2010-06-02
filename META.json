@@ -3,43 +3,49 @@
    "author" : [
       "Arthur Axel \"fREW\" Schmidt <frioux+cpan@gmail.com>"
    ],
-   "build_requires" : {},
-   "configure_requires" : {
-      "ExtUtils::MakeMaker" : "6.31"
-   },
-   "generated_by" : "Dist::Zilla version 2.101310",
-   "license" : "perl",
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 3.101461",
+   "license" : "perl_5",
    "meta-spec" : {
-      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html",
-      "version" : 1.4
+      "url" : "http://github.com/dagolden/cpan-meta/",
+      "version" : 2
    },
    "name" : "DBIx-Class-DeploymentHandler",
-   "recommends" : {},
-   "requires" : {
-      "Carp" : "0",
-      "Carp::Clan" : "0",
-      "DBD::SQLite" : "0",
-      "DBIx::Class" : "0.08121",
-      "File::Path" : "2.08",
-      "File::Touch" : "0.08",
-      "JSON" : "2.21",
-      "Log::Contextual" : "0.00202",
-      "Method::Signatures::Simple" : "0.05",
-      "Moose" : "1.0",
-      "MooseX::Role::Parameterized" : "0.18",
-      "SQL::Translator" : "0.11005",
-      "Test::Exception" : "0",
-      "Test::More" : "0.88",
-      "Try::Tiny" : "0",
-      "aliased" : "0",
-      "autodie" : "0",
-      "namespace::autoclean" : "0"
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.31"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "Carp::Clan" : "0",
+            "DBD::SQLite" : "0",
+            "DBIx::Class" : "0.08121",
+            "File::Path" : "2.08",
+            "File::Touch" : "0.08",
+            "Log::Contextual" : "0.00202",
+            "Method::Signatures::Simple" : "0.05",
+            "Moose" : "1.0",
+            "MooseX::Role::Parameterized" : "0.18",
+            "SQL::Translator" : "0.11005",
+            "Test::Exception" : "0",
+            "Test::More" : "0.88",
+            "Try::Tiny" : "0",
+            "aliased" : "0",
+            "autodie" : "0",
+            "namespace::autoclean" : "0"
+         }
+      }
    },
    "resources" : {
-      "repository.type" : "git",
-      "repository.url" : "git://git.shadowcat.co.uk/dbsrgits/DBIx-Class-DeploymentHandler.git",
-      "repository.web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
+      "repository" : {
+         "type" : "git",
+         "url" : "git://git.shadowcat.co.uk/dbsrgits/DBIx-Class-DeploymentHandler.git",
+         "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
+      }
    },
-   "version" : "0.001000_12"
+   "version" : "0.001000_13"
 }
 

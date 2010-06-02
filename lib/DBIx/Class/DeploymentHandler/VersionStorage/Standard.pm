@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_12';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001000_13';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -39,13 +39,13 @@ sub _build_version_rs {
 
 sub add_database_version {
   my $version = $_[1]->{version};
-  log_debug { "[DBICDH] Adding database version $version" };
+  log_debug { "Adding database version $version" };
   $_[0]->version_rs->create($_[1])
 }
 
 sub delete_database_version {
   my $version = $_[1]->{version};
-  log_debug { "[DBICDH] Deleting database version $version" };
+  log_debug { "Deleting database version $version" };
   $_[0]->version_rs->search({ version => $version})->delete
 }
 

@@ -1,5 +1,10 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.001000_13 2010-06-01 23:30:15 CST6CDT
+       - No more serialized SQL, we serialize the SQLT schema instead
+       - Completely reorganize the name of directories for more user friendlyness
+       - take out support for _generic since it's against my creed
+
 0.001000_12 2010-05-27 19:12:20 CST6CDT
        - Add missing dep
        - Better defaults and cascading for Logging

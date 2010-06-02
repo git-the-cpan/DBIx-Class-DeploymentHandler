@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Logger;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.001000_12';
+  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.001000_13';
 }
 
 use warnings;
@@ -30,6 +30,14 @@ sub is_fatal {
    my $orig = $_[0]->next::method;
    return undef if defined $orig && !$orig;
    return $_[0]->is_error || 1
+}
+
+sub _log {
+  my $self    = shift;
+  my $level   = shift;
+  my $message = join( "\n", @_ );
+  $message .= "\n" unless $message =~ /\n$/;
+  warn "[DBICDH] [$level] $message";
 }
 
 1;
