@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001000_14';
 }
 use Moose;
 

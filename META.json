@@ -46,6 +46,6 @@
          "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
       }
    },
-   "version" : "0.001000_13"
+   "version" : "0.001000_14"
 }
 

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.001000_14';
 }
 use Moose;
 

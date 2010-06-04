@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.001000_14';
 }
 
 # ABSTRACT: The typical way to store versions in the database

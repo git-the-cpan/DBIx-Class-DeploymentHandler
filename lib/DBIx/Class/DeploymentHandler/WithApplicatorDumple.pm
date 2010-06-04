@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithApplicatorDumple;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.001000_14';
 }
 use MooseX::Role::Parameterized;
 use Class::MOP;

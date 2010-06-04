@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component::VERSION = '0.001000_14';
 }
 
 # ABSTRACT: (DEPRECATED) Attach this component to your schema to ensure you stay up to date

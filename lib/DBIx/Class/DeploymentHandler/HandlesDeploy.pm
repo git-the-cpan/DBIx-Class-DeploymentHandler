@@ -1,12 +1,12 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_13';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001000_14';
 }
 use Moose::Role;
 
 # ABSTRACT: Interface for deploy methods
 
-requires 'preinstall';
+requires 'initialize';
 
 requires 'prepare_deploy';
 requires 'deploy';
@@ -48,9 +48,9 @@ L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated>
 
 =head1 METHODS
 
-=head2 preinstall
+=head2 initialize
 
- $dh->preinstall({
+ $dh->initialize({
    version      => 1,
    storage_type => 'SQLite'
  });
