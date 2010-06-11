@@ -1,9 +1,9 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Thu Jun  3 19:43:05 2010
+-- Created on Thu Jun 10 21:52:48 2010
 -- 
 
-
+;
 BEGIN TRANSACTION;
 --
 -- Table: dbix_class_deploymenthandler_versions

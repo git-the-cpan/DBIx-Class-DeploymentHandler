@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001000_14';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001000';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -188,11 +188,6 @@ variables: C<DBICDH_FATAL>, C<DBICDH_ERROR>, C<DBICDH_WARN>, C<DBICDH_INFO>,
 C<DBICDH_DEBUG>, and C<DBICDH_TRACE>.  Each level can be set on it's own,
 but the default is the first three on and the last three off, and the levels
 cascade, so if you turn on trace the rest will turn on automatically.
-
-Lastly, the logging uses L<Log::Contextual>, so if you have already set up an
-application-wide logger this will use that logger instead, and the environment
-variables will be completely ignored (unless you did something weird like
-set your logger to log when the above environment variables are set.)
 
 =head1 DONATIONS
 

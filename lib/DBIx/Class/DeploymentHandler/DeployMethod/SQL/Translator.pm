@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000_14';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000';
 }
 use Moose;
 
@@ -9,7 +9,7 @@ use Moose;
 use autodie;
 use Carp qw( carp croak );
 use DBIx::Class::DeploymentHandler::Logger;
-use Log::Contextual qw(:log :dlog), -default_logger =>
+use Log::Contextual qw(:log :dlog), -package_logger =>
   DBIx::Class::DeploymentHandler::Logger->new({
     env_prefix => 'DBICDH'
   });

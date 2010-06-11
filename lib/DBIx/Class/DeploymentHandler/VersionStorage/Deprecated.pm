@@ -1,10 +1,10 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000_14';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
-use Log::Contextual ':log', -default_logger =>
+use Log::Contextual ':log', -package_logger =>
   DBIx::Class::DeploymentHandler::Logger->new({
     env_prefix => 'DBICDH'
   });

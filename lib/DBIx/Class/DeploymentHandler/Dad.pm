@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000_14';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001000';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -10,7 +10,7 @@ use Method::Signatures::Simple;
 require DBIx::Class::Schema;    # loaded for type constraint
 use Carp::Clan '^DBIx::Class::DeploymentHandler';
 use DBIx::Class::DeploymentHandler::Logger;
-use Log::Contextual ':log', -default_logger =>
+use Log::Contextual ':log', -package_logger =>
   DBIx::Class::DeploymentHandler::Logger->new({
     env_prefix => 'DBICDH'
   });

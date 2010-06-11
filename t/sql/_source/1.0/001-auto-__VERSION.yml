@@ -155,10 +155,12 @@ translator:
           - dbi:SQLite:db.db
           - ''
           - ''
-          - AutoCommit: 1
+          - &4
+            AutoCommit: 1
             PrintError: 0
             RaiseError: 1
             ignore_version: 1
+        _dbic_connect_attributes: *4
         _in_dbh_do: 0
         _sql_maker: ~
         _sql_maker_opts: {}
@@ -173,4 +175,4 @@ translator:
   producer_type: SQL::Translator::Producer::YAML
   show_warnings: 0
   trace: 0
-  version: 0.11005
+  version: 0.11006

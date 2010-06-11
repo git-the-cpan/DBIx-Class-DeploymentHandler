@@ -4,11 +4,13 @@
       "Arthur Axel \"fREW\" Schmidt <frioux+cpan@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 3.101461",
-   "license" : "perl_5",
+   "generated_by" : "Dist::Zilla version 4.101582, CPAN::Meta::Converter version 2.101580",
+   "license" : [
+      "perl_5"
+   ],
    "meta-spec" : {
-      "url" : "http://github.com/dagolden/cpan-meta/",
-      "version" : 2
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
    },
    "name" : "DBIx-Class-DeploymentHandler",
    "prereqs" : {
@@ -19,26 +21,27 @@
       },
       "runtime" : {
          "requires" : {
-            "Carp" : "0",
-            "Carp::Clan" : "0",
-            "DBD::SQLite" : "0",
+            "Carp" : 0,
+            "Carp::Clan" : 0,
+            "DBD::SQLite" : 0,
             "DBIx::Class" : "0.08121",
             "File::Path" : "2.08",
             "File::Touch" : "0.08",
-            "Log::Contextual" : "0.00202",
+            "Log::Contextual" : "0.00300",
             "Method::Signatures::Simple" : "0.05",
             "Moose" : "1.0",
             "MooseX::Role::Parameterized" : "0.18",
             "SQL::Translator" : "0.11005",
-            "Test::Exception" : "0",
+            "Test::Exception" : 0,
             "Test::More" : "0.88",
-            "Try::Tiny" : "0",
-            "aliased" : "0",
-            "autodie" : "0",
-            "namespace::autoclean" : "0"
+            "Try::Tiny" : 0,
+            "aliased" : 0,
+            "autodie" : 0,
+            "namespace::autoclean" : 0
          }
       }
    },
+   "release_status" : "stable",
    "resources" : {
       "repository" : {
          "type" : "git",
@@ -46,6 +49,6 @@
          "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
       }
    },
-   "version" : "0.001000_14"
+   "version" : "0.001000"
 }
 
