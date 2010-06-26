@@ -1,0 +1,260 @@
+---
+schema:
+  procedures: {}
+  tables:
+    Foo:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - foo
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        bar:
+          data_type: VARCHAR
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: bar
+          order: 2
+          size:
+            - 10
+        baz:
+          data_type: VARCHAR
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: baz
+          order: 3
+          size:
+            - 10
+        foo:
+          data_type: INTEGER
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: foo
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: Foo
+      options: []
+      order: 1
+    dbix_class_deploymenthandler_versions:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - version
+          match_type: ''
+          name: dbix_class_deploymenthandler_versions_version
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        ddl:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: ddl
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: int
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        upgrade_sql:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: upgrade_sql
+          order: 4
+          size:
+            - 0
+        version:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: version
+          order: 2
+          size:
+            - 50
+      indices: []
+      name: dbix_class_deploymenthandler_versions
+      options: []
+      order: 2
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    package: &1 !!perl/hash:DBICVersion::Schema
+      class_mappings:
+        DBICVersion::Foo: Foo
+        DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult: __VERSION
+      source_registrations:
+        Foo: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            bar:
+              data_type: VARCHAR
+              size: 10
+            baz:
+              data_type: VARCHAR
+              is_nullable: 1
+              size: 10
+            foo:
+              data_type: INTEGER
+              is_auto_increment: 1
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - foo
+            - bar
+            - baz
+          _primaries: &2
+            - foo
+          _relationships: {}
+          _unique_constraints:
+            primary: *2
+          name: Foo
+          result_class: DBICVersion::Foo
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *1
+          source_name: Foo
+          sqlt_deploy_callback: default_sqlt_deploy_hook
+        __VERSION: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            ddl:
+              data_type: text
+              is_nullable: 1
+            id:
+              data_type: int
+              is_auto_increment: 1
+            upgrade_sql:
+              data_type: text
+              is_nullable: 1
+            version:
+              data_type: varchar
+              size: 50
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - id
+            - version
+            - ddl
+            - upgrade_sql
+          _primaries: &3
+            - id
+          _relationships: {}
+          _unique_constraints:
+            dbix_class_deploymenthandler_versions_version:
+              - version
+            primary: *3
+          name: dbix_class_deploymenthandler_versions
+          result_class: DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet
+          schema: *1
+          source_name: __VERSION
+          sqlt_deploy_callback: default_sqlt_deploy_hook
+      storage: !!perl/hash:DBIx::Class::Storage::DBI::SQLite
+        _conn_pid: 12670
+        _connect_info:
+          - 'dbi:SQLite::memory:'
+          - ''
+          - ''
+          - ignore_version: 1
+        _dbh: !!perl/hash:DBI::db {}
+        _dbh_autocommit: 1
+        _dbh_gen: 0
+        _dbi_connect_info:
+          - 'dbi:SQLite::memory:'
+          - ''
+          - ''
+          - &4
+            AutoCommit: 1
+            PrintError: 0
+            RaiseError: 1
+            ignore_version: 1
+        _dbic_connect_attributes: *4
+        _driver_determined: 1
+        _in_dbh_do: 0
+        _server_info_hash: ~
+        _sql_maker: !!perl/hash:DBIx::Class::SQLAHacks::SQLite
+          _cached_syntax: LimitOffset
+          array_datatypes: 1
+          bindtype: columns
+          cmp: =
+          equality_op: !!perl/regexp (?i-xsm:^(\=|is|(is\s+)?like)$)
+          inequality_op: !!perl/regexp (?i-xsm:^(!=|<>|(is\s+)?not(\s+like)?)$)
+          limit_dialect: LimitOffset
+          logic: OR
+          special_ops:
+            - handler: _where_field_BETWEEN
+              regex: !!perl/regexp (?i-xsm:^(not )?between$)
+            - handler: _where_field_IN
+              regex: !!perl/regexp (?i-xsm:^(not )?in$)
+          sqlfalse: 0=1
+          sqltrue: 1=1
+          unary_ops:
+            - handler: _where_op_ANDOR
+              regex: !!perl/regexp '(?ix-sm:^and  (?: \s? \d+ )? $)'
+            - handler: _where_op_ANDOR
+              regex: !!perl/regexp '(?ix-sm:^or   (?: \s? \d+ )? $)'
+            - handler: _where_op_NEST
+              regex: !!perl/regexp '(?ix-sm:^nest (?: \s? \d+ )? $)'
+            - handler: _where_op_BOOL
+              regex: !!perl/regexp '(?ix-sm:^ (?: not \s )? bool $)'
+        _sql_maker_opts: {}
+        debugobj: !!perl/hash:DBIx::Class::Storage::Statistics {}
+        savepoints: []
+        schema: *1
+        transaction_depth: 0
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11006

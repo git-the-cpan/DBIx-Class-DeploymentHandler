@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001001';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -97,7 +97,7 @@ new Standard VersionStorage:
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

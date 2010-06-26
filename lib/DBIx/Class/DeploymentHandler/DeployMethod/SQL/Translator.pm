@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001001';
 }
 use Moose;
 
@@ -224,7 +224,7 @@ method _run_sql_array($sql) {
     }
     catch {
       die "$_ (running line '$line')"
-    }
+    };
     $storage->_query_end($line);
   }
   return join "\n", @$sql
@@ -869,7 +869,7 @@ C<< $self->schema->schema_version >>.
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

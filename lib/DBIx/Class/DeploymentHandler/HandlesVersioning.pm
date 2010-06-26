@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesVersioning;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.001001';
 }
 use Moose::Role;
 
@@ -143,7 +143,7 @@ Return a L<version set|/VERSION SET> describing each version that needs to be
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

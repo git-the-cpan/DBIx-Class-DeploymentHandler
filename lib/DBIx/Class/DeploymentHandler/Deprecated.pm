@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.001001';
 }
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
@@ -130,7 +130,7 @@ your schema.
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

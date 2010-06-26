@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::Monotonic;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.001001';
 }
 use Moose;
 
@@ -85,7 +85,7 @@ DBIx::Class::DeploymentHandler::VersionHandler::Monotonic - Obvious version prog
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

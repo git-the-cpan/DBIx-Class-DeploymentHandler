@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::Component::VERSION = '0.001001';
 }
 
 # ABSTRACT: (DEPRECATED) Attach this component to your schema to ensure you stay up to date
@@ -60,7 +60,7 @@ In the major version after that (2) we will remove it entirely.
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

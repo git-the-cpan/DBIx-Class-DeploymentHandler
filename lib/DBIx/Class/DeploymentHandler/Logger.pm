@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Logger;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.001000';
+  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.001001';
 }
 
 use warnings;
@@ -51,7 +51,7 @@ DBIx::Class::DeploymentHandler::Logger
 
 =head1 AUTHOR
 
-  Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

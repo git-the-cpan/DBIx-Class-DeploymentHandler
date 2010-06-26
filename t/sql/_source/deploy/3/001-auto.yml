@@ -2,6 +2,66 @@
 schema:
   procedures: {}
   tables:
+    Foo:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - foo
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        bar:
+          data_type: VARCHAR
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: bar
+          order: 2
+          size:
+            - 10
+        baz:
+          data_type: VARCHAR
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: baz
+          order: 3
+          size:
+            - 10
+        biff:
+          data_type: VARCHAR
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: biff
+          order: 4
+          size:
+            - 10
+        foo:
+          data_type: INTEGER
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: foo
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: Foo
+      options: []
+      order: 1
     dbix_class_deploymenthandler_versions:
       constraints:
         - deferrable: 1
@@ -73,7 +133,7 @@ schema:
       indices: []
       name: dbix_class_deploymenthandler_versions
       options: []
-      order: 1
+      order: 2
   triggers: {}
   views: {}
 translator:
@@ -91,6 +151,14 @@ translator:
             bar:
               data_type: VARCHAR
               size: 10
+            baz:
+              data_type: VARCHAR
+              is_nullable: 1
+              size: 10
+            biff:
+              data_type: VARCHAR
+              is_nullable: 1
+              size: 10
             foo:
               data_type: INTEGER
               is_auto_increment: 1
@@ -98,6 +166,8 @@ translator:
           _ordered_columns:
             - foo
             - bar
+            - baz
+            - biff
           _primaries: &2
             - foo
           _relationships: {}
@@ -144,15 +214,18 @@ translator:
           schema: *1
           source_name: __VERSION
           sqlt_deploy_callback: default_sqlt_deploy_hook
-      storage: !!perl/hash:DBIx::Class::Storage::DBI
+      storage: !!perl/hash:DBIx::Class::Storage::DBI::SQLite
+        _conn_pid: 12670
         _connect_info:
-          - dbi:SQLite:db.db
+          - 'dbi:SQLite::memory:'
           - ''
           - ''
           - ignore_version: 1
+        _dbh: !!perl/hash:DBI::db {}
+        _dbh_autocommit: 1
         _dbh_gen: 0
         _dbi_connect_info:
-          - dbi:SQLite:db.db
+          - 'dbi:SQLite::memory:'
           - ''
           - ''
           - &4
@@ -161,15 +234,39 @@ translator:
             RaiseError: 1
             ignore_version: 1
         _dbic_connect_attributes: *4
+        _driver_determined: 1
         _in_dbh_do: 0
-        _sql_maker: ~
+        _server_info_hash: ~
+        _sql_maker: !!perl/hash:DBIx::Class::SQLAHacks::SQLite
+          _cached_syntax: LimitOffset
+          array_datatypes: 1
+          bindtype: columns
+          cmp: =
+          equality_op: !!perl/regexp (?i-xsm:^(\=|is|(is\s+)?like)$)
+          inequality_op: !!perl/regexp (?i-xsm:^(!=|<>|(is\s+)?not(\s+like)?)$)
+          limit_dialect: LimitOffset
+          logic: OR
+          special_ops:
+            - handler: _where_field_BETWEEN
+              regex: !!perl/regexp (?i-xsm:^(not )?between$)
+            - handler: _where_field_IN
+              regex: !!perl/regexp (?i-xsm:^(not )?in$)
+          sqlfalse: 0=1
+          sqltrue: 1=1
+          unary_ops:
+            - handler: _where_op_ANDOR
+              regex: !!perl/regexp '(?ix-sm:^and  (?: \s? \d+ )? $)'
+            - handler: _where_op_ANDOR
+              regex: !!perl/regexp '(?ix-sm:^or   (?: \s? \d+ )? $)'
+            - handler: _where_op_NEST
+              regex: !!perl/regexp '(?ix-sm:^nest (?: \s? \d+ )? $)'
+            - handler: _where_op_BOOL
+              regex: !!perl/regexp '(?ix-sm:^ (?: not \s )? bool $)'
         _sql_maker_opts: {}
         debugobj: !!perl/hash:DBIx::Class::Storage::Statistics {}
         savepoints: []
         schema: *1
         transaction_depth: 0
-    sources:
-      - __VERSION
   parser_type: SQL::Translator::Parser::DBIx::Class
   producer_args: {}
   producer_type: SQL::Translator::Producer::YAML
