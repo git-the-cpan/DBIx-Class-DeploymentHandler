@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.001001';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.001002';
 }
 
 # ABSTRACT: Attach this component to your schema to ensure you stay up to date
@@ -23,7 +23,7 @@ sub connection  {
 
   $self->attach_version_storage;
 
-  my $args = $_[3] || {};
+  my $args = $self->storage->_dbic_connect_attributes;
 
   unless ( $args->{ignore_version} || $ENV{DBIC_NO_VERSION_CHECK}) {
     my $versions = $self->resultset('__VERSION');

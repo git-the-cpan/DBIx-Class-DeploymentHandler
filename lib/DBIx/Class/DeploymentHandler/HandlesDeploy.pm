@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001001';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001002';
 }
 use Moose::Role;
 

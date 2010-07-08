@@ -11,11 +11,11 @@ use aliased 'DBIx::Class::DeploymentHandler', 'DH';
 use File::Path 'remove_tree';
 use Test::More;
 use Test::Exception;
+use DBI;
 
 DBICDHTest::ready;
-
-my $db = 'dbi:SQLite:db.db';
-my @connection = ($db, '', '', { ignore_version => 1 });
+my $dbh = DBI->connect('dbi:SQLite::memory:');
+my @connection = (sub { $dbh }, { ignore_version => 1 });
 my $sql_dir = 't/sql';
 
 VERSION1: {
@@ -34,7 +34,7 @@ VERSION1: {
   ok($handler, 'DBIx::Class::DeploymentHandler w/1 instantiates correctly');
 
   my $version = $s->schema_version;
-  $handler->prepare_deploy;
+  $handler->prepare_install;
 
   dies_ok {
     $s->resultset('Foo')->create({
@@ -67,7 +67,7 @@ VERSION2: {
   ok($handler, 'DBIx::Class::DeploymentHandler w/2 instantiates correctly');
 
   my $version = $s->schema_version();
-  $handler->prepare_deploy();
+  $handler->prepare_install;
   dies_ok {
     $s->resultset('Foo')->create({
       bar => 'frew',
@@ -104,7 +104,7 @@ VERSION3: {
   ok($handler, 'DBIx::Class::DeploymentHandler w/3 instantiates correctly');
 
   my $version = $s->schema_version();
-  $handler->prepare_deploy;
+  $handler->prepare_install;
   dies_ok {
     $s->resultset('Foo')->create({
         bar => 'frew',

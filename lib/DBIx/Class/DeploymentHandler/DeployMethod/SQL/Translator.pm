@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001001';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001002';
 }
 use Moose;
 
@@ -136,6 +136,19 @@ method _ddl_initialize_consume_filenames($type, $version) {
 
 method _ddl_schema_consume_filenames($type, $version) {
   $self->__ddl_consume_with_prefix($type, [ $version ], 'deploy')
+}
+
+method _ddl_protoschema_deploy_consume_filenames($version) {
+  my $base_dir = $self->script_directory;
+
+  my $dir = catfile( $base_dir, '_source', 'deploy', $version);
+  return [] unless -d $dir;
+
+  opendir my($dh), $dir;
+  my %files = map { $_ => "$dir/$_" } grep { /\.yml$/ && -f "$dir/$_" } readdir $dh;
+  closedir $dh;
+
+  return [@files{sort keys %files}]
 }
 
 method _ddl_protoschema_upgrade_consume_filenames($versions) {
@@ -286,7 +299,7 @@ sub deploy {
   my $sql;
   if ($self->ignore_ddl) {
      $sql = $self->_sql_from_yaml({},
-       '_ddl_protoschema_produce_filename', $sqlt_type
+       '_ddl_protoschema_deploy_consume_filenames', $sqlt_type
      );
   }
   return $self->_run_sql_and_perl($self->_ddl_schema_consume_filenames(
@@ -403,19 +416,25 @@ method _sql_from_yaml($sqltargs, $from_file, $db) {
   my $schema    = $self->schema;
   my $version   = $self->schema_version;
 
-  my $sqlt = SQL::Translator->new({
-    add_drop_table          => 0,
-    parser                  => 'SQL::Translator::Parser::YAML',
-    %{$sqltargs},
-    producer => $db,
-  });
+  my @sql;
 
-  my $yaml_filename = $self->$from_file($version);
+  my $actual_file = $self->$from_file($version);
+  for my $yaml_filename (@{
+     DlogS_trace { "generating SQL from Serialized SQL Files: $_" }
+        (ref $actual_file?$actual_file:[$actual_file])
+  }) {
+     my $sqlt = SQL::Translator->new({
+       add_drop_table          => 0,
+       parser                  => 'SQL::Translator::Parser::YAML',
+       %{$sqltargs},
+       producer => $db,
+     });
 
-  my @sql = $sqlt->translate($yaml_filename);
-  if(!@sql) {
-    carp("Failed to translate to $db, skipping. (" . $sqlt->error . ")");
-    return undef;
+     push @sql, $sqlt->translate($yaml_filename);
+     if(!@sql) {
+       carp("Failed to translate to $db, skipping. (" . $sqlt->error . ")");
+       return undef;
+     }
   }
   return \@sql;
 }
@@ -458,7 +477,7 @@ sub _resultsource_protoschema_filename {
   my ($self, $source_name) = @_;
   return sub {
     my ($self, $version) = @_;
-    my $dirname = catfile( $self->script_directory, '_source', $version );
+    my $dirname = catfile( $self->script_directory, '_source', 'deploy', $version );
     mkpath($dirname) unless -d $dirname;
 
     return catfile( $dirname, "001-auto-$source_name.yml" );
@@ -498,7 +517,10 @@ sub prepare_resultsource_install {
 sub prepare_deploy {
   log_info { 'preparing deploy' };
   my $self = shift;
-  $self->prepare_protoschema({}, '_ddl_protoschema_produce_filename');
+  $self->prepare_protoschema({
+      # Exclude __VERSION so that it gets installed separately
+      parser_args => { sources => [grep { $_ ne '__VERSION' } $self->schema->sources], }
+  }, '_ddl_protoschema_produce_filename');
   $self->_prepare_install({}, '_ddl_protoschema_produce_filename', '_ddl_schema_produce_filename');
 }
 

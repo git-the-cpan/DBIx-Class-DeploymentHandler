@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001001';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001002';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
