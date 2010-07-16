@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001002';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001003';
 }
 use Moose;
 
@@ -29,6 +29,12 @@ use File::Spec::Functions;
 with 'DBIx::Class::DeploymentHandler::HandlesDeploy';
 
 has ignore_ddl => (
+  isa      => 'Bool',
+  is       => 'ro',
+  default  => undef,
+);
+
+has force_overwrite => (
   isa      => 'Bool',
   is       => 'ro',
   default  => undef,
@@ -453,8 +459,12 @@ sub _prepare_install {
 
     my $filename = $self->$to_file($db, $version, $dir);
     if (-e $filename ) {
-      carp "Overwriting existing DDL file - $filename";
-      unlink $filename;
+      if ($self->force_overwrite) {
+         carp "Overwriting existing DDL file - $filename";
+         unlink $filename;
+      } else {
+         die "Cannot overwrite '$filename', either enable force_overwrite or delete it"
+      }
     }
     open my $file, q(>), $filename;
     print {$file} join ";\n", @$sql;
@@ -486,8 +496,10 @@ sub _resultsource_protoschema_filename {
 
 sub install_resultsource {
   my ($self, $args) = @_;
-  my $source          = $args->{result_source};
-  my $version         = $args->{version};
+  my $source          = $args->{result_source}
+    or die 'result_source must be passed to install_resultsource';
+  my $version         = $args->{version}
+    or die 'version must be passed to install_resultsource';
   log_info { 'installing_resultsource ' . $source->source_name . ", version $version" };
   my $rs_install_file =
     $self->_resultsource_install_filename($source->source_name);
@@ -559,8 +571,12 @@ method _prepare_changegrade($from_version, $to_version, $version_set, $direction
   foreach my $db (@$databases) {
     my $diff_file = $self->$diff_file_method($db, $version_set, $dir );
     if(-e $diff_file) {
-      carp("Overwriting existing $direction-diff file - $diff_file");
-      unlink $diff_file;
+      if ($self->force_overwrite) {
+         carp("Overwriting existing $direction-diff file - $diff_file");
+         unlink $diff_file;
+      } else {
+         die "Cannot overwrite '$diff_file', either enable force_overwrite or delete it"
+      }
     }
 
     open my $file, q(>), $diff_file;
@@ -648,8 +664,12 @@ sub prepare_protoschema {
     unless $yml;
 
   if (-e $filename ) {
-    carp "Overwriting existing DDL-YML file - $filename";
-    unlink $filename;
+    if ($self->force_overwrite) {
+       carp "Overwriting existing DDL-YML file - $filename";
+       unlink $filename;
+    } else {
+       die "Cannot overwrite '$filename', either enable force_overwrite or delete it"
+    }
   }
 
   open my $file, q(>), $filename;
@@ -855,6 +875,12 @@ L<SQL::Translator> to use the C<_source>'s serialized SQL::Translator::Schema
 instead of any pregenerated SQL.  If you have a development server this is
 probably the best plan of action as you will not be putting as many generated
 files in your version control.  Goes well with with C<databases> of C<[]>.
+
+=head2 force_overwrite
+
+When this attribute is true generated files will be overwritten when the
+methods which create such files are run again.  The default is false, in which
+case the program will die with a message saying which file needs to be deleted.
 
 =head2 schema
 

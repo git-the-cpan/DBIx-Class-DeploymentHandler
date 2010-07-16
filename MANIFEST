@@ -4,7 +4,6 @@ MANIFEST
 META.json
 Makefile.PL
 README
-db.db
 dist.ini
 lib/DBIx/Class/DeploymentHandler.pm
 lib/DBIx/Class/DeploymentHandler/Cookbook/CustomResultSource.pod
@@ -16,6 +15,7 @@ lib/DBIx/Class/DeploymentHandler/HandlesDeploy.pm
 lib/DBIx/Class/DeploymentHandler/HandlesVersionStorage.pm
 lib/DBIx/Class/DeploymentHandler/HandlesVersioning.pm
 lib/DBIx/Class/DeploymentHandler/Logger.pm
+lib/DBIx/Class/DeploymentHandler/Manual/CatalystIntro.pod
 lib/DBIx/Class/DeploymentHandler/Manual/Intro.pod
 lib/DBIx/Class/DeploymentHandler/Types.pm
 lib/DBIx/Class/DeploymentHandler/VersionHandler/DatabaseToSchemaVersions.pm
@@ -36,6 +36,7 @@ t/02-instantiation-wo-component.t
 t/02-instantiation.t
 t/03-deprecated.t
 t/04-preconnect.t
+t/bugs/01-emailed-bug-01.t
 t/deploy_methods/sql_translator.t
 t/deploy_methods/sql_translator_deprecated.t
 t/deploy_methods/sql_translator_protoschema_transform.t

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Types;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001002';
+  $DBIx::Class::DeploymentHandler::Types::VERSION = '0.001003';
 }
 use strict;
 use warnings;
@@ -14,8 +14,16 @@ subtype 'DBIx::Class::DeploymentHandler::Databases'
 coerce 'DBIx::Class::DeploymentHandler::Databases'
  => from 'Str'
  => via { [$_] };
-no Moose::Util::TypeConstraints;
 
+subtype 'StrSchemaVersion'
+ => as 'Str'
+ => message {
+  defined $_
+    ? "Schema version (currently '$_') must be a string"
+    : 'Schema version must be defined'
+ };
+
+no Moose::Util::TypeConstraints;
 1;
 
 # vim: ts=2 sw=2 expandtab

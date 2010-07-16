@@ -1,5 +1,8 @@
 #!perl
 
+use strict;
+use warnings;
+
 use Test::More;
 use Test::Exception;
 
@@ -38,12 +41,7 @@ VERSION1: {
 
    ok -e 'foobar';
 
-   {
-      my $warned = 0;
-      local $SIG{__WARN__} = sub{$warned = 1};
-      $dm->prepare_deploy;
-      ok( $warned, 'prepare_deploy warns if you run it twice' );
-   }
+   dies_ok {$dm->prepare_deploy} 'prepare_deploy dies if you run it twice' ;
 
    ok(
       -f catfile(qw( t sql SQLite deploy 1.0 001-auto.sql )),
@@ -78,7 +76,7 @@ VERSION2: {
 
    ok( $dm, 'DBIC::DH::SQL::Translator w/2.0 instantiates correctly');
 
-   $version = $s->schema_version();
+   my $version = $s->schema_version();
    $dm->prepare_deploy;
    ok(
       -f catfile(qw( t sql SQLite deploy 2.0 001-auto.sql )),
@@ -185,7 +183,7 @@ VERSION3: {
 
    ok( $dm, 'DBIC::DH::SQL::Translator w/3.0 instantiates correctly');
 
-   $version = $s->schema_version();
+   my $version = $s->schema_version();
    $dm->prepare_deploy;
    ok(
       -f catfile(qw( t sql SQLite deploy 3.0 001-auto.sql )),
@@ -214,16 +212,14 @@ VERSION3: {
      to_version => $version,
      version_set => ['2.0', $version]
    });
-   {
-      my $warned = 0;
-      local $SIG{__WARN__} = sub{$warned = 1};
+   dies_ok {
       $dm->prepare_upgrade({
         from_version => '2.0',
         to_version => $version,
         version_set => ['2.0', $version]
       });
-      ok( $warned, 'prepare_upgrade warns if you clobber an existing upgrade file' );
-   }
+      }
+   'prepare_upgrade dies if you clobber an existing upgrade file' ;
    ok(
       -f catfile(qw( t sql SQLite upgrade 1.0-2.0 001-auto.sql )),
       '2.0-3.0 diff gets generated properly'
