@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001003';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001004';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -15,7 +15,9 @@ with 'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
     class_name           => 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator',
     delegate_name        => 'deploy_method',
     attributes_to_assume => [qw(schema schema_version)],
-    attributes_to_copy   => [qw( ignore_ddl databases script_directory sql_translator_args )],
+    attributes_to_copy   => [qw(
+      ignore_ddl databases script_directory sql_translator_args force_overwrite
+    )],
   },
   'DBIx::Class::DeploymentHandler::WithApplicatorDumple' => {
     interface_role       => 'DBIx::Class::DeploymentHandler::HandlesVersioning',
@@ -98,7 +100,10 @@ or for upgrades:
    sql_translator_args => { add_drop_table => 0 },
  });
 
- $dh->prepare_upgrade(1, 2);
+ $dh->prepare_upgrade({
+   from_version => 1,
+   to_version   => 2,
+ });
 
  $dh->upgrade;
 

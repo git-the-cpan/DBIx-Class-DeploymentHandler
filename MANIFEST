@@ -50,7 +50,6 @@ t/no-component-lib/DBICVersion_v1.pm
 t/no-component-lib/DBICVersion_v2.pm
 t/no-component-lib/DBICVersion_v3.pm
 t/no-component-lib/DBICVersion_v4.pm
-t/release-pod-coverage.t
 t/release-pod-syntax.t
 t/sql/SQLite/deploy/1.0/001-auto-__VERSION.sql
 t/sql/_source/deploy/1.0/001-auto-__VERSION.yml
