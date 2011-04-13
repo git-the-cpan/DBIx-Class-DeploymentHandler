@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001004';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001005';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -109,14 +109,14 @@ or for upgrades:
 
 =head1 DESCRIPTION
 
-C<DBIx::Class::DeploymentHandler> is, as it's name suggests, a tool for
+C<DBIx::Class::DeploymentHandler> is, as its name suggests, a tool for
 deploying and upgrading databases with L<DBIx::Class>.  It is designed to be
 much more flexible than L<DBIx::Class::Schema::Versioned>, hence the use of
 L<Moose> and lots of roles.
 
 C<DBIx::Class::DeploymentHandler> itself is just a recommended set of roles
 that we think will not only work well for everyone, but will also yeild the
-best overall mileage.  Each role it uses has it's own nuances and
+best overall mileage.  Each role it uses has its own nuances and
 documentation, so I won't describe all of them here, but here are a few of the
 major benefits over how L<DBIx::Class::Schema::Versioned> worked (and
 L<DBIx::Class::DeploymentHandler::Deprecated> tries to maintain compatibility
@@ -168,10 +168,14 @@ L<DBIx::Class::DeploymentHandler::WithReasonableDefaults>.
 You started your project and weren't using C<DBIx::Class::DeploymentHandler>?
 Lucky for you I had you in mind when I wrote this doc.
 
-First off, you'll want to just install the C<version_storage>:
+First,
+L<define the version|DBIx::Class::DeploymentHandler::Intro/Sample_database>
+in your main schema file (maybe using C<$VERSION>).
+
+Then you'll want to just install the version_storage:
 
  my $s = My::Schema->connect(...);
- my $dh = DBIx::Class::DeploymentHandler->({ schema => $s });
+ my $dh = DBIx::Class::DeploymentHandler->new({ schema => $s });
 
  $dh->prepare_version_storage_install;
  $dh->install_version_storage;
@@ -193,7 +197,7 @@ which will give you everything except for the exact SQL being run.
 
 To enable the various logging levels all you need to do is set an environment
 variables: C<DBICDH_FATAL>, C<DBICDH_ERROR>, C<DBICDH_WARN>, C<DBICDH_INFO>,
-C<DBICDH_DEBUG>, and C<DBICDH_TRACE>.  Each level can be set on it's own,
+C<DBICDH_DEBUG>, and C<DBICDH_TRACE>.  Each level can be set on its own,
 but the default is the first three on and the last three off, and the levels
 cascade, so if you turn on trace the rest will turn on automatically.
 
@@ -237,7 +241,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

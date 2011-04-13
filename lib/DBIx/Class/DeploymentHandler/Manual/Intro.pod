@@ -42,7 +42,12 @@ or if you are using a newer Perl you can use the prettier syntax:
 
 By default DBIx::Class::DeploymentHandler only uses integers for versions,
 this makes versioning much simpler for figuring out what version is next
-(or previous.)
+(or previous.) However, if you are using decimal numbers for versioning,
+you will need to create a separate DeploymentHandler class, as per
+L<DBIx::Class::DeploymentHandler::Cookbook::CustomResultSource>, and
+set the VersionHandler class_name from Monotonic to ExplicitVersions or
+DatabaseToSchemaVersions, as these handle version numbers as strings instead
+of integers.
 
 =head1 install.pl
 
@@ -50,20 +55,32 @@ Our first script, C<install.pl> reads our schema file and creates the tables
 in the database.
 
  #!/usr/bin/env perl
+
  use strict;
  use warnings;
  use aliased 'DBIx::Class::DeploymentHandler' => 'DH';
+ use Getopt::Long;
  use FindBin;
  use lib "$FindBin::Bin/../lib";
  use MyDatabase::Main;
- my $schema = MyDatabase::Main->connect('dbi:SQLite:mydb');
 
- my $dh = DH->new({
-      schema              => $schema,
-      script_directory    => "$FindBin::Bin/dbicdh",
-      databases           => 'SQLite',
-      sql_translator_args => { add_drop_table => 0 },
- });
+ my $force_overwrite = 0;
+
+ unless ( GetOptions( 'force_overwrite!' => \$force_overwrite ) ) {
+     die "Invalid options";
+ }
+
+ my $schema = MyDatabase::Main->connect('dbi:SQLite:mydb.db');
+
+ my $dh = DH->new(
+     {
+         schema              => $schema,
+         script_directory    => "$FindBin::Bin/../dbicdh",
+         databases           => 'SQLite',
+         sql_translator_args => { add_drop_table => 0 },
+         force_overwrite     => $force_overwrite,
+     }
+ );
 
  $dh->prepare_install;
  $dh->install;
@@ -82,6 +99,10 @@ Running C<install.pl> should create the following:
          `-- 1
              `-- 001-auto.yml
 
+You may wish to turn on L<debug logging|DBIx::Class::DeploymentHandler/"LOGGING"> 
+before running this script by setting the environment variable C<DBICDH_TRACE> to
+C<1>.
+
 =head3 001-auto.sql
 
 DBIx::Class::DeploymentHandler automatically generates SQL from our schema
@@ -96,17 +117,17 @@ translated into the sql.
 
 To truly take advantage of all DBIx::Class::DeploymentHandler offers, you
 should probably be using it for population.  To do that all you need to do
-is create a file called C<dbicdh/_common/install/1/create_artists.pl>:
+is create a file called C<dbicdh/_common/deploy/1/create_artists.pl>:
 
- sub {
-    my $schema = shift;
-    $schema->resultset('User')->populate([
-       ['name'],
-       ['Marillion'],
-       ['The Moutain Goats'],
-       ['Ladyhawke'],
-    ]);
- };
+  sub {
+     my $schema = shift;
+     $schema->resultset('Artist')->populate([
+        ['artistid', 'name'],
+        [1,          'Marillion'],
+        [2,          'The Moutain Goats'],
+        [3,          'Ladyhawke'],
+     ]);
+  };
 
 =head1 Upgrading
 
@@ -142,7 +163,7 @@ So here is our next script, C<upgrade.pl>:
 
  my $dh = DH->new({
     schema              => $schema,
-    script_directory    => "$FindBin::Bin/dbicdh",
+    script_directory    => "$FindBin::Bin/../dbicdh",
     databases           => 'SQLite',
     sql_translator_args => { add_drop_table => 0 },
  });
@@ -183,7 +204,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

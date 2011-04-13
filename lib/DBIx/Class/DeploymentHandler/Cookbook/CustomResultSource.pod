@@ -100,13 +100,19 @@ table being set on the original result.
  __PACKAGE__->meta->make_immutable;
  1;
 
+Note: if you are using decimal numbers for versioning, you should ammend
+this DeploymentHandler package, setting it's VersionHandler class_name from
+Monotonic ( which handles integer only version numbers ) to ExplicitVersions
+or DatabaseToSchemaVersions, as these handle version numbers as strings
+instead of integers.
+
 =head1 AUTHOR
 
 Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -34,14 +34,14 @@ SYNOPSIS
      $dh->upgrade;
 
 DESCRIPTION
-    "DBIx::Class::DeploymentHandler" is, as it's name suggests, a tool for
+    "DBIx::Class::DeploymentHandler" is, as its name suggests, a tool for
     deploying and upgrading databases with DBIx::Class. It is designed to be
     much more flexible than DBIx::Class::Schema::Versioned, hence the use of
     Moose and lots of roles.
 
     "DBIx::Class::DeploymentHandler" itself is just a recommended set of
     roles that we think will not only work well for everyone, but will also
-    yeild the best overall mileage. Each role it uses has it's own nuances
+    yeild the best overall mileage. Each role it uses has its own nuances
     and documentation, so I won't describe all of them here, but here are a
     few of the major benefits over how DBIx::Class::Schema::Versioned worked
     (and DBIx::Class::DeploymentHandler::Deprecated tries to maintain
@@ -79,10 +79,13 @@ THIS SUCKS
     "DBIx::Class::DeploymentHandler"? Lucky for you I had you in mind when I
     wrote this doc.
 
-    First off, you'll want to just install the "version_storage":
+    First, define the version in your main schema file (maybe using
+    $VERSION).
+
+    Then you'll want to just install the version_storage:
 
      my $s = My::Schema->connect(...);
-     my $dh = DBIx::Class::DeploymentHandler->({ schema => $s });
+     my $dh = DBIx::Class::DeploymentHandler->new({ schema => $s });
 
      $dh->prepare_version_storage_install;
      $dh->install_version_storage;
@@ -106,7 +109,7 @@ LOGGING
     To enable the various logging levels all you need to do is set an
     environment variables: "DBICDH_FATAL", "DBICDH_ERROR", "DBICDH_WARN",
     "DBICDH_INFO", "DBICDH_DEBUG", and "DBICDH_TRACE". Each level can be set
-    on it's own, but the default is the first three on and the last three
+    on its own, but the default is the first three on and the last three
     off, and the levels cascade, so if you turn on trace the rest will turn
     on automatically.
 
@@ -143,7 +146,7 @@ AUTHOR
     Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+    This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
