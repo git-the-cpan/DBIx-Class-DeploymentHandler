@@ -14,7 +14,8 @@ use Test::Exception;
 use DBI;
 
 DBICDHTest::ready;
-my $dbh = DBI->connect('dbi:SQLite::memory:');
+
+my $dbh = DBICDHTest::dbh();
 my @connection = (sub { $dbh }, { ignore_version => 1 });
 my $sql_dir = 't/sql';
 
@@ -158,6 +159,10 @@ DOWN2: {
       baz => 'frew',
     })
   } 'schema is at version 2';
+
+  is $handler->version_storage->database_version => 2, 
+    'database version is down to 2';
+
 }
 
 done_testing;

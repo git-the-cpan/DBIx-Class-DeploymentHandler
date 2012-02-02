@@ -1,5 +1,15 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.001006  2012-02-01 21:18:38 CST6CDT
+       - Fix install to allow you to deploy to a given version (jnap)
+       - Fix the backup method to use storage, not schema (jnap)
+       - Fix the reasonable defaults for downgrading (jnap)
+       - Stop warning all the time (ribasushi)
+       - croak on a couple errors that should be fatal
+       - Stop deleting the wrong version (for downgrades)
+       - Fix documentation for in the Cookbook (moltar)
+       - removed Method::Signatures::Simple stuff (dhoss)
+
 0.001005  2011-04-13 15:21:08 CST6CDT
        - Add _any "version" for running code for all versions
        - Fix more minor pod niggles

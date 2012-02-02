@@ -1,12 +1,11 @@
 package DBIx::Class::DeploymentHandler::Dad;
-BEGIN {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001005';
+{
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.001006';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
 
 use Moose;
-use Method::Signatures::Simple;
 require DBIx::Class::Schema;    # loaded for type constraint
 use Carp::Clan '^DBIx::Class::DeploymentHandler';
 use DBIx::Class::DeploymentHandler::Logger;
@@ -44,12 +43,13 @@ has schema_version => (
 
 sub _build_schema_version { $_[0]->schema->schema_version }
 
-method install {
+sub install {
+  my $self = shift;
   log_info { 'installing version ' . $self->to_version };
   croak 'Install not possible as versions table already exists in database'
     if $self->version_storage_is_installed;
 
-  my $ddl = $self->deploy;
+  my $ddl = $self->deploy({version=>$self->to_version});
 
   $self->add_database_version({
     version     => $self->to_version,
@@ -78,7 +78,7 @@ sub upgrade {
 }
 
 sub downgrade {
-  log_info { 'upgrading' };
+  log_info { 'downgrading' };
   my $self = shift;
   my $ran_once = 0;
   while ( my $version_list = $self->previous_version_set ) {
@@ -86,14 +86,15 @@ sub downgrade {
     $self->downgrade_single_step({ version_set => $version_list });
 
     # do we just delete a row here?  I think so but not sure
-    $self->delete_database_version({ version => $version_list->[-1] });
+    $self->delete_database_version({ version => $version_list->[0] });
   }
   log_warn { 'no version to run downgrade' } unless $ran_once;
 }
 
-method backup {
+sub backup {
+  my $self = shift;
   log_info { 'backing up' };
-  $self->storage->backup($self->backup_directory)
+  $self->schema->storage->backup($self->backup_directory)
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -254,7 +255,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

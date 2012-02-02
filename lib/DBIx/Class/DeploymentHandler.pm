@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
-BEGIN {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.001005';
+{
+  $DBIx::Class::DeploymentHandler::VERSION = '0.001006';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -115,7 +115,7 @@ much more flexible than L<DBIx::Class::Schema::Versioned>, hence the use of
 L<Moose> and lots of roles.
 
 C<DBIx::Class::DeploymentHandler> itself is just a recommended set of roles
-that we think will not only work well for everyone, but will also yeild the
+that we think will not only work well for everyone, but will also yield the
 best overall mileage.  Each role it uses has its own nuances and
 documentation, so I won't describe all of them here, but here are a few of the
 major benefits over how L<DBIx::Class::Schema::Versioned> worked (and
@@ -241,7 +241,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

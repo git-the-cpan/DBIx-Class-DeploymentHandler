@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesVersionStorage;
-BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001005';
+{
+  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.001006';
 }
 use Moose::Role;
 
@@ -81,7 +81,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

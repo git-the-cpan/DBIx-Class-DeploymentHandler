@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
-BEGIN {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001005';
+{
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.001006';
 }
 use Moose::Role;
 
@@ -110,7 +110,7 @@ The version set uniquely identifies the migration.
 
 Takes two versions and a version set.  This basically is supposed to generate
 the needed C<SQL> to migrate down from the first version to the second version.
-The version set uniquely identifies the migration and should match it's
+The version set uniquely identifies the migration and should match its
 respective upgrade version set.
 
 =head2 upgrade_single_step
@@ -139,7 +139,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

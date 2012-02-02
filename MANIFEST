@@ -36,6 +36,7 @@ t/02-instantiation-wo-component.t
 t/02-instantiation.t
 t/03-deprecated.t
 t/04-preconnect.t
+t/10-split-sql-chunk.t
 t/bugs/01-emailed-bug-01.t
 t/deploy_methods/sql_translator.t
 t/deploy_methods/sql_translator_deprecated.t
@@ -51,7 +52,8 @@ t/no-component-lib/DBICVersion_v2.pm
 t/no-component-lib/DBICVersion_v3.pm
 t/no-component-lib/DBICVersion_v4.pm
 t/release-pod-syntax.t
-t/sql/SQLite/schema/1.0/001-auto-__VERSION.sql
+t/sql/SQLite/deploy/1.0/001-auto-__VERSION.sql
+t/sql/_source/deploy/1.0/001-auto-__VERSION.yml
 t/version_handlers/db_schema_versions.t
 t/version_handlers/explict_versions.t
 t/version_handlers/monotonic.t

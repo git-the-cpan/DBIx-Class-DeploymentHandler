@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
-BEGIN {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001005';
+{
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.001006';
 }
 use Moose::Role;
 
@@ -27,8 +27,8 @@ around prepare_downgrade => sub {
 
   my $args = shift || {};
 
-  $args->{from_version} ||= $self->database_version;
-  $args->{to_version}   ||= $self->schema_version;
+  $args->{to_version}   ||= $self->database_version;
+  $args->{from_version} ||= $self->schema_version;
   $args->{version_set}  ||= [$args->{from_version}, $args->{to_version}];
 
   $self->$orig($args);
@@ -72,9 +72,9 @@ Defaulted args:
 
 Defaulted args:
 
-  my $from_version = $self->database_version;
-  my $to_version   = $self->schema_version;
-  my $version_set  = [$to_version];
+  my $from_version = $self->schema_version;
+  my $to_version   = $self->data_version;
+  my $version_set  = [$from_version, $to_version];
 
 =head2 install_resultsource
 
@@ -88,7 +88,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
