@@ -1,12 +1,10 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001006';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.001007';
 }
 use Moose;
 
 # ABSTRACT: Go straight from Database to Schema version
-
-use Method::Signatures::Simple;
 
 with 'DBIx::Class::DeploymentHandler::HandlesVersioning';
 

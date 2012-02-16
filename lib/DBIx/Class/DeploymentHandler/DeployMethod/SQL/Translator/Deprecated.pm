@@ -1,22 +1,22 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001006';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.001007';
 }
 use Moose;
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
 
-use Method::Signatures::Simple;
-
 use File::Spec::Functions;
 
-extends 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator',
+extends 'DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator';
 
-method _ddl_schema_consume_filenames($type, $version) {
+sub _ddl_schema_consume_filenames {
+  my ($self, $type, $version) = @_;
   return [$self->_ddl_schema_produce_filename($type, $version)]
 }
 
-method _ddl_schema_produce_filename($type, $version) {
+sub _ddl_schema_produce_filename {
+  my ($self, $type, $version) = @_;
   my $filename = ref $self->schema;
   $filename =~ s/::/-/g;
 
@@ -27,7 +27,8 @@ method _ddl_schema_produce_filename($type, $version) {
   return $filename;
 }
 
-method _ddl_schema_up_produce_filename($type, $versions, $dir) {
+sub _ddl_schema_up_produce_filename {
+  my ($self, $type, $versions, $dir) = @_;
   my $filename = ref $self->schema;
   $filename =~ s/::/-/g;
 
@@ -38,7 +39,8 @@ method _ddl_schema_up_produce_filename($type, $versions, $dir) {
   return $filename;
 }
 
-method _ddl_schema_up_consume_filenames($type, $versions) {
+sub _ddl_schema_up_consume_filenames {
+  my ($self, $type, $versions) = @_;
   return [$self->_ddl_schema_up_produce_filename($type, $versions)]
 }
 

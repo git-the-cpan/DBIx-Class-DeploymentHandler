@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001006';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.001007';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -11,8 +11,6 @@ use Log::Contextual ':log', -package_logger =>
 
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
-
-use Method::Signatures::Simple;
 
 has schema => (
   isa      => 'DBIx::Class::Schema',

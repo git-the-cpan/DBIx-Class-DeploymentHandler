@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001006';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.001007';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -11,7 +11,6 @@ use Log::Contextual ':log', -package_logger =>
 
 # ABSTRACT: Version storage that does the normal stuff
 
-use Method::Signatures::Simple;
 use DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult;
 
 has schema => (
