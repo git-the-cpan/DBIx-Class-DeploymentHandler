@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.001008';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002000';
 }
 use Moose;
 
@@ -905,7 +905,10 @@ A very basic perl script might look like:
  use strict;
  use warnings;
 
- sub {
+ use DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers
+    'schema_from_schema_loader';
+
+ schema_from_schema_loader({ naming => 'v4' }, sub {
    my $schema = shift;
 
    # [1] for deploy, [1,2] for upgrade or downgrade, probably used with _any
@@ -915,7 +918,12 @@ A very basic perl script might look like:
      name => 'root',
      password => 'root',
    })
- }
+ })
+
+Note that the above uses
+L<DBIx::Class::DeploymentHanlder::DeployMethod::SQL::Translator::ScriptHelpers/schema_from_schema_loader>.
+Using a raw coderef is strongly discouraged as it is likely to break as you
+modify your schema.
 
 =head1 ATTRIBUTES
 

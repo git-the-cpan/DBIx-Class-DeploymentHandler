@@ -33,6 +33,7 @@
             "SQL::Translator" : "0.11005",
             "Test::Exception" : 0,
             "Test::More" : "0.88",
+            "Test::Requires" : "0.06",
             "Try::Tiny" : 0,
             "aliased" : 0,
             "autodie" : 0,
@@ -49,6 +50,6 @@
          "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
       }
    },
-   "version" : "0.001008"
+   "version" : "0.002000"
 }
 

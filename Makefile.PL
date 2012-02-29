@@ -32,13 +32,14 @@ my %WriteMakefileArgs = (
     "SQL::Translator" => "0.11005",
     "Test::Exception" => 0,
     "Test::More" => "0.88",
+    "Test::Requires" => "0.06",
     "Try::Tiny" => 0,
     "aliased" => 0,
     "autodie" => 0,
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.001008",
+  "VERSION" => "0.002000",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }

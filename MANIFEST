@@ -10,6 +10,7 @@ lib/DBIx/Class/DeploymentHandler/Cookbook/CustomResultSource.pod
 lib/DBIx/Class/DeploymentHandler/Dad.pm
 lib/DBIx/Class/DeploymentHandler/DeployMethod/SQL/Translator.pm
 lib/DBIx/Class/DeploymentHandler/DeployMethod/SQL/Translator/Deprecated.pm
+lib/DBIx/Class/DeploymentHandler/DeployMethod/SQL/Translator/ScriptHelpers.pm
 lib/DBIx/Class/DeploymentHandler/Deprecated.pm
 lib/DBIx/Class/DeploymentHandler/HandlesDeploy.pm
 lib/DBIx/Class/DeploymentHandler/HandlesVersionStorage.pm
@@ -38,6 +39,7 @@ t/03-deprecated.t
 t/04-preconnect.t
 t/10-split-sql-chunk.t
 t/bugs/01-emailed-bug-01.t
+t/deploy_methods/script-helpers.t
 t/deploy_methods/sql_translator.t
 t/deploy_methods/sql_translator_deprecated.t
 t/deploy_methods/sql_translator_protoschema_transform.t
