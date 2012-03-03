@@ -22,6 +22,7 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "Carp" => 0,
     "Carp::Clan" => 0,
+    "Context::Preserve" => "0.01",
     "DBD::SQLite" => "1.35",
     "DBIx::Class" => "0.08121",
     "File::Path" => "2.08",
@@ -39,7 +40,7 @@ my %WriteMakefileArgs = (
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.002000",
+  "VERSION" => "0.002100",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }

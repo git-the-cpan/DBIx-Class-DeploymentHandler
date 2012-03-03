@@ -39,6 +39,7 @@ t/03-deprecated.t
 t/04-preconnect.t
 t/10-split-sql-chunk.t
 t/bugs/01-emailed-bug-01.t
+t/deploy_methods/coderef-leakage.t
 t/deploy_methods/script-helpers.t
 t/deploy_methods/sql_translator.t
 t/deploy_methods/sql_translator_deprecated.t

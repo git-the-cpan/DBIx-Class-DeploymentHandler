@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002000';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002100';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;

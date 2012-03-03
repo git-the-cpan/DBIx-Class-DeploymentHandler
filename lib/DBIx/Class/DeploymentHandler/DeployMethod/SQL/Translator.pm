@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002000';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002100';
 }
 use Moose;
 
@@ -13,6 +13,7 @@ use Log::Contextual qw(:log :dlog), -package_logger =>
   DBIx::Class::DeploymentHandler::Logger->new({
     env_prefix => 'DBICDH'
   });
+use Context::Preserve;
 
 use Try::Tiny;
 
@@ -293,49 +294,72 @@ sub _run_sql {
   return $self->_run_sql_array($self->_read_sql_file($filename));
 }
 
+# stolen from Plack::Util::_load_sandbox
+sub _load_sandbox {
+  my $_file = shift;
+
+  my $_package = $_file;
+  $_package =~ s/([^A-Za-z0-9_])/sprintf("_%2x", unpack("C", $1))/eg;
+
+  local $0 = $_file; # so FindBin etc. works
+
+  return eval sprintf <<'END_EVAL', $_package;
+package DBICDH::Sandbox::%s;
+{
+  my $app = do $_file;
+  if ( !$app && ( my $error = $@ || $! )) { die $error; }
+  $app;
+}
+END_EVAL
+}
+
 sub _run_perl {
   my ($self, $filename, $versions) = @_;
   log_debug { "Running Perl from $filename" };
   my $filedata = do { local( @ARGV, $/ ) = $filename; <> };
 
-  no warnings 'redefine';
-  my $fn = eval "$filedata";
-  use warnings;
+  my $fn = _load_sandbox($filename);
+
   Dlog_trace { "Running Perl $_" } $fn;
 
-  if ($@) {
-    croak "$filename failed to compile: $@";
-  } elsif (ref $fn eq 'CODE') {
+  if (ref $fn eq 'CODE') {
     $fn->($self->schema, $versions)
   } else {
     croak "$filename should define an anonymouse sub that takes a schema but it didn't!";
   }
 }
 
+sub txn_do {
+   my ( $self, $code ) = @_;
+   return $code->() unless $self->txn_wrap;
+
+   my $guard = $self->schema->txn_scope_guard;
+
+   return preserve_context { $code->() } after => sub { $guard->commit };
+}
+
 sub _run_sql_and_perl {
   my ($self, $filenames, $sql_to_run, $versions) = @_;
   my @files   = @{$filenames};
-  my $guard   = $self->schema->txn_scope_guard if $self->txn_wrap;
+  $self->txn_do(sub {
+     $self->_run_sql_array($sql_to_run) if $self->ignore_ddl;
 
-  $self->_run_sql_array($sql_to_run) if $self->ignore_ddl;
+     my $sql = ($sql_to_run)?join ";\n", @$sql_to_run:'';
+     FILENAME:
+     for my $filename (@files) {
+       if ($self->ignore_ddl && $filename =~ /^[^_]*-auto.*\.sql$/) {
+         next FILENAME
+       } elsif ($filename =~ /\.sql$/) {
+          $sql .= $self->_run_sql($filename)
+       } elsif ( $filename =~ /\.pl$/ ) {
+          $self->_run_perl($filename, $versions)
+       } else {
+         croak "A file ($filename) got to deploy that wasn't sql or perl!";
+       }
+     }
 
-  my $sql = ($sql_to_run)?join ";\n", @$sql_to_run:'';
-  FILENAME:
-  for my $filename (@files) {
-    if ($self->ignore_ddl && $filename =~ /^[^_]*-auto.*\.sql$/) {
-      next FILENAME
-    } elsif ($filename =~ /\.sql$/) {
-       $sql .= $self->_run_sql($filename)
-    } elsif ( $filename =~ /\.pl$/ ) {
-       $self->_run_perl($filename, $versions)
-    } else {
-      croak "A file ($filename) got to deploy that wasn't sql or perl!";
-    }
-  }
-
-  $guard->commit if $self->txn_wrap;
-
-  return $sql;
+     return $sql;
+  });
 }
 
 sub deploy {

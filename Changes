@@ -1,5 +1,13 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002100  2012-03-03 17:09:21 CST6CDT
+       - Wrap upgrades, downgrades, and installs in a transaction, as a failure
+         to add a version to the version table should cause a rollback
+       - Allow user to specify version of schema to install
+       - Added better sandboxing (stolen straight from Plack::Util) for coderefs
+         to avoid accidental leakage
+       - Sandboxing also makes $0 and thus FindBin et al work in perl scripts
+
 0.002000  2012-02-28 21:20:48 CST6CDT
        - Added DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers,
          ALL users who use perl scripts during migrations are encouraged to use
