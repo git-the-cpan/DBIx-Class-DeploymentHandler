@@ -1,5 +1,10 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002110  2012-03-14 21:22:36 America/Chicago
+       - Use ->count instead of ->next to check if version storage is deployed
+         (->next caused issues on MSSQL due to length of DDL)
+       - Fix a couple stupid documentation issues (Phillip Smith)
+
 0.002100  2012-03-03 17:09:21 CST6CDT
        - Wrap upgrades, downgrades, and installs in a transaction, as a failure
          to add a version to the version table should cause a rollback

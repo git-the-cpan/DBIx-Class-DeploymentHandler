@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002100';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002110';
 }
 
 # ABSTRACT: Predefined searches to find what you want from the version storage
@@ -14,7 +14,7 @@ use Try::Tiny;
 
 sub version_storage_is_installed {
   my $self = shift;
-  try { $self->next; 1 } catch { undef }
+  try { $self->count; 1 } catch { undef }
 }
 
 sub database_version {

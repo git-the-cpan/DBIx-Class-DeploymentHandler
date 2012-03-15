@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.002100';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResultSet::VERSION = '0.002110';
 }
 
 # ABSTRACT: (DEPRECATED) Predefined searches to find what you want from the version storage
@@ -15,7 +15,7 @@ use Time::HiRes 'gettimeofday';
 
 sub version_storage_is_installed {
   my $self = shift;
-  try { $self->next; 1 } catch { undef }
+  try { $self->count; 1 } catch { undef }
 }
 
 sub database_version {
