@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions;
 {
-  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.002111';
 }
 use Moose;
 
@@ -116,6 +116,12 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions - Define your own list of versions to use for migrations
+
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesVersioning>.  Pretty much all the
+documentation is there.
 
 =head1 AUTHOR
 

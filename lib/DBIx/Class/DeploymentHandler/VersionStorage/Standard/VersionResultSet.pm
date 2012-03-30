@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002111';
 }
 
 # ABSTRACT: Predefined searches to find what you want from the version storage

@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002111';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -61,6 +61,12 @@ __PACKAGE__->meta->make_immutable;
 =head1 NAME
 
 DBIx::Class::DeploymentHandler::VersionStorage::Standard - Version storage that does the normal stuff
+
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesVersionStorage>.  Pretty much all the
+documentation is there.
 
 =head1 AUTHOR
 

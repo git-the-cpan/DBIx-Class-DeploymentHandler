@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions;
 {
-  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions::VERSION = '0.002111';
 }
 use Moose;
 
@@ -71,6 +71,12 @@ __PACKAGE__->meta->make_immutable;
 
 DBIx::Class::DeploymentHandler::VersionHandler::DatabaseToSchemaVersions - Go straight from Database to Schema version
 
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesVersioning>.  Pretty much all the
+documentation is there.
+
 =head1 AUTHOR
 
 Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
@@ -86,5 +92,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-
 

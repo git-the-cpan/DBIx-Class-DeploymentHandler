@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.002111';
 }
 use Moose;
 
@@ -114,6 +114,12 @@ L<DBIx::Class::DeployMethod::SQL::Translator/_ddl_schema_up_produce_filename>
 L<DBIx::Class::DeployMethod::SQL::Translator/_ddl_schema_up_consume_filenames>
 
 =back
+
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesDeploy>.  Pretty much all the
+documentation is there.
 
 =head1 AUTHOR
 

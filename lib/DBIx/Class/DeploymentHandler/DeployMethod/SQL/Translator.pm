@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002111';
 }
 use Moose;
 
@@ -948,6 +948,12 @@ Note that the above uses
 L<DBIx::Class::DeploymentHanlder::DeployMethod::SQL::Translator::ScriptHelpers/schema_from_schema_loader>.
 Using a raw coderef is strongly discouraged as it is likely to break as you
 modify your schema.
+
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesDeploy>.  Pretty much all the
+documentation is there.
 
 =head1 ATTRIBUTES
 

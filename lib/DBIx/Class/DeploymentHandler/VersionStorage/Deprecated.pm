@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.002110';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.002111';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -92,6 +92,12 @@ new Standard VersionStorage:
 
  $dh->version_storage->add_database_vesion({ version => $_ })
    for @versions;
+
+=head1 SEE ALSO
+
+This class is an implementation of
+L<DBIx::Class::DeploymentHandler::HandlesVersionStorage>.  Pretty much all the
+documentation is there.
 
 =head1 AUTHOR
 
