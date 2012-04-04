@@ -1,5 +1,10 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002112  2012-04-03 21:11:19 America/Chicago
+       - Handle errors in Perl Scripts better
+       - Stop supporting FindBin by localizing $0, just use Dir::Self if you
+         need that
+
 0.002111  2012-03-29 20:09:45 America/Chicago
        - Improve docs by linking from implementations to their roles
 
