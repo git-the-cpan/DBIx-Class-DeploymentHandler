@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002112';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002113';
 }
 use Moose;
 
@@ -41,7 +41,6 @@ has force_overwrite => (
 );
 
 has schema => (
-  isa      => 'DBIx::Class::Schema',
   is       => 'ro',
   required => 1,
 );
@@ -312,7 +311,7 @@ END_EVAL
 
   croak $@ if $@;
 
-  croak "$_file should define an anonymouse sub that takes a schema but it didn't!"
+  croak "$_file should define an anonymous sub that takes a schema but it didn't!"
      unless ref $fn && ref $fn eq 'CODE';
 
   return $fn;

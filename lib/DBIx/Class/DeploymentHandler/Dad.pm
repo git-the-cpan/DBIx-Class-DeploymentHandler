@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002112';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002113';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -16,7 +16,6 @@ use Log::Contextual ':log', -package_logger =>
   });
 
 has schema => (
-  isa      => 'DBIx::Class::Schema',
   is       => 'ro',
   required => 1,
 );

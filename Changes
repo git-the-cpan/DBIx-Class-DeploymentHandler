@@ -1,5 +1,9 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002113  2012-05-05 23:09:33 America/Chicago
+       - Remove isa check on schema attributes so that you may pass the schema
+         class instead of the schema object
+
 0.002112  2012-04-03 21:11:19 America/Chicago
        - Handle errors in Perl Scripts better
        - Stop supporting FindBin by localizing $0, just use Dir::Self if you

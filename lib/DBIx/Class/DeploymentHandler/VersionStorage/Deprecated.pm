@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.002112';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VERSION = '0.002113';
 }
 use Moose;
 use DBIx::Class::DeploymentHandler::Logger;
@@ -13,7 +13,6 @@ use Log::Contextual ':log', -package_logger =>
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past
 
 has schema => (
-  isa      => 'DBIx::Class::Schema',
   is       => 'ro',
   required => 1,
 );
