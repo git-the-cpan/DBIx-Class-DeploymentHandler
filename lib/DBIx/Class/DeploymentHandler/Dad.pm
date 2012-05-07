@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Dad;
 {
-  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002113';
+  $DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002114';
 }
 
 # ABSTRACT: Parent class for DeploymentHandlers
@@ -54,7 +54,7 @@ sub install {
      my $ddl = $self->deploy({ version=> $version });
 
      $self->add_database_version({
-       version     => $self->to_version,
+       version     => $version,
        ddl         => $ddl,
      });
   });
