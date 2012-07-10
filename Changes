@@ -1,5 +1,9 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002115  2012-07-10 13:36:35 America/Chicago
+       - Make tests use actual temp files to make certain systems stop failing tests
+       - Remove dep on File::Touch
+
 0.002114  2012-05-07 08:05:20 America/Chicago
        - Correctly set the version deployed to the version requested on install
          instead of just the current schema version

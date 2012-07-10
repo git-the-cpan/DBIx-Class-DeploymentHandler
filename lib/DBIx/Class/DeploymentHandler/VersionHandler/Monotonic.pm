@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::Monotonic;
 {
-  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.002114';
+  $DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.002115';
 }
 use Moose;
 
