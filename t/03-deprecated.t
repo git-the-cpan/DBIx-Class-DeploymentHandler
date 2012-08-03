@@ -9,13 +9,12 @@ use aliased 'DBIx::Class::DeploymentHandler::Deprecated';
 
 use File::Path 'remove_tree';
 use Test::More;
-use Test::Exception;
-
-DBICDHTest::ready;
+use File::Temp 'tempdir';
+use Test::Fatal qw(lives_ok dies_ok);
 
 my $dbh = DBICDHTest::dbh();
 my @connection = (sub { $dbh }, { ignore_version => 1 });
-my $sql_dir = 't/sql';
+my $sql_dir = tempdir( CLEANUP => 1 );
 
 VERSION1: {
   use_ok 'DBICVersion_v1';

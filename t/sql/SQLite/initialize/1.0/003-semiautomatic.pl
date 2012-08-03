@@ -1,0 +1,1 @@
+sub { open my $fh, '>', '/tmp/SGc76o0vbl'}

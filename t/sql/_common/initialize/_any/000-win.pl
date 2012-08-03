@@ -1,0 +1,1 @@
+sub {open my $fh, ">>", '/tmp/MAsCIp2XhO'; use Data::Dumper::Concise; print {$fh} join(",", @{$_[1]||[]}) . "\n";  }

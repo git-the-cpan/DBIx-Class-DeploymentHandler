@@ -1,13 +1,9 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002115';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VERSION = '0.002200';
 }
 use Moose;
-use DBIx::Class::DeploymentHandler::Logger;
-use Log::Contextual ':log', -package_logger =>
-  DBIx::Class::DeploymentHandler::Logger->new({
-    env_prefix => 'DBICDH'
-  });
+use DBIx::Class::DeploymentHandler::LogImporter ':log';
 
 # ABSTRACT: Version storage that does the normal stuff
 

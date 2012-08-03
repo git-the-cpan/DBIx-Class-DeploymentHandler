@@ -27,20 +27,22 @@ my %WriteMakefileArgs = (
     "DBIx::Class" => "0.08121",
     "File::Path" => "2.08",
     "File::Temp" => 0,
-    "Log::Contextual" => "0.00300",
+    "Log::Contextual" => "0.004200",
     "Moose" => "1.0",
     "MooseX::Role::Parameterized" => "0.18",
     "SQL::Translator" => "0.11005",
-    "Test::Exception" => 0,
+    "Sub::Exporter::Progressive" => 0,
+    "Test::Fatal" => "0.006",
     "Test::More" => "0.88",
     "Test::Requires" => "0.06",
+    "Text::Brew" => "0.02",
     "Try::Tiny" => 0,
     "aliased" => 0,
     "autodie" => 0,
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.002115",
+  "VERSION" => "0.002200",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }

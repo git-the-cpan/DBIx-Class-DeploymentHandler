@@ -1,16 +1,19 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002115';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002200';
 }
 
 use strict;
 use warnings;
 
-use Sub::Exporter -setup => {
+use Sub::Exporter::Progressive -setup => {
   exports => [qw(dbh schema_from_schema_loader)],
 };
 
 use List::Util 'first';
+use Text::Brew 'distance';
+use Try::Tiny;
+use DBIx::Class::DeploymentHandler::LogImporter qw(:dlog);
 
 sub dbh {
    my ($code) = @_;
@@ -46,6 +49,10 @@ sub schema_from_schema_loader {
    warn 'using "current" naming in a deployment script is begging for problems.  Just Say No.'
       if $opts->{naming} eq 'current' ||
         (ref $opts->{naming} eq 'HASH' && first { $_ eq 'current' } values %{$opts->{naming}});
+
+   $opts->{debug} = 1
+      if !exists $opts->{debug} && $ENV{DBICDH_TRACE};
+
    sub {
       my ($schema, $versions) = @_;
 
@@ -57,8 +64,33 @@ sub schema_from_schema_loader {
       my $new_schema = DBIx::Class::Schema::Loader::make_schema_at(
         'SHSchema::' . $count++, $opts, \@ci
       );
+
+      Dlog_debug {
+         "schema_from_schema_loader generated the following sources: $_"
+      } [ $new_schema->sources ];
       my $sl_schema = $new_schema->connect(@ci);
-      $code->($sl_schema, $versions)
+      try {
+         $code->($sl_schema, $versions)
+      } catch {
+         if (m/Can't find source for (.+?) at/) {
+            my @presentsources = map {
+              (distance($_, $1))[0] < 3 ? "$_ <== Possible Match\n" : "$_\n";
+            } $sl_schema->sources;
+
+            die <<"ERR";
+$_
+You are seeing this error because the DBIx::Class::ResultSource in your
+migration script called "$1" is not part of the schema that ::Schema::Loader
+has inferred from your existing database.
+
+To help you debug this issue, here's a list of the actual sources that the
+schema available to your migration knows about:
+
+ @presentsources
+ERR
+         }
+         die $_;
+      }
    }
 }
 
