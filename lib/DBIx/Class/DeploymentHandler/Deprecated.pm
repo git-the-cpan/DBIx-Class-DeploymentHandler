@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Deprecated;
 {
-  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.002200';
+  $DBIx::Class::DeploymentHandler::Deprecated::VERSION = '0.002201';
 }
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past

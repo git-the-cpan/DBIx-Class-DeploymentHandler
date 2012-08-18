@@ -25,11 +25,11 @@ my %WriteMakefileArgs = (
     "Context::Preserve" => "0.01",
     "DBD::SQLite" => "1.35",
     "DBIx::Class" => "0.08121",
-    "File::Path" => "2.08",
     "File::Temp" => 0,
     "Log::Contextual" => "0.004200",
     "Moose" => "1.0",
     "MooseX::Role::Parameterized" => "0.18",
+    "Path::Class" => "0.26",
     "SQL::Translator" => "0.11005",
     "Sub::Exporter::Progressive" => 0,
     "Test::Fatal" => "0.006",
@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.002200",
+  "VERSION" => "0.002201",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }

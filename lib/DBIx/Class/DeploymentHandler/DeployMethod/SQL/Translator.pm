@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002200';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002201';
 }
 use Moose;
 
@@ -19,8 +19,7 @@ require SQL::Translator::Diff;
 require DBIx::Class::Storage;   # loaded for type constraint
 use DBIx::Class::DeploymentHandler::Types;
 
-use File::Path 'mkpath';
-use File::Spec::Functions;
+use Path::Class qw(file dir);
 
 with 'DBIx::Class::DeploymentHandler::HandlesDeploy';
 
@@ -97,16 +96,16 @@ sub __ddl_consume_with_prefix {
   my ($self, $type, $versions, $prefix) = @_;
   my $base_dir = $self->script_directory;
 
-  my $main    = catfile( $base_dir, $type      );
+  my $main    = dir( $base_dir, $type      );
   my $common  =
-    catfile( $base_dir, '_common', $prefix, join q(-), @{$versions} );
+    dir( $base_dir, '_common', $prefix, join q(-), @{$versions} );
 
   my $common_any  =
-    catfile( $base_dir, '_common', $prefix, '_any' );
+    dir( $base_dir, '_common', $prefix, '_any' );
 
   my $dir;
   if (-d $main) {
-    $dir = catfile($main, $prefix, join q(-), @{$versions})
+    $dir = dir($main, $prefix, join q(-), @{$versions})
   } else {
     if ($self->ignore_ddl) {
       return []
@@ -114,7 +113,7 @@ sub __ddl_consume_with_prefix {
       croak "$main does not exist; please write/generate some SQL"
     }
   }
-  my $dir_any = catfile($main, $prefix, '_any');
+  my $dir_any = dir($main, $prefix, '_any');
 
   my %files;
   try {
@@ -129,9 +128,9 @@ sub __ddl_consume_with_prefix {
   };
   for my $dirname (grep { -d $_ } $common, $common_any, $dir_any) {
     opendir my($dh), $dirname;
-    for my $filename (grep { /\.(?:sql|pl)$/ && -f catfile($dirname,$_) } readdir $dh) {
+    for my $filename (grep { /\.(?:sql|pl)$/ && -f file($dirname,$_) } readdir $dh) {
       unless ($files{$filename}) {
-        $files{$filename} = catfile($dirname,$filename);
+        $files{$filename} = file($dirname,$filename);
       }
     }
     closedir $dh;
@@ -154,7 +153,7 @@ sub _ddl_protoschema_deploy_consume_filenames {
   my ($self, $version) = @_;
   my $base_dir = $self->script_directory;
 
-  my $dir = catfile( $base_dir, '_source', 'deploy', $version);
+  my $dir = dir( $base_dir, '_source', 'deploy', $version);
   return [] unless -d $dir;
 
   opendir my($dh), $dir;
@@ -168,7 +167,7 @@ sub _ddl_protoschema_upgrade_consume_filenames {
   my ($self, $versions) = @_;
   my $base_dir = $self->script_directory;
 
-  my $dir = catfile( $base_dir, '_preprocess_schema', 'upgrade', join q(-), @{$versions});
+  my $dir = dir( $base_dir, '_preprocess_schema', 'upgrade', join q(-), @{$versions});
 
   return [] unless -d $dir;
 
@@ -183,7 +182,7 @@ sub _ddl_protoschema_downgrade_consume_filenames {
   my ($self, $versions) = @_;
   my $base_dir = $self->script_directory;
 
-  my $dir = catfile( $base_dir, '_preprocess_schema', 'downgrade', join q(-), @{$versions});
+  my $dir = dir( $base_dir, '_preprocess_schema', 'downgrade', join q(-), @{$versions});
 
   return [] unless -d $dir;
 
@@ -196,18 +195,18 @@ sub _ddl_protoschema_downgrade_consume_filenames {
 
 sub _ddl_protoschema_produce_filename {
   my ($self, $version) = @_;
-  my $dirname = catfile( $self->script_directory, '_source', 'deploy',  $version );
-  mkpath($dirname) unless -d $dirname;
+  my $dirname = dir( $self->script_directory, '_source', 'deploy',  $version );
+  $dirname->mkpath unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.yml' );
+  return "" . file( $dirname, '001-auto.yml' );
 }
 
 sub _ddl_schema_produce_filename {
   my ($self, $type, $version) = @_;
-  my $dirname = catfile( $self->script_directory, $type, 'deploy', $version );
-  mkpath($dirname) unless -d $dirname;
+  my $dirname = dir( $self->script_directory, $type, 'deploy', $version );
+  $dirname->mkpath unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql' );
+  return "" . file( $dirname, '001-auto.sql' );
 }
 
 sub _ddl_schema_upgrade_consume_filenames {
@@ -224,18 +223,18 @@ sub _ddl_schema_upgrade_produce_filename {
   my ($self, $type, $versions) = @_;
   my $dir = $self->script_directory;
 
-  my $dirname = catfile( $dir, $type, 'upgrade', join q(-), @{$versions});
-  mkpath($dirname) unless -d $dirname;
+  my $dirname = dir( $dir, $type, 'upgrade', join q(-), @{$versions});
+  $dirname->mkpath unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql' );
+  return "" . file( $dirname, '001-auto.sql' );
 }
 
 sub _ddl_schema_downgrade_produce_filename {
   my ($self, $type, $versions, $dir) = @_;
-  my $dirname = catfile( $dir, $type, 'downgrade', join q(-), @{$versions} );
-  mkpath($dirname) unless -d $dirname;
+  my $dirname = dir( $dir, $type, 'downgrade', join q(-), @{$versions} );
+  $dirname->mkpath unless -d $dirname;
 
-  return catfile( $dirname, '001-auto.sql');
+  return "" . file( $dirname, '001-auto.sql');
 }
 
 sub _run_sql_array {
@@ -341,8 +340,8 @@ sub _run_sql_and_perl {
 
      my $sql = ($sql_to_run)?join ";\n", @$sql_to_run:'';
      FILENAME:
-     for my $filename (@files) {
-       if ($self->ignore_ddl && $filename =~ /^[^_]*-auto.*\.sql$/) {
+     for my $filename (map file($_), @files) {
+       if ($self->ignore_ddl && $filename->basename =~ /^[^-]*-auto.*\.sql$/) {
          next FILENAME
        } elsif ($filename =~ /\.sql$/) {
           $sql .= $self->_run_sql($filename)
@@ -538,10 +537,10 @@ sub _resultsource_install_filename {
   my ($self, $source_name) = @_;
   return sub {
     my ($self, $type, $version) = @_;
-    my $dirname = catfile( $self->script_directory, $type, 'deploy', $version );
-    mkpath($dirname) unless -d $dirname;
+    my $dirname = dir( $self->script_directory, $type, 'deploy', $version );
+    $dirname->mkpath unless -d $dirname;
 
-    return catfile( $dirname, "001-auto-$source_name.sql" );
+    return "" . file( $dirname, "001-auto-$source_name.sql" );
   }
 }
 
@@ -549,10 +548,10 @@ sub _resultsource_protoschema_filename {
   my ($self, $source_name) = @_;
   return sub {
     my ($self, $version) = @_;
-    my $dirname = catfile( $self->script_directory, '_source', 'deploy', $version );
-    mkpath($dirname) unless -d $dirname;
+    my $dirname = dir( $self->script_directory, '_source', 'deploy', $version );
+    $dirname->mkpath unless -d $dirname;
 
-    return catfile( $dirname, "001-auto-$source_name.yml" );
+    return "" . file( $dirname, "001-auto-$source_name.yml" );
   }
 }
 
