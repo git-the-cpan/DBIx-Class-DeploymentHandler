@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesVersionStorage;
 {
-  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.002201';
+  $DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.002202';
 }
 use Moose::Role;
 
@@ -15,7 +15,7 @@ requires 'version_storage_is_installed';
 
 # vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -87,7 +87,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

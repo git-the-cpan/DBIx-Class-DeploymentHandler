@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.002201';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult::VERSION = '0.002202';
 }
 
 # ABSTRACT: The typical way to store versions in the database
@@ -41,7 +41,7 @@ __PACKAGE__->resultset_class('DBIx::Class::DeploymentHandler::VersionStorage::St
 
 # vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -61,7 +61,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

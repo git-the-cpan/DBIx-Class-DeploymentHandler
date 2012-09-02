@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.002201",
+  "VERSION" => "0.002202",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }

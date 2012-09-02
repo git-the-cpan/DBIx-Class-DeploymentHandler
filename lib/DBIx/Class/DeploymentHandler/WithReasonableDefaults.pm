@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
 {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002201';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002202';
 }
 use Moose::Role;
 
@@ -44,8 +44,6 @@ around install_resultsource => sub {
 };
 
 1;
-
-
 
 =pod
 
@@ -94,7 +92,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
 
 __END__
 

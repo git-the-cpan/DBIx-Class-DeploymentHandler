@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.002201';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.002202';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
@@ -66,7 +66,7 @@ __PACKAGE__->meta->make_immutable;
 
 #vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -247,7 +247,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-
