@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler;
 {
-  $DBIx::Class::DeploymentHandler::VERSION = '0.002202';
+  $DBIx::Class::DeploymentHandler::VERSION = '0.002203';
 }
 
 # ABSTRACT: Extensible DBIx::Class deployment
