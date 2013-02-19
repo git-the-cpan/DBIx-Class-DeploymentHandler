@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.002204';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Deprecated::VersionResult::VERSION = '0.002205';
 }
 
 # ABSTRACT: (DEPRECATED) The old way to store versions in the database
@@ -33,7 +33,7 @@ __PACKAGE__->resultset_class('DBIx::Class::DeploymentHandler::VersionStorage::De
 
 # vim: ts=2 sw=2 expandtab
 
-__END__
+
 
 =pod
 
@@ -60,3 +60,7 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
+

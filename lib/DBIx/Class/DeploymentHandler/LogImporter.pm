@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::LogImporter;
 {
-  $DBIx::Class::DeploymentHandler::LogImporter::VERSION = '0.002204';
+  $DBIx::Class::DeploymentHandler::LogImporter::VERSION = '0.002205';
 }
 
 use warnings;
@@ -19,7 +19,6 @@ sub arg_package_logger { $_[1] || $logger }
 1;
 
 __END__
-
 =pod
 
 =head1 NAME
@@ -38,3 +37,4 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+

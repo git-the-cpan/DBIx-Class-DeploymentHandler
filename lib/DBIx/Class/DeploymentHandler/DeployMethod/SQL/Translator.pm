@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002204';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002205';
 }
 use Moose;
 
@@ -706,14 +706,13 @@ sub prepare_protoschema {
 
   # we do this because the code that uses this sets parser args,
   # so we just need to merge in the package
-  $sqltargs->{parser_args}{package} = $self->schema;
   my $sqlt = SQL::Translator->new({
     parser                  => 'SQL::Translator::Parser::DBIx::Class',
     producer                => 'SQL::Translator::Producer::YAML',
     %{ $sqltargs },
   });
 
-  my $yml = $sqlt->translate;
+  my $yml = $sqlt->translate(data => $self->schema);
 
   croak("Failed to translate to YAML: " . $sqlt->error)
     unless $yml;
@@ -738,7 +737,7 @@ __PACKAGE__->meta->make_immutable;
 
 # vim: ts=2 sw=2 expandtab
 
-__END__
+
 
 =pod
 
@@ -1010,3 +1009,7 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
+
