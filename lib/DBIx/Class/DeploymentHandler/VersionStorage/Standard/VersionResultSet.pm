@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002205';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet::VERSION = '0.002206';
 }
 
 # ABSTRACT: Predefined searches to find what you want from the version storage
@@ -29,7 +29,7 @@ sub database_version {
 
 # vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -59,7 +59,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

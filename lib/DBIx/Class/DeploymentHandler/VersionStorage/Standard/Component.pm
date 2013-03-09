@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component;
 {
-  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.002205';
+  $DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.002206';
 }
 
 # ABSTRACT: Attach this component to your schema to ensure you stay up to date
@@ -43,7 +43,7 @@ sub connection  {
 
 # vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -63,7 +63,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

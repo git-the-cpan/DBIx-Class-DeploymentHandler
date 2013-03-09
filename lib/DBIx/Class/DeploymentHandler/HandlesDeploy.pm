@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::HandlesDeploy;
 {
-  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.002205';
+  $DBIx::Class::DeploymentHandler::HandlesDeploy::VERSION = '0.002206';
 }
 use Moose::Role;
 
@@ -26,7 +26,7 @@ requires 'txn_do';
 
 # vim: ts=2 sw=2 expandtab
 
-
+__END__
 
 =pod
 
@@ -153,7 +153,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-
