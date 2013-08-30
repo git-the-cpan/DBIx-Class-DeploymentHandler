@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::Logger;
 {
-  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.002206';
+  $DBIx::Class::DeploymentHandler::Logger::VERSION = '0.002207';
 }
 
 use warnings;
@@ -38,6 +38,15 @@ sub _log {
   my $message = join( "\n", @_ );
   $message .= "\n" unless $message =~ /\n$/;
   warn "[DBICDH] [$level] $message";
+}
+
+sub new {
+   my ($self, $options, @rest) = @_;
+
+   $options ||= {};
+   $options->{env_prefix} ||= 'DBICDH';
+
+   $self->next::method($options, @rest)
 }
 
 1;

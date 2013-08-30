@@ -4,7 +4,7 @@
       "Arthur Axel \"fREW\" Schmidt <frioux+cpan@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -32,7 +32,8 @@
             "DBD::SQLite" : "1.35",
             "DBIx::Class" : "0.08121",
             "File::Temp" : "0",
-            "Log::Contextual" : "0.004200",
+            "Log::Contextual" : "0.005005",
+            "Moo" : "1.003000",
             "Moose" : "1.0",
             "MooseX::Role::Parameterized" : "0.18",
             "Path::Class" : "0.26",
@@ -61,6 +62,6 @@
          "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=dbsrgits/DBIx-Class-DeploymentHandler.git"
       }
    },
-   "version" : "0.002206"
+   "version" : "0.002207"
 }
 

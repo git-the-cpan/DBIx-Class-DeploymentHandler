@@ -6,7 +6,7 @@ build_requires: {}
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -19,7 +19,8 @@ requires:
   DBD::SQLite: 1.35
   DBIx::Class: 0.08121
   File::Temp: 0
-  Log::Contextual: 0.004200
+  Log::Contextual: 0.005005
+  Moo: 1.003000
   Moose: 1.0
   MooseX::Role::Parameterized: 0.18
   Path::Class: 0.26
@@ -37,4 +38,4 @@ requires:
 resources:
   bugtracker: https://github.com/frioux/DBIx-Class-DeploymentHandler/issues
   repository: git://git.shadowcat.co.uk/dbsrgits/DBIx-Class-DeploymentHandler.git
-version: 0.002206
+version: 0.002207

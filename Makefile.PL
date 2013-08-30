@@ -26,7 +26,8 @@ my %WriteMakefileArgs = (
     "DBD::SQLite" => "1.35",
     "DBIx::Class" => "0.08121",
     "File::Temp" => 0,
-    "Log::Contextual" => "0.004200",
+    "Log::Contextual" => "0.005005",
+    "Moo" => "1.003000",
     "Moose" => "1.0",
     "MooseX::Role::Parameterized" => "0.18",
     "Path::Class" => "0.26",
@@ -42,12 +43,26 @@ my %WriteMakefileArgs = (
     "namespace::autoclean" => 0,
     "parent" => "0.225"
   },
-  "VERSION" => "0.002206",
+  "TEST_REQUIRES" => {},
+  "VERSION" => "0.002207",
   "test" => {
     "TESTS" => "t/*.t t/bugs/*.t t/deploy_methods/*.t t/version_handlers/*.t t/version_storages/*.t"
   }
 );
 
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
   my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
