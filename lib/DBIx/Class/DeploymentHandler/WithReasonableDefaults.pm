@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
 {
-  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002207';
+  $DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002208';
 }
 use Moose::Role;
 

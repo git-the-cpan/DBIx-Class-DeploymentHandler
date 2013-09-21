@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002207';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002208';
 }
 
 use strict;

@@ -5,6 +5,7 @@ META.json
 META.yml
 Makefile.PL
 README
+cpanfile
 dist.ini
 lib/DBIx/Class/DeploymentHandler.pm
 lib/DBIx/Class/DeploymentHandler/Cookbook/CustomResultSource.pod
