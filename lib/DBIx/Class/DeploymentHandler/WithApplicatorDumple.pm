@@ -1,9 +1,9 @@
 package DBIx::Class::DeploymentHandler::WithApplicatorDumple;
 {
-  $DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.002208';
+  $DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.002209';
 }
 use MooseX::Role::Parameterized;
-use Class::MOP;
+use Module::Runtime 'use_module';
 use namespace::autoclean;
 
 # this is at least a little ghetto and not super well
@@ -43,7 +43,7 @@ role {
 
   my $class_name = $p->class_name;
 
-  Class::MOP::load_class($class_name);
+  use_module($class_name);
 
   my $meta = Class::MOP::class_of($class_name);
 
