@@ -12,7 +12,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -35,4 +35,8 @@ requires:
   autodie: 0
   namespace::autoclean: 0
   parent: 0.225
-version: 0.002209
+resources:
+  bugtracker: https://github.com/frioux/DBIx-Class-DeploymentHandler/issues
+  homepage: https://github.com/frioux/DBIx-Class-DeploymentHandler
+  repository: https://github.com/frioux/DBIx-Class-DeploymentHandler.git
+version: 0.002210

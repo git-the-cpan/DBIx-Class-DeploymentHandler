@@ -1,6 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
 {
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002209';
+  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002210';
 }
 use Moose;
 
@@ -267,19 +267,20 @@ sub _split_sql_chunk {
         s/^(?:BEGIN|BEGIN TRANSACTION|COMMIT).*//mgi;
 
         # trim whitespaces
-        s/^\s+|\s+$//mg;
+        s/^\s+//gm;
+        s/\s+$//gm;
 
         # remove comments
         s/^--.*//gm;
 
         # remove blank lines
-        s/^\n//mg;
+        s/^\n//gm;
 
         # put on single line
         s/\n/ /g;
     }
 
-    return @sql;
+    return grep $_, @sql;
 }
 
 sub _run_sql {
@@ -362,8 +363,9 @@ sub deploy {
   log_info { "deploying version $version" };
   my $sqlt_type = $self->storage->sqlt_type;
   my $sql;
+  my $sqltargs = $self->sql_translator_args;
   if ($self->ignore_ddl) {
-     $sql = $self->_sql_from_yaml({},
+     $sql = $self->_sql_from_yaml($sqltargs,
        '_ddl_protoschema_deploy_consume_filenames', $sqlt_type
      );
   }
@@ -592,7 +594,13 @@ sub prepare_deploy {
   my $self = shift;
   $self->prepare_protoschema({
       # Exclude __VERSION so that it gets installed separately
-      parser_args => { sources => [grep { $_ ne '__VERSION' } $self->schema->sources], }
+      parser_args => {
+         sources => [
+            sort { $a cmp $b }
+            grep { $_ ne '__VERSION' }
+            $self->schema->sources
+         ],
+      }
   }, '_ddl_protoschema_produce_filename');
   $self->_prepare_install({}, '_ddl_protoschema_produce_filename', '_ddl_schema_produce_filename');
 }
@@ -1003,7 +1011,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2014 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
