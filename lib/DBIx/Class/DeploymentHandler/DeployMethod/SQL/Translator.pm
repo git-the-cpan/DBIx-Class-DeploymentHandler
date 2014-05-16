@@ -1,7 +1,5 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
-{
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002210';
-}
+$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002211';
 use Moose;
 
 # ABSTRACT: Manage your SQL and Perl migrations in nicely laid out directories
@@ -291,6 +289,7 @@ sub _run_sql {
 
 sub _load_sandbox {
   my $_file = shift;
+  $_file = "$_file";
 
   my $_package = $_file;
   $_package =~ s/([^A-Za-z0-9_])/sprintf("_%2x", ord($1))/eg;

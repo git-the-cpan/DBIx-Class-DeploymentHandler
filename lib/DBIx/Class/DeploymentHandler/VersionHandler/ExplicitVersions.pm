@@ -1,7 +1,5 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions;
-{
-  $DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.002210';
-}
+$DBIx::Class::DeploymentHandler::VersionHandler::ExplicitVersions::VERSION = '0.002211';
 use Moose;
 
 # ABSTRACT: Define your own list of versions to use for migrations

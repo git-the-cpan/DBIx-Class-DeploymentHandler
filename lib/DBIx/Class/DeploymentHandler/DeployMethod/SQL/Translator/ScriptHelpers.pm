@@ -1,7 +1,6 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers;
-{
-  $DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002210';
-}
+$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers::VERSION = '0.002211';
+# ABSTRACT: CodeRef Transforms for common use-cases in DBICDH Migrations
 
 use strict;
 use warnings;
@@ -102,7 +101,7 @@ __END__
 
 =head1 NAME
 
-DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers
+DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers - CodeRef Transforms for common use-cases in DBICDH Migrations
 
 =head1 SYNOPSIS
 

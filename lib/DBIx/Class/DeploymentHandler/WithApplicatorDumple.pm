@@ -1,7 +1,5 @@
 package DBIx::Class::DeploymentHandler::WithApplicatorDumple;
-{
-  $DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.002210';
-}
+$DBIx::Class::DeploymentHandler::WithApplicatorDumple::VERSION = '0.002211';
 use MooseX::Role::Parameterized;
 use Module::Runtime 'use_module';
 use namespace::autoclean;
@@ -73,22 +71,3 @@ role {
 # vim: ts=2 sw=2 expandtab
 
 __END__
-
-=pod
-
-=head1 NAME
-
-DBIx::Class::DeploymentHandler::WithApplicatorDumple
-
-=head1 AUTHOR
-
-Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2014 by Arthur Axel "fREW" Schmidt.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
-=cut
