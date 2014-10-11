@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::HandlesVersionStorage;
-$DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.002211';
+$DBIx::Class::DeploymentHandler::HandlesVersionStorage::VERSION = '0.002212';
 use Moose::Role;
 
 # ABSTRACT: Interface for version storage methods
@@ -71,7 +71,7 @@ Deletes given database version from the version storage
  warn q(I can't version this database!)
    unless $dh->version_storage_is_installed
 
-return true iff the version storage is installed.
+return true if the version storage is installed.
 
 =head1 AUTHOR
 

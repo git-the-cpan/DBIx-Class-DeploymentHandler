@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::Dad;
-$DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002211';
+$DBIx::Class::DeploymentHandler::Dad::VERSION = '0.002212';
 # ABSTRACT: Parent class for DeploymentHandlers
 
 use Moose;
