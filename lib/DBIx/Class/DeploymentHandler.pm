@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler;
-$DBIx::Class::DeploymentHandler::VERSION = '0.002212';
+$DBIx::Class::DeploymentHandler::VERSION = '0.002213';
 # ABSTRACT: Extensible DBIx::Class deployment
 
 use Moose;

@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::VersionHandler::Monotonic;
-$DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.002212';
+$DBIx::Class::DeploymentHandler::VersionHandler::Monotonic::VERSION = '0.002213';
 use Moose;
 
 # ABSTRACT: Obvious version progressions
