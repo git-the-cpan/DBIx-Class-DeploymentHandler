@@ -1,5 +1,17 @@
 Revision history for DBIx-Class-DeploymentHandler
 
+0.002214  2014-12-21 11:53:20-06:00 America/Chicago
+ - Fix inconsistency of what files get run when `ignore_ddl` is set.
+   To be clear, if in the past you generated DDL and *also* hand wrote DDL,
+   `ignore_ddl` would ignore both, though the intention was only to ignore
+   generated DDL.
+   (Thanks Lianna Eeftinck for very detailed bug report at GH#20!)
+ - Include the filename of the script being run in case of error
+ - Add some documentation for how to portably create indices
+ - Fix doc bug stating that install calls initialize
+   (Thanks Gavin Shelley! Fixes GH#13)
+ - Minor Pod Fixes (Thanks Renee B and Pär Karlsson!)
+
 0.002213  2014-12-03 08:44:10-06:00 America/Chicago
  - Fix some POD formatting
 

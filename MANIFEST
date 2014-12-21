@@ -6,6 +6,7 @@ META.json
 META.yml
 Makefile.PL
 README
+TODO
 cpanfile
 dist.ini
 lib/DBIx/Class/DeploymentHandler.pm
@@ -48,6 +49,8 @@ t/deploy_methods/coderef-leakage.t
 t/deploy_methods/script-helpers.t
 t/deploy_methods/sql_translator.t
 t/deploy_methods/sql_translator_deprecated.t
+t/deploy_methods/sql_translator_errors.t
+t/deploy_methods/sql_translator_ignore_ddl.t
 t/deploy_methods/sql_translator_protoschema_transform.t
 t/lib/DBICDHTest.pm
 t/lib/DBICVersion_v1.pm

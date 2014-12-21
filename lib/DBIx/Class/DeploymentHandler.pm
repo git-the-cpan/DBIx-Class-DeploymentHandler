@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler;
-$DBIx::Class::DeploymentHandler::VERSION = '0.002213';
+$DBIx::Class::DeploymentHandler::VERSION = '0.002214';
 # ABSTRACT: Extensible DBIx::Class deployment
 
 use Moose;
@@ -97,6 +97,7 @@ or for upgrades:
    sql_translator_args => { add_drop_table => 0 },
  });
 
+ $dh->prepare_deploy;
  $dh->prepare_upgrade({
    from_version => 1,
    to_version   => 2,

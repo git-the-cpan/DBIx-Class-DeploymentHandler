@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
-$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002213';
+$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002214';
 use Moose;
 
 # ABSTRACT: Manage your SQL and Perl migrations in nicely laid out directories
@@ -101,20 +101,11 @@ sub __ddl_consume_with_prefix {
   my $common_any  =
     dir( $base_dir, '_common', $prefix, '_any' );
 
-  my $dir;
-  if (-d $main) {
-    $dir = dir($main, $prefix, join q(-), @{$versions})
-  } else {
-    if ($self->ignore_ddl) {
-      return []
-    } else {
-      croak "$main does not exist; please write/generate some SQL"
-    }
-  }
   my $dir_any = dir($main, $prefix, '_any');
 
   my %files;
   try {
+     my $dir = dir( $main, $prefix, join q(-), @{$versions} );
      opendir my($dh), $dir;
      %files =
        map { $_ => "$dir/$_" }
@@ -284,7 +275,11 @@ sub _split_sql_chunk {
 sub _run_sql {
   my ($self, $filename) = @_;
   log_debug { "Running SQL from $filename" };
-  return $self->_run_sql_array($self->_read_sql_file($filename));
+  try {
+     $self->_run_sql_array($self->_read_sql_file($filename));
+  } catch {
+     die "failed to run SQL in $filename: $_"
+  };
 }
 
 sub _load_sandbox {
@@ -320,7 +315,11 @@ sub _run_perl {
 
   Dlog_trace { "Running Perl $_" } $fn;
 
-  $fn->($self->schema, $versions)
+  try {
+     $fn->($self->schema, $versions)
+  } catch {
+     die "failed to run Perl in $filename: $_"
+  };
 }
 
 sub txn_do {
@@ -883,6 +882,26 @@ $from_schema, $to_schema >>, which are L<SQL::Translator::Schema> objects.
 
 =back
 
+A typical usage of C<_preprocess_schema> is to define indices or other non-DBIC
+type metadata.  Here is an example of how one might do that:
+
+The following coderef could be placed in a file called
+F<_preprocess_schema/1-2/001-add-user-index.pl>
+
+ sub {
+    my ($from, $to) = @_;
+
+    $to->get_table('Users')->add_index(
+       name => 'idx_Users_name',
+       fields => ['name'],
+    )
+ }
+
+This would ensure that in version 2 of the schema the generated migrations
+include an index on C<< Users.name >>.  Frustratingly, due to the nature of
+L<SQL::Translator>, you'll need to add this to each migration or it will detect
+that it was left out and kindly remove the index for you.
+
 =item C<$storage_type>
 
 This is a set of scripts that gets run depending on what your storage type is.
@@ -895,7 +914,8 @@ directory can contain the following directories itself:
 
 =item C<initialize>
 
-Gets run before the C<deploy> is C<deploy>ed.  Has the same structure as the
+If you are using the C<initialize> functionality,
+you should call initialize() before calling C<install>. This has the same structure as the
 C<deploy> subdirectory as well; that is, it has a directory for each schema
 version.  Unlike C<deploy>, C<upgrade>, and C<downgrade> though, it can only run
 C<.pl> files, and the coderef in the perl files get no arguments passed to them.
@@ -960,7 +980,7 @@ A very basic perl script might look like:
  })
 
 Note that the above uses
-L<DBIx::Class::DeploymentHanlder::DeployMethod::SQL::Translator::ScriptHelpers/schema_from_schema_loader>.
+L<DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::ScriptHelpers/schema_from_schema_loader>.
 Using a raw coderef is strongly discouraged as it is likely to break as you
 modify your schema.
 
