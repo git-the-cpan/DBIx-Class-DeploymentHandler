@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator;
-$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002214';
+$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::VERSION = '0.002215';
 use Moose;
 
 # ABSTRACT: Manage your SQL and Perl migrations in nicely laid out directories
@@ -902,6 +902,17 @@ include an index on C<< Users.name >>.  Frustratingly, due to the nature of
 L<SQL::Translator>, you'll need to add this to each migration or it will detect
 that it was left out and kindly remove the index for you.
 
+An alternative to the above, which is likely to be a lot less annoying, is to
+define such data in your schema directly, and only change it as you need to:
+
+ package MyApp::Schema::Result::User;
+
+ #[...]
+
+ sub sqlt_deploy_hook ( $self, $sqlt_table ) {
+    $sqlt_table->add_index(name => 'idx_Users_name', fields => [ 'name' ]);
+ }
+
 =item C<$storage_type>
 
 This is a set of scripts that gets run depending on what your storage type is.
@@ -1045,7 +1056,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2015 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

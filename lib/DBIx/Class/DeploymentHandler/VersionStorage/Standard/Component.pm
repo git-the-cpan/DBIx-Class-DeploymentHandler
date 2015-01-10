@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component;
-$DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.002214';
+$DBIx::Class::DeploymentHandler::VersionStorage::Standard::Component::VERSION = '0.002215';
 # ABSTRACT: Attach this component to your schema to ensure you stay up to date
 
 use strict;
@@ -54,7 +54,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2015 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
