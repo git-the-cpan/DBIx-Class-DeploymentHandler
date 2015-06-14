@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated;
-$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.002215';
+$DBIx::Class::DeploymentHandler::DeployMethod::SQL::Translator::Deprecated::VERSION = '0.002216';
 use Moose;
 
 # ABSTRACT: (DEPRECATED) Use this if you are stuck in the past

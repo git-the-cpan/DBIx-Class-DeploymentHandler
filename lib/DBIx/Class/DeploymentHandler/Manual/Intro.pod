@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::Manual::Intro
-$DBIx::Class::DeploymentHandler::Manual::Intro::VERSION = '0.002215';
+$DBIx::Class::DeploymentHandler::Manual::Intro::VERSION = '0.002216';
 # ABSTRACT: Introduction to DBIx::Class::DeploymentHandler
 
 __END__

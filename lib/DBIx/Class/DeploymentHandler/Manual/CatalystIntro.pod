@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::Manual::CatalystIntro
-$DBIx::Class::DeploymentHandler::Manual::CatalystIntro::VERSION = '0.002215';
+$DBIx::Class::DeploymentHandler::Manual::CatalystIntro::VERSION = '0.002216';
 # ABSTRACT: Introduction to using DBIx::Class::DeploymentHandler with a new Catalyst Project
 
 __END__
