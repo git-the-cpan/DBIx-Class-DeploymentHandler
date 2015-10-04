@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::WithReasonableDefaults;
-$DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002216';
+$DBIx::Class::DeploymentHandler::WithReasonableDefaults::VERSION = '0.002217';
 use Moose::Role;
 
 # ABSTRACT: Make default arguments to a few methods sensible

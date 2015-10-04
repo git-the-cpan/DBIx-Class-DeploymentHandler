@@ -57,6 +57,7 @@ t/lib/DBICVersion_v1.pm
 t/lib/DBICVersion_v2.pm
 t/lib/DBICVersion_v3.pm
 t/lib/DBICVersion_v4.pm
+t/lib/SH.pm
 t/no-component-lib/DBICDHTest.pm
 t/no-component-lib/DBICVersion_v1.pm
 t/no-component-lib/DBICVersion_v2.pm
