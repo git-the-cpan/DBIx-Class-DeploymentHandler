@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::Types;
-$DBIx::Class::DeploymentHandler::Types::VERSION = '0.002217';
+$DBIx::Class::DeploymentHandler::Types::VERSION = '0.002218';
 use strict;
 use warnings;
 

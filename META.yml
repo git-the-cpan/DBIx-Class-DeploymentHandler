@@ -39,4 +39,4 @@ resources:
   bugtracker: https://github.com/frioux/DBIx-Class-DeploymentHandler/issues
   homepage: https://github.com/frioux/DBIx-Class-DeploymentHandler
   repository: https://github.com/frioux/DBIx-Class-DeploymentHandler.git
-version: '0.002217'
+version: '0.002218'

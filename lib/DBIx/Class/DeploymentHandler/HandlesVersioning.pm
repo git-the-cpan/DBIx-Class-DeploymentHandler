@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::HandlesVersioning;
-$DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.002217';
+$DBIx::Class::DeploymentHandler::HandlesVersioning::VERSION = '0.002218';
 use Moose::Role;
 
 # ABSTRACT: Interface for version methods
@@ -86,7 +86,7 @@ or maybe just
 
 Note that we do not swap the version number order.  This allows us to remain
 consistent in our version set abstraction, since a version set really just
-describes a version change, and not necesarily a defined progression.
+describes a version change, and not necessarily a defined progression.
 
 =head1 VERSION SET
 

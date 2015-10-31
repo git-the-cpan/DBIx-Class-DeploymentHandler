@@ -1,5 +1,5 @@
 package DBIx::Class::DeploymentHandler::Cookbook::CustomResultSource;
-$DBIx::Class::DeploymentHandler::Cookbook::CustomResultSource::VERSION = '0.002217';
+$DBIx::Class::DeploymentHandler::Cookbook::CustomResultSource::VERSION = '0.002218';
 # ABSTRACT: Customize how your DBICDH versions are stored
 
 __END__
